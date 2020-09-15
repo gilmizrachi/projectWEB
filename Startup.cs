@@ -30,13 +30,11 @@ namespace projectWEB
 
             services.AddDbContext<projectWEBContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("projectWEBContext")));
-             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-           /*  services.AddAuthentication("CookieAuthentication")
-                  .AddCookie("CookieAuthentication", config =>
-                  {
-                      config.Cookie.Name = "UserLoginCookie";
-                      config.LoginPath = "/Login/UserLogin";
-                  });*/
+            services.AddSession(Options => Options.IdleTimeout = TimeSpan.FromMinutes(10));
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            services.ConfigureApplicationCookie(opts => opts.LoginPath = "/");
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,11 +55,12 @@ namespace projectWEB
 
             app.UseRouting();
 
-            
-            app.UseAuthorization();
-            
+            app.UseSession();
+
             app.UseAuthentication();
 
+            app.UseAuthorization();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

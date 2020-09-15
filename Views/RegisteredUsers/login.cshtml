@@ -9,11 +9,11 @@
     <h2>Sign In</h2>
     <div class="form-group">
         <label for="Username" class="sr-only">Username</label>
-        <input asp-for="UserName" class="form-control" id="Username" placeholder="Username" autocomplete="off">
+        <input asp-for="UserName" class="form-control" id="Username" placeholder="Username" autocomplete="off" name="Username">
     </div>
     <div class="form-group">
         <label for="Password" class="sr-only">Password</label>
-        <input asp-for="Password" class="form-control" id="Password" placeholder="Password" autocomplete="off">
+        <input asp-for="Password" type="password" class="form-control" id="Password" placeholder="Password" autocomplete="off" name="Password" >
     </div>
     <div class="form-group">
         <label for="remember"><input type="checkbox" id="remember"> Remember Me</label>
@@ -22,7 +22,7 @@
         <p>Not registered? <a asp-action="signup">Sign Up</a> | <a href="forgot.html">Forgot Password?</a></p>
     </div>
     <div class="form-group">
-        <input type="submit" value="Sign In" class="btn btn-primary">
+        <input type="submit" value="login" class="btn btn-primary">
     </div>
 </form>
 <!-- END Sign In Form -->

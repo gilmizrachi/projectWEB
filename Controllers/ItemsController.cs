@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using projectWEB.Data;
+
 
 namespace projectWEB.Controllers
 {
@@ -20,9 +23,11 @@ namespace projectWEB.Controllers
         }
 
         // GET: Items
+        [Authorize]
         public async Task<IActionResult> index()
         {
-            return View(await _context.Item.ToListAsync());
+            //return View(await _context.Item.ToListAsync());
+            return View();
         }
         /*
         public  IActionResult Index()
@@ -30,11 +35,15 @@ namespace projectWEB.Controllers
             return View();
         } */
         [Authorize]
-        public IActionResult Item_Details()
+        public IActionResult Item_Details()//(int? id)
         {
             return View();
         }
         public IActionResult Create()
+        {
+            return View();
+        }
+        public IActionResult Index2()
         {
             return View();
         }

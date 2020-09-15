@@ -27,17 +27,56 @@ namespace projectWEB.Controllers
         {
             return View();
         }
+        [HttpPost]
+        private async void signin(RegisteredUsers user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name,user.UserName),
+                new Claim(ClaimTypes.Role,user.MemberType.ToString()),
+            };
+
+            var claimsIdentity  = new ClaimsIdentity(
+                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties { };
+
+
+            await HttpContext.SignInAsync(
+              CookieAuthenticationDefaults.AuthenticationScheme,
+               new ClaimsPrincipal(claimsIdentity),
+               authProperties);
+
+            //return Redirect("/items/index");
+
+            /* moved this to check another kind of auth 
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authproperties = new AuthenticationProperties { /* ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10)* / };
+            //  var userPrincipal = new ClaimsPrincipal(new[] { claimsIdentity });
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authproperties);
+            // HttpContext.Session.SetString("Logged", "5");
+          //  RedirectToAction( "item","Items");
+          */
+        }
+
 
         [HttpPost]
-        public async Task<IActionResult> signup(string UserName,string Email,string Password) 
+        [ValidateAntiForgeryToken]
+        //public async Task<IActionResult> signup(string UserName,string Email,string Password) 
+        public async Task<IActionResult> Signup([Bind("UserName,Email,Password")] RegisteredUsers registeredUsers)
         {
-            
+                if((_context.RegisteredUsers.Where(u => u.UserName == registeredUsers.UserName).Count())>0)
+                {
+                //throw f
+                return View();
+                }
                 if (ModelState.IsValid)
                 {
-                RegisteredUsers registeredUsers = new RegisteredUsers() { UserName = UserName, Email = Email, Password = Password };
+               // RegisteredUsers registeredUsers = new RegisteredUsers() { UserName = UserName, Email = Email, Password = Password };
                 _context.Add(registeredUsers);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("item","Items");
+                var users = _context.RegisteredUsers.First(u => u.UserName == registeredUsers.UserName);
+                signin(users);
+                return View("index", Index());
                 }
                 return View("item","Items");
             
@@ -70,30 +109,15 @@ namespace projectWEB.Controllers
             return View();
         }
 
-        private async void signin(RegisteredUsers user)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name,user.UserName),
-                new Claim(ClaimTypes.Role,user.MemberType.ToString())
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authproperties = new AuthenticationProperties { ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10) };
-            //  var userPrincipal = new ClaimsPrincipal(new[] { claimsIdentity });
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authproperties);
-            // HttpContext.Session.SetString("Logged", "5");
-            RedirectToAction( "item","Items");
-        }
-
+       
         [HttpPost]
         public IActionResult Login(String Username, String Password)
         {
-            var users = _context.RegisteredUsers.Where(u => u.UserName == Username && u.Password == Password);
+            var users = _context.RegisteredUsers.Where(u => u.UserName == Username && u.Password == Password).First();
 
-            if (users != null && users.Count() > 0)
+            if (users != null)
             {
-                signin(users.First());
+                signin(users);
                 return RedirectToAction("Index","Items");//View(nameof(Index),);
             }
             //  return View( _context.RegisteredUsers.ToListAsync());
