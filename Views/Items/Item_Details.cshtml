@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_shopLayout.cshtml";
+    var item = Model.FirstOrDefault();
 }
 
 
@@ -78,15 +79,15 @@
 
                 <div class="col-md-6">
                     <div class="shop-desc">
-                        <h3>Brown leather bag</h3>
-                        <small>$20.00</small>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis consequat condimentum. In a tincidunt purus. Curabitur facilisis luctus aliquet. Aenean a cursus erat, sit amet interdum arcu. Mauris aliquam magna turpis, lobortis pellentesque velit elementum et. Nulla scelerisque a lorem nec posuere. Nunc convallis posuere tincidunt. Pellentesque a aliquet odio. Integer euismod, enim id lacinia auctor, tortor turpis malesuada enim, in semper turpis magna quis enim.</p>
+                        <h3>@Html.DisplayFor(modelItem => item.ItemName)</h3>
+                        <small>@Html.DisplayFor(modelItem => item.price)</small>
+                        <p>@Html.DisplayFor(modelItem => item.Description)</p>
 
                         <div class="shop-meta">
                             <a href="#" class="btn btn-primary">Add to Cart</a>
                             <ul class="list-inline">
                                 <li> SKU: product-111</li>
-                                <li>Categories: <a href="#">Bags</a>
+                                <li>Categories: <a href="#">@Html.DisplayFor(modelItem => item.ItemDevision)</a>
                             </ul>
                         </div><!-- end shop meta -->
                     </div><!-- end desc -->
@@ -107,7 +108,7 @@
 
                         <div class="tab-content">
                             <div id="home" class="tab-pane fade in active">
-                                <p>Suspendisse tristique porttitor magna, ac pulvinar libero lobortis at. Quisque sit amet facilisis eros. Vestibulum id ligula elementum, rutrum nunc sit amet, vulputate diam. Phasellus finibus mauris leo, quis commodo elit pellentesque quis. Phasellus a justo in enim maximus dictum nec interdum erat. Integer varius justo id nunc vulputate scelerisque. Curabitur maximus tristique magna. Nulla ut laoreet turpis, vel porta mauris. Suspendisse et varius orci, eget ullamcorper lacus. Duis accumsan odio at elit facilisis semper.</p>
+                                <p>@Html.DisplayFor(modelItem => item.Description)</p>
 
                                 <p>Phasellus finibus mauris leo, quis commodo elit pellentesque quis. Phasellus a justo in enim maximus dictum nec interdum erat. Integer varius justo id nunc vulputate scelerisque. Curabitur maximus tristique magna. Nulla ut laoreet turpis, vel porta mauris. Suspendisse et varius orci, eget ullamcorper lacus. Duis accumsan odio at elit facilisis semper.</p>
                             </div>
@@ -183,13 +184,13 @@
                             <div class="image-wrap entry">
                                 <img src="~/upload/shop_01.jpg" alt="" class="img-responsive">
                                 <div class="magnifier">
-                                    <a href="shop-single.html" title=""><i class="flaticon-add"></i></a>
+                                    <a href="#" title=""><i class="flaticon-add"></i></a>
                                 </div>
                             </div>
                             <!-- end image-wrap -->
                             <div class="course-details shop-box text-center">
                                 <h4>
-                                    <a href="shop-single.html" title="">Brown leather bag</a>
+                                    <a href="#" title="">Brown leather bag</a>
                                     <small>Bags</small>
                                 </h4>
                             </div>

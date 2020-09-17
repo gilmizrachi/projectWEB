@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -35,9 +36,10 @@ namespace projectWEB.Controllers
             return View();
         } */
         [Authorize]
-        public IActionResult Item_Details()//(int? id)
+        public async Task<IActionResult> Item_Details(int id)
         {
-            return View();
+            ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
+            return View( _context.Item.Where(u=>u.id==id));
         }
         public IActionResult Create()
         {
@@ -47,6 +49,29 @@ namespace projectWEB.Controllers
         {
             return View();
         }
+        [Authorize]
+        public async Task<IActionResult> mainshop()
+        {
+            return View(await _context.Item.ToListAsync());
+        }
+
+        // POST: Items/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Create([Bind("id,ItemName,price,ItemDevision,Description,amount")] Item item)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(item);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(item);
+        }
+
         /*
                 // GET: Items/Details/5
                 public async Task<IActionResult> Details(int? id)

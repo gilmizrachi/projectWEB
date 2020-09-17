@@ -118,7 +118,7 @@ namespace projectWEB.Controllers
             if (users != null)
             {
                 signin(users);
-                return RedirectToAction("Index","Items");//View(nameof(Index),);
+                return RedirectToAction("mainshop","Items");//View(nameof(Index),);
             }
             //  return View( _context.RegisteredUsers.ToListAsync());
             return View();
