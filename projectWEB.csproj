@@ -1,15 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="wwwroot\NewFolder\**" />
-    <Content Remove="wwwroot\NewFolder\**" />
-    <EmbeddedResource Remove="wwwroot\NewFolder\**" />
-    <None Remove="wwwroot\NewFolder\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Migrations\20200912223913_member_type.cs" />
@@ -19,22 +12,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="compilerconfig.json" />
+    <None Include="wwwroot\sass\style.scss" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="compilerconfig.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="BuildWebCompiler" Version="1.12.405" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
   </ItemGroup>
 
