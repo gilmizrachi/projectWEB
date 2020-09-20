@@ -18,5 +18,7 @@ namespace projectWEB.Data
         public DbSet<projectWEB.Models.RegisteredUsers> RegisteredUsers { get; set; }
 
         public DbSet<projectWEB.Data.Item> Item { get; set; }
+
+        public DbSet<projectWEB.Data.Category> Category { get; set; }
     }
 }

@@ -14,21 +14,19 @@ using projectWEB.Data;
 
 namespace projectWEB.Controllers
 {
-    public class ItemsController : Controller
+    public class ItemsController : BaseController
     {
-        private readonly projectWEBContext _context;
 
-        public ItemsController(projectWEBContext context)
+        public ItemsController(projectWEBContext context) : base(context)
         {
-            _context = context;
         }
 
         // GET: Items
         [Authorize]
-        public async Task<IActionResult> index()
+        public async Task<IActionResult> index2()
         {
-            //return View(await _context.Item.ToListAsync());
-            return View();
+            return View(await _context.Item.ToListAsync());
+            //return View();
         }
         /*
         public  IActionResult Index()
@@ -45,13 +43,16 @@ namespace projectWEB.Controllers
         {
             return View();
         }
-        public IActionResult Index2()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await _context.Item.ToListAsync());
+
+            //return View();
         }
         [Authorize]
         public async Task<IActionResult> mainshop()
         {
+            setCategoriesMenu();
             return View(await _context.Item.ToListAsync());
         }
 
