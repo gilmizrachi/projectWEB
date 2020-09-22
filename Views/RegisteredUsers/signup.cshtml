@@ -7,8 +7,8 @@
 
 <h1>SignUp</h1>
 
-<!-- Start Sign In Form -->
-<form asp-action="Signup" class="fh5co-form animate-box" data-animate-effect="fadeIn">
+<!-- Start Sign In Form class="fh5co-form animate-box" -->
+<form asp-action="Signup" class="fh5co-form" data-animate-effect="fadeIn">
     <h2>Sign Up</h2>
     <div class="form-group">
         <div class="alert alert-success" role="alert">Your info has been saved.</div>
@@ -44,21 +44,24 @@
 </form>
 <!-- END Sign In Form -->
 <script id="rendered-js">
-var password = document.getElementById("password"),
-confirm_password = document.getElementById("re-password");
+    var password = document.getElementById("password"),
+        confirm_password = document.getElementById("re-password");
 
-function validatePassword() {
-  if (password.value != confirm_password.value) {
-    confirm_password.setCustomValidity("Passwords Don't Match");
-  } else {
-    confirm_password.setCustomValidity('');
-  }
-}
+    function validatePassword() {
+        if (password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("Passwords Don't Match");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
 
-password.onchange = validatePassword;
-confirm_password.onkeyup = validatePassword;
+    password.onchange = validatePassword;
+    confirm_password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
 
 </script>
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript" src="~/js/PswCompare.js"></script>   
+ @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
 }

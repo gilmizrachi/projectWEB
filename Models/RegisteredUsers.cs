@@ -36,7 +36,21 @@ namespace projectWEB.Models
 
         private string _Password { get; set; }
 
-        
+        [DataType(DataType.CreditCard)]
+        private string CreditCardNo { get; set; }
+
+        [RegularExpression(@"^[0-9]*$")]
+        public string CreditCard
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(CreditCardNo)) return "✘";
+                else return "✅";
+            }
+            set { CreditCardNo = value; }
+
+        }
+
         public  MemberType MemberType { get; set; }
 
 

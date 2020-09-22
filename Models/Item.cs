@@ -1,4 +1,5 @@
-﻿using System;
+﻿using projectWEB.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,5 +18,6 @@ namespace projectWEB.Data
         public string Description { get; set; }
 
         public int amount { get; set; }
+        public ICollection<Reviews> Comments { get; set; }
     }
 }

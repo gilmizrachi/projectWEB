@@ -40,3 +40,31 @@
 	    $("#preloader").on(500).fadeOut();
 	    $(".preloader").on(600).fadeOut("slow");
 	});
+
+$('.selectpicker').on('changed.bs.select', function (e) {
+	var sort = this.options[this.selectedIndex].value;
+	
+	//alert(sort);
+	var dir = $('itemsorter');
+	var url = dir.attr('action');
+	var addr = "/items/sort/"
+	var Sortby = 'Sortby='+sort;
+	$.ajax(
+		{
+			url: '/items/sort/',
+			type: 'POST',
+			data: Sortby,//.replace(/\?/g, '/'),
+			success: function (result) {
+				$('#shop-grid').html(result);
+			}
+
+		});
+	$('#loader').hide();
+	$(document).ajaxStart(function () {
+		$('div.row.blog-grid.shop-grid').empty();
+		$('#loader').show();
+	}).ajaxStop(function () {
+		$('#loader').hide();
+	});
+
+});

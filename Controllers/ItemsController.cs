@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using projectWEB.Data;
-
+using Microsoft.AspNetCore.Http;
 
 namespace projectWEB.Controllers
 {
@@ -45,13 +45,32 @@ namespace projectWEB.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> Search(string Phrase)
+        {
+            var result = _context.Item.Where(str=>str.ItemName.Contains(Phrase)||str.ItemDevision.Contains(Phrase) || str.Description.Contains(Phrase));
+            return View("Mainshop",await result.ToListAsync());
+           
+        }
+        [HttpPost]
+        public async Task<IActionResult> Sort(string Sortby)
+        {
+
+            if (Sortby == "1") {return View( await _context.Item.OrderByDescending(p => p.price).ToListAsync()); }
+            else if (Sortby == "2") { return View( await _context.Item.OrderBy(p => p.price).ToListAsync()); }
+            else if (Sortby == "3") { return View( await _context.Item.OrderByDescending(p => p.id).ToListAsync()); }
+            else if (Sortby == "4") { return View( await _context.Item.OrderBy(p => p.id).ToListAsync()); }
+            else { return View("Mainshop"); }
+
+        }
         public IActionResult Index2()
         {
             return View();
         }
-        [Authorize]
-        public async Task<IActionResult> mainshop()
+       // [Authorize]
+        public async Task<IActionResult> Mainshop()
         {
+           // HttpContext.Session.SetString()
             return View(await _context.Item.ToListAsync());
         }
 
