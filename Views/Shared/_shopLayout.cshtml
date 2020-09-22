@@ -15,8 +15,8 @@
     <meta name="author" content="">
    
     <!-- Site Icons -->
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="favicon.ico">
+    <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="~/favicon.ico">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
@@ -51,12 +51,12 @@
                     <div class="modal-content">
                         <!-- Begin # DIV Form -->
                         <div id="div-forms">
-                            <form id="login-form">
+                            <form asp-action="Search" id="login-form">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span class="flaticon-add" aria-hidden="true"></span>
                                 </button>
                                 <div class="modal-body">
-                                    <input class="form-control" type="text" placeholder="What you are looking for?" required>
+                                    <input class="form-control" name="Phrase" id="Phrase" type="text" placeholder="What you are looking for?" required />
                                 </div>
                             </form><!-- End # Login Form -->
                         </div><!-- End # DIV Form -->
@@ -169,18 +169,19 @@
                     </nav><!-- end navbar -->
                 </div><!-- end container -->
             </header>
-            <div class="col-3" style="width: 14%; position: fixed; z-index: 123;">
-                <ul class="list-group">
-                    @foreach (var item in ViewBag.modelCategory)
-                    {
-                    <a href="@Url.Action("showProductsOfCategory","Categories", new {id = item.id})">
-                        <li class="list-group-item">
-                            @(item.name)
-                        </li>
-                    </a>
-                    }
-                </ul>
-            </div>
+         
+        <div class="col-3" style="width: 14%; position: fixed; z-index: 123;">
+            <ul class="list-group">
+                @foreach (var item in ViewBag.modelCategory)
+                {
+                <a href="@Url.Action("showProductsOfCategory","Categories", new {id = item.id})">
+                    <li class="list-group-item">
+                        @(item.name)
+                    </li>
+                </a>
+                }
+            </ul>
+        </div>
             @RenderBody()
 
             <footer class="section footer noover">

@@ -34,18 +34,20 @@
                         <p> Showing 1–9 of 11 results</p>
                     </div>
                     <div class="pull-right">
-                        <select class="selectpicker">
+                        <input style="display:none" type="submit" id="itemsorter" asp-action="Sort" />
+                        <select class="selectpicker sortby">
                             <!-- TODO sort display method -->
-                            <option>Price - High to Low</option>
-                            <option>Price - Low to High</option>
-                            <option>Newest Items</option>
-                            <option>Older Items</option>
+                            <option value="" disabled selected>Order by</option>
+                            <option value="1">Price - High to Low</option>
+                            <option value="2">Price - Low to High</option>
+                            <option value="3">Newest Items</option>
+                            <option value="4">Older Items</option>
                         </select>
                     </div>
                 </div>
             </div>
 
-                    <div class="row blog-grid shop-grid">
+                    <div class="row blog-grid shop-grid" id="shop-grid">
                         @foreach (var item in Model.Take(6))
                         {
                             <div class="col-md-3">

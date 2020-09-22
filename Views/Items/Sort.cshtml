@@ -1,0 +1,43 @@
+﻿@model IEnumerable<projectWEB.Data.Item>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+<div class="row blog-grid shop-grid">
+    @foreach (var item in Model.Take(6))
+    {
+        <div class="col-md-3">
+            <div class="course-box shop-wrapper">
+                <div class="image-wrap entry">
+                    <img src="~/upload/shop_01.jpg" alt="" class="img-responsive"> <!-- TODO redirect to image method -->
+                    <div class="magnifier">
+                        <a asp-action="item_details" asp-route-id="@item.id" title=""><i class="flaticon-add"></i></a>
+                    </div>
+                </div>
+                <!-- end image-wrap -->
+                <div class="course-details shop-box text-center">
+                    <h4>
+                        <a asp-action="item_details" asp-route-id="@item.id" title="">@Html.DisplayFor(modelItem => item.ItemName)</a>
+                        <small>@Html.DisplayFor(modelItem => item.ItemDevision)</small>
+                    </h4>
+                </div>
+                <!-- end details -->
+                <div class="course-footer clearfix">
+                    <div class="pull-left">
+                        <ul class="list-inline">
+                            <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li> <!-- TODO cart model -->
+                        </ul>
+                    </div><!-- end left -->
+
+                    <div class="pull-right">
+                        <ul class="list-inline">
+                            <li><a href="#">$@Html.DisplayFor(modelItem => item.price)</a></li>
+                        </ul>
+                    </div><!-- end left -->
+                </div><!-- end footer -->
+            </div><!-- end box -->
+        </div><!-- end col -->
+    }
+</div><!-- end row -->
