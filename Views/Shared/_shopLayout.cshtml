@@ -169,19 +169,31 @@
                     </nav><!-- end navbar -->
                 </div><!-- end container -->
             </header>
-         
-        <div class="col-3" style="width: 14%; position: fixed; z-index: 123;">
-            <ul class="list-group">
-                @foreach (var item in ViewBag.modelCategory)
+
+            <div class="col-3" style="width: 14%; position: fixed; z-index: 123;">
+                <ul class="list-group">
+                    @foreach (var item in ViewBag.modelCategory)
+                    {
+                        <a href="@Url.Action("showProductsOfCategory","Categories", new {id = item.id})">
+                            <li class="list-group-item">
+                                @(item.name)
+                            </li>
+                        </a>
+                    }
+                </ul>
+            </div>
+            <div class="bg-dark text-white p-3 mt-3" style="width: 14%;position: fixed; z-index: 1523; top: 32%;background-color: black;">
+                @if (ViewBag.cart == null)
                 {
-                <a href="@Url.Action("showProductsOfCategory","Categories", new {id = item.id})">
-                    <li class="list-group-item">
-                        @(item.name)
-                    </li>
-                </a>
+                    <p>Your cart is empty.</p>
                 }
-            </ul>
-        </div>
+                else
+                {
+                    <p>You have @ViewBag.size item in your cart</p>
+                    <p>Total price: $@ViewBag.total </p>
+
+                }
+            </div>
             @RenderBody()
 
             <footer class="section footer noover">

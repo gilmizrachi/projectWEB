@@ -17,6 +17,6 @@ namespace projectWEB.Data
         public int amount { get; set; }
         public string pictureUrl { get; set; }
         
-        public Blob Image { get; set; }
+        //public Blob Image { get; set; }
     }
 }

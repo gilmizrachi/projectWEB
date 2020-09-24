@@ -19,7 +19,9 @@ namespace projectWEB.Controllers
         {
             var modelCategory = _context.Category.ToList();
             ViewBag.modelCategory = modelCategory;
-
+            ViewBag.cart = HttpContext.Session.GetString("cart");
+            ViewBag.size = HttpContext.Session.GetInt32("size");
+            ViewBag.total = HttpContext.Session.GetString("total");
         }
     }
 }
