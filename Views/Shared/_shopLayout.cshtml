@@ -169,8 +169,8 @@
                     </nav><!-- end navbar -->
                 </div><!-- end container -->
             </header>
-
-            <div class="col-3" style="width: 14%; position: fixed; z-index: 123;">
+            
+            <div class="col-3" style="width: 14%; position: absolute; z-index: 123;">
                 <ul class="list-group">
                     @foreach (var item in ViewBag.modelCategory)
                     {
@@ -181,19 +181,24 @@
                         </a>
                     }
                 </ul>
+                <div class="cart-menu bg-dark text-white p-3 mt-3" style="background-color: #343a40!important; color: white; min-height:60px;">
+                    @if (ViewBag.cart == null)
+                    {
+                        <p style="margin-top: 5px">Your cart is empty.</p>
+                    }
+                    else
+                    {
+                        <p>You have @ViewBag.size item in your cart</p>
+                        <p>Total price: $@ViewBag.total </p>
+                        <p>
+                            <a class="btn btn-success" href="@Url.Action("Index","Cart")" style="border: none !important; margin-left: 7px; padding: 8px 26px; margin-bottom: 5px;">View cart</a>
+                            <a class="btn btn-danger float-right" style="border: none !important; margin-left: 18px; padding: 8px 26px; margin-bottom: 5px;">Clear cart</a>
+                        </p>
+                    }
+                </div>
             </div>
-            <div class="bg-dark text-white p-3 mt-3" style="width: 14%;position: fixed; z-index: 1523; top: 32%;background-color: black;">
-                @if (ViewBag.cart == null)
-                {
-                    <p>Your cart is empty.</p>
-                }
-                else
-                {
-                    <p>You have @ViewBag.size item in your cart</p>
-                    <p>Total price: $@ViewBag.total </p>
+          
 
-                }
-            </div>
             @RenderBody()
 
             <footer class="section footer noover">

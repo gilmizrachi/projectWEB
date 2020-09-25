@@ -21,6 +21,7 @@ namespace projectWEB.Controllers
         // GET: Cart
         public ActionResult Index()
         {
+            setCategoriesMenu();
             return View();
         }
 
@@ -36,20 +37,8 @@ namespace projectWEB.Controllers
             return View();
         }
 
-        //public static void SetObjectAsJson(this ISession session, string key, object value)
-        //{
-        //    session.SetString(key, JsonConvert.SerializeObject(value));
-        //}
-
-        //public static T GetObjectFromJson<T>(this ISession session, string key)
-        //{
-        //    var value = session.GetString(key);
-
-        //    return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
-        //}
-
         [Authorize]
-        public async Task<IActionResult> Add(int id)
+        public async Task<IActionResult> Add(int id, string cartView)
         {
             try
             {
@@ -91,14 +80,13 @@ namespace projectWEB.Controllers
                     total += values[i].quantity * values[i].price;
                 }
 
-                //ViewBag.size = size;
-                //ViewBag.total = total;
                 session.SetInt32("size", size);
-                session.SetString("total", total.ToString());
-                //setCategoriesMenu();
-                //var itemss = await _context.Item.ToListAsync();
+                session.SetString("total", total.ToString());  
+                if (cartView != null)
+                {
+                    return RedirectToAction("Index", "Cart");
+                }
                 return RedirectToAction("Mainshop", "Items");
-                //return RedirectToAction(nameof(Index));
             }
             catch(Exception ex)
             {
@@ -150,6 +138,11 @@ namespace projectWEB.Controllers
             {
                 return View();
             }
+        }
+
+        public string GetCart()
+        {
+            return HttpContext.Session.GetString("cart");
         }
     }
 }
