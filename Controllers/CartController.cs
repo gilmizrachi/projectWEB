@@ -74,21 +74,21 @@ namespace projectWEB.Controllers
                 double total = 0;
 
                 List<ItemInCart> values = myCart.Values.ToList();
-                for (int i=0; i<values.Count; i++)
+                for (int i = 0; i < values.Count; i++)
                 {
                     size += values[i].quantity;
                     total += values[i].quantity * values[i].price;
                 }
 
                 session.SetInt32("size", size);
-                session.SetString("total", total.ToString());  
+                session.SetString("total", total.ToString());
                 if (cartView != null)
                 {
                     return RedirectToAction("Index", "Cart");
                 }
                 return RedirectToAction("Mainshop", "Items");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("~/Views/Items/mainshop.cshtml");
             }
@@ -143,6 +143,39 @@ namespace projectWEB.Controllers
         public string GetCart()
         {
             return HttpContext.Session.GetString("cart");
+        }
+
+        [Authorize]
+        public void Checkout()
+        {
+            var claims = HttpContext.User.Claims;
+
+            var value = HttpContext.Session.GetString("cart");
+            Dictionary<int, ItemInCart> cart = JsonConvert.DeserializeObject<Dictionary<int, ItemInCart>>(value);
+            var itemsInCart = cart.Values.ToList();
+            Order[] orders = new Order[itemsInCart.Count];
+            for (int i = 0; i < itemsInCart.Count; i++)
+            {
+                Order ord = new Order
+                {
+                    item_id = itemsInCart[i].id,
+                    item_quantity = itemsInCart[i].quantity,
+                    user_id = int.Parse(HttpContext.Session.GetInt32("userId").ToString()),
+                    date = DateTime.Now,
+                };
+                orders[i] = ord;
+            }
+            _context.Order.AddRange(orders);
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                _context.SaveChanges();
+            }
         }
     }
 }
