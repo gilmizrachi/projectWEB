@@ -175,5 +175,33 @@ namespace projectWEB.Models
                     );
             }
         }
+
+        private static void PublishToFacebook()
+        {
+            Facebook facebook = new Facebook("EAA9ZCZBIcsnZBEBAKgZAPlYZBYRHJXOdk13HCdzZBjBfN0iB9ZCv7VTu5axqJUzrdr0HEb3VGUrYBfZBuMryZBnccnhXMrXOgW3hKmbmMiZBNIaeoD1pKtvlIlCoMPE3x5ztfNgDWKnL4REVyBQV0ZBlUpoVzaXnhqgKqaNocMA0YREBrYBQ53vaXx7ZC5QA8CEDZCXUZD", "102526684953651");
+            var rezText = Task.Run(async () =>
+            {
+                using (var http = new HttpClient())
+                {
+                    return await facebook.PublishSimplePost("First Post");
+                }
+            });
+            var rezTextJson = JObject.Parse(rezText.Result.Item2);
+            if (rezText.Result.Item1 != 200)
+            {
+                try // return error from JSON
+                {
+                    Console.WriteLine($"Error posting to Facebook. {rezTextJson["error"]["message"].Value<string>()}");
+                    return;
+                }
+                catch (Exception ex) // return unknown error
+                {
+                    // log exception somewhere
+                    Console.WriteLine($"Unknown error posting to Facebook. {ex.Message}");
+                    return;
+                }
+            }
+            Console.WriteLine(rezTextJson);
+        }
     }
 }

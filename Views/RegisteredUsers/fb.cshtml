@@ -1,0 +1,13 @@
+﻿@model projectWEB.Models.RegisteredUsers
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+@section Scripts {
+
+    <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <script src="~/js/fbcn.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
