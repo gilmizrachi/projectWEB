@@ -118,11 +118,35 @@ namespace projectWEB.Controllers
             if (users != null)
             {
                 signin(users);
+                HttpContext.Session.SetString("username",Username);
+                HttpContext.Session.SetString("email", users.Email);
+                HttpContext.Session.SetString("userId", users.id.ToString());
                 return RedirectToAction("Mainshop","Items");//View(nameof(Index),);
             }
             //  return View( _context.RegisteredUsers.ToListAsync());
             return View();
         }
+
+        [HttpPost]
+        public int Validate(String Username, String email)
+        {
+            var users = _context.RegisteredUsers.Where(u =>  u.UserName == Username).Count();
+            var mails = _context.RegisteredUsers.Where(u =>  u.Email == email).Count();
+            if (users == 0 && mails == 0)
+            {
+                return 1;
+            }
+            else if (users > 0 && mails == 0)
+            {
+                return 2;
+            }
+            else if (users == 0 && mails > 0)
+            {
+                return 3;
+            }
+            else { return 0; }
+        }
+
         /*
                 private void signin()
                 {
@@ -131,8 +155,8 @@ namespace projectWEB.Controllers
         */
 
 
-      
-        
+
+
         // GET: RegisteredUsers
         public async Task<IActionResult> Index()
         {

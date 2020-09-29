@@ -1,7 +1,6 @@
 ﻿@model projectWEB.Models.RegisteredUsers
 
 @{
-    ViewData["Title"] = "SignUp";
     Layout = "_LoginLayout";
 }
 
@@ -10,37 +9,41 @@
 <!-- Start Sign In Form class="fh5co-form animate-box" -->
 <form asp-action="Signup" class="fh5co-form" data-animate-effect="fadeIn">
     <h2>Sign Up</h2>
-    <div class="form-group">
-        <div class="alert alert-success" role="alert">Your info has been saved.</div>
+
+    <div class="alert alert-success alert-dismissible" style="display:none">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong>Your info has been saved.
     </div>
-    <div class="form-group">
-        <label for="name" class="sr-only">Name</label>
-        <input asp-for="UserName" class="form-control" id="User-Name" placeholder="Name" autocomplete="off" required name="Username">
-        <span asp-validation-for="UserName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label for="email" class="sr-only">Email</label>
-        <input asp-for="Email" class="form-control" id="email" placeholder="Email Address" autocomplete="off" required type="email">
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label for="password" class="sr-only">Password</label>
-        <input asp-for="Password" class="form-control" id="password" placeholder="Password" autocomplete="off" required type="password">
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label for="re-password" class="sr-only">Re-type Password</label>
-        <input type="password" class="form-control" id="re-password" placeholder="Re-type Password" autocomplete="off" required>
-    </div>
-    <div class="form-group">
-        <label for="remember"><input type="checkbox" id="remember"> Remember Me</label>
-    </div>
-    <div class="form-group">
-        <p>Already registered? <a asp-action="login">Sign In</a></p>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Sign Up" class="btn btn-primary">
-    </div>
+        <div class="form-group" id="undiv">
+            <label for="name" class="sr-only">Name</label>
+            <input asp-for="UserName" class="form-control" id="User-Name" placeholder="Name" autocomplete="off" required name="Username">
+            <span asp-validation-for="UserName" class="text-danger" id="unspa"></span>
+        </div>
+        <div class="form-group" id="emdiv">
+            <label for="email" class="sr-only">Email</label>
+            <input asp-for="Email" class="form-control" id="email" placeholder="Email Address" autocomplete="off" required type="email">
+            <span asp-validation-for="Email" class="text-danger" id="emspa"></span>
+        </div>
+        <div class="form-group">
+            <label for="password" class="sr-only">Password</label>
+            <input asp-for="Password" class="form-control" id="password" placeholder="Password" autocomplete="off" required type="password">
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="re-password" class="sr-only">Re-type Password</label>
+            <input type="password" class="form-control" id="re-password" placeholder="Re-type Password" autocomplete="off" required>
+            <span  class="" id="repass"></span>
+        </div>
+        <div class="form-group">
+            <label for="remember"><input type="checkbox" id="remember"> Remember Me</label>
+        </div>
+        <div class="form-group">
+            <p>Already registered? <a asp-action="login">Sign In</a></p>
+        </div>
+        <div class="form-group">
+            <input type="button" value="Sign Up" class="btn btn-primary" id="register">
+            <input type="submit" value="Sign Up" class="btn btn-primary" style="display:none" >
+        </div>
 </form>
 <!-- END Sign In Form -->
 <script id="rendered-js">

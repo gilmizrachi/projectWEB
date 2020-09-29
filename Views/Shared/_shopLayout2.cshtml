@@ -26,6 +26,7 @@
     <!-- Custom & Default Styles -->
 
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/bootsnav.css">
     <link rel="stylesheet" href="~/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="~/css/animate.css">
@@ -56,7 +57,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span class="flaticon-add" aria-hidden="true"></span>
                             </button>
-                           
+
                             <div class="modal-body">
 
                                 <input class="form-control" name="Phrase" id="Phrase" type="text" placeholder="What you are looking for?" required />
@@ -95,7 +96,7 @@
             </div><!-- end topbar -->
 
             <div class="container">
-                <nav class="navbar navbar-default yamm bootsnav">
+                <nav class="navbar navbar-default navbar-expand-lg navbar-light bg-light bootsnav on no-full">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                             <span class="sr-only">Toggle navigation</span>
@@ -172,6 +173,7 @@
                             <li class="side-menu"><a class="shopicon" href="#"><i class="fa fa-shopping-bag"></i></a></li>
                         </ul>
                     </div>
+                    <!-- <div class="attr-nav"> <li class="side-menu"><a class="shopicon" href="#"><i class="fa fa-shopping-bag"></i></a></li></div>-->
                     <div class="side">
                         <a href="#" class="close-side"><i class="fa fa-times"></i></a>
                         <li class="cart-box">
@@ -202,100 +204,102 @@
             </div><!-- end container -->
         </header>
 
-            @RenderBody()
+        @RenderBody()
 
-            <footer class="section footer noover">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4">
-                            <div class="widget clearfix">
-                                <h3 class="widget-title">Subscribe Our Newsletter</h3>
-                                <div class="newsletter-widget">
-                                    <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy policy</a>.</p>
-                                    <form class="form-inline" role="search">
-                                        <div class="form-1">
-                                            <input type="text" class="form-control" placeholder="Enter email here..">
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
-                                        </div>
-                                    </form>
-                                    <img src="~/images/payments.png" alt="" class="img-responsive">
-                                </div><!-- end newsletter -->
-                            </div><!-- end widget -->
-                        </div><!-- end col -->
+        <footer class="section footer noover">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                            <div class="newsletter-widget">
+                                <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy policy</a>.</p>
+                                <form class="form-inline" role="search">
+                                    <div class="form-1">
+                                        <input type="text" class="form-control" placeholder="Enter email here..">
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
+                                    </div>
+                                </form>
+                                <img src="~/images/payments.png" alt="" class="img-responsive">
+                            </div><!-- end newsletter -->
+                        </div><!-- end widget -->
+                    </div><!-- end col -->
 
-                        <div class="col-lg-3 col-md-3">
-                            <div class="widget clearfix">
-                                <h3 class="widget-title">Bla Bla Footer</h3>
-                                <p>Would you like to change this into somthing useful? go ahed </p>
-                                <a href="#" class="readmore"> Another Bla Bla? add this to TODO list</a>
-                            </div><!-- end widget -->
-                        </div><!-- end col -->
+                    <div class="col-lg-3 col-md-3">
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">Bla Bla Footer</h3>
+                            <p>Would you like to change this into somthing useful? go ahed </p>
+                            <a href="#" class="readmore"> Another Bla Bla? add this to TODO list</a>
+                        </div><!-- end widget -->
+                    </div><!-- end col -->
 
-                        <div class="col-lg-3 col-md-3">
-                            <div class="widget clearfix">
-                                <h3 class="widget-title">Popular Tags</h3>
-                                <div class="tags-widget">
-                                    <ul class="list-inline">
-                                        <li><a href="#">Store</a></li>
-                                        <li><a href="#">Online</a></li>
-                                        <li><a href="#">Shop</a></li>
-                                        <li><a href="#">Blabla</a></li>
-                                        <li><a href="#">Bla</a></li>
-                                        <li><a href="#">wasting</a></li>
-                                        <li><a href="#">Time</a></li>
-                                        <li><a href="#">For css</a></li>
-                                        <li><a href="#">and html</a></li>
-                                        <li><a href="#">learning</a></li>
-                                    </ul>
-                                </div><!-- end list-widget -->
-                            </div><!-- end widget -->
-                        </div><!-- end col -->
-
-                        <div class="col-lg-2 col-md-2">
-                            <div class="widget clearfix">
-                                <h3 class="widget-title">Support</h3>
-                                <div class="list-widget">
-                                    <ul>
-                                        <li><a href="#">Terms of Use</a></li>
-                                        <li><a href="#">Copyrights</a></li>
-                                        <li><a href="#">Create a Ticket</a></li>
-                                        <li><a href="#">Pricing & Plans</a></li>
-                                        <li><a href="#">Carrier</a></li>
-                                        <li><a href="#">Trademark</a></li>
-                                    </ul>
-                                </div><!-- end list-widget -->
-                            </div><!-- end widget -->
-                        </div><!-- end col -->
-                    </div><!-- end row -->
-                </div><!-- end container -->
-            </footer><!-- end footer -->
-
-            <div class="copyrights">
-                <div class="container">
-                    <div class="clearfix">
-                        <div class="pull-left">
-                            <div class="cop-logo">
-                                <a href="#"><img src="~/images/logo.png" alt=""></a>
-                            </div>
-                        </div>
-
-                        <div class="pull-right">
-                            <div class="footer-links">
+                    <div class="col-lg-3 col-md-3">
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">Popular Tags</h3>
+                            <div class="tags-widget">
                                 <ul class="list-inline">
-                                    <li>Design? : <a href="#">Bootstrap</a></li>
+                                    <li><a href="#">Store</a></li>
+                                    <li><a href="#">Online</a></li>
+                                    <li><a href="#">Shop</a></li>
+                                    <li><a href="#">Blabla</a></li>
+                                    <li><a href="#">Bla</a></li>
+                                    <li><a href="#">wasting</a></li>
+                                    <li><a href="#">Time</a></li>
+                                    <li><a href="#">For css</a></li>
+                                    <li><a href="#">and html</a></li>
+                                    <li><a href="#">learning</a></li>
                                 </ul>
-                            </div>
+                            </div><!-- end list-widget -->
+                        </div><!-- end widget -->
+                    </div><!-- end col -->
+
+                    <div class="col-lg-2 col-md-2">
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">Support</h3>
+                            <div class="list-widget">
+                                <ul>
+                                    <li><a href="#">Terms of Use</a></li>
+                                    <li><a href="#">Copyrights</a></li>
+                                    <li><a href="#">Create a Ticket</a></li>
+                                    <li><a href="#">Pricing & Plans</a></li>
+                                    <li><a href="#">Carrier</a></li>
+                                    <li><a href="#">Trademark</a></li>
+                                </ul>
+                            </div><!-- end list-widget -->
+                        </div><!-- end widget -->
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </footer><!-- end footer -->
+
+        <div class="copyrights">
+            <div class="container">
+                <div class="clearfix">
+                    <div class="pull-left">
+                        <div class="cop-logo">
+                            <a href="#"><img src="~/images/logo.png" alt=""></a>
                         </div>
                     </div>
-                </div><!-- end container -->
-            </div><!-- end copy -->
+
+                    <div class="pull-right">
+                        <div class="footer-links">
+                            <ul class="list-inline">
+                                <li>Design? : <a href="#">Bootstrap</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end container -->
+        </div><!-- end copy -->
     </div><!-- end wrapper -->
-    <!-- jQuery Files -->
+    <!-- jQuery Files-->
     <script src="~/js/jquery.min2.js"></script>
+    <!--script src="~/js/jquery-3.2.1.min.js"></!-script>-->
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/animate.js"></script>
     <script src="~/js/bootstrap-select.min.js"></script>
     <script src="~/js/custom.js"></script>
+    <!-- <script src="~/js/bootsnav.js"></script>-->
     @RenderSection("Scripts", required: false)
 </body>
 </html>

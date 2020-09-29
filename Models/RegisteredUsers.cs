@@ -52,7 +52,8 @@ namespace projectWEB.Models
         }
 
         public  MemberType MemberType { get; set; }
-
+        public virtual ICollection<Reviews> Reviews { get; set; }
+        public virtual ICollection<Transaction> Transactions { get; set; }
 
     }
 }

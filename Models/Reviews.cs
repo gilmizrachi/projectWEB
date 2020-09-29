@@ -14,9 +14,12 @@ namespace projectWEB.Models
 
         public Item Item { get; set; }
 
-        public string CustomerName { get; set; }
+        public RegisteredUsers registeredUsers { get; set; }
+        public string CommentTitle { get; set; }
 
-        public string Comment { get; set; }
+        public string CommentBody { get; set; }
+
+        public int Rate { get; set; }
         public DateTime PublishTime { get; set; }
     }
 }

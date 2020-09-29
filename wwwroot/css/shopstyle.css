@@ -85,6 +85,77 @@ IMPORT
 /******************************************
 SKELETON
 ******************************************/
+/* Side Menu
+=================================*/
+body {
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+    body.on-side {
+        margin-left: -280px;
+    }
+
+.side {
+    position: fixed;
+    overflow-y: auto;
+    top: 0;
+    right: -280px;
+    width: 280px;
+    padding: 25px 15px;
+    height: 100%;
+    display: block;
+    background-color: #010101;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    z-index: 9;
+}
+
+    .side.on {
+        right: 0;
+    }
+
+    .side .close-side {
+        float: right;
+        color: #fff;
+        position: relative;
+        z-index: 2;
+        font-size: 16px;
+    }
+
+    .side .widget {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 25px;
+    }
+
+        .side .widget .title {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .side .widget ul.link {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+            .side .widget ul.link li a {
+                color: #9f9f9f;
+                letter-spacing: 1px;
+            }
+
+                .side .widget ul.link li a:focus,
+                .side .widget ul.link li a:hover {
+                    color: #fff;
+                    text-decoration: none;
+                }
 
 body {
     background-color: #f6f6f6;

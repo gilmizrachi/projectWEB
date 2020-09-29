@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using projectWEB.Data;
+using projectWEB.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace projectWEB.Controllers
@@ -35,10 +36,13 @@ namespace projectWEB.Controllers
         {
             return View();
         } */
-        [Authorize]
+       // [Authorize]
         public async Task<IActionResult> Item_Details(int id)
         {
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
+            ViewBag.username = HttpContext.Session.GetString("username");
+            ViewBag.email = HttpContext.Session.GetString("email");
+            ViewBag.id = HttpContext.Session.GetString("userId");
             return View( _context.Item.Where(u=>u.id==id));
         }
         public IActionResult Create()

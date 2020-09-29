@@ -1,0 +1,26 @@
+﻿@model IEnumerable<projectWEB.Models.viewclass>
+@{
+
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+<div class="content boxed-comment clearfix">
+    <h3 class="small-title">@Model.Count() Reviews</h3>
+    <div class="comments-list">
+        @foreach (var item in Model)
+        {
+            <div class="media">
+                <p class="pull-right"><small>5 days ago</small></p>
+                <a class="media-left" href="#">
+                    <img src="upload/Avatar.png" alt="" class="img-circle">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading user_name">By: @Html.DisplayFor(modelItem => item.registeredUsers.UserName)</h4>
+                    <p>@Html.DisplayFor(modelItem => item.Reviews.CommentTitle)</p>
+                    <p>@Html.DisplayFor(modelItem => item.Reviews.CommentBody)</p>
+                    <a href="mailto:@Html.DisplayFor(modelItem=>item.registeredUsers.Email)" class="btn btn-primary btn-sm">Send Email</a>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

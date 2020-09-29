@@ -14,10 +14,11 @@ namespace projectWEB.Data
         public int price { get; set; }
 
         public string ItemDevision { get; set; }
+        public byte[] ItemImage { get; set; }
 
         public string Description { get; set; }
 
         public int amount { get; set; }
-        public ICollection<Reviews> Comments { get; set; }
+        public virtual ICollection<Reviews> Comments { get; set; }
     }
 }

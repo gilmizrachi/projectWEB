@@ -18,7 +18,7 @@
             </div><!-- end col -->
             <div class="col-md-6 text-right">
                 <ul class="breadcrumb">
-                    <li><a href="javascript:void(0)">Implament</a></li>
+                    <li><a href="javascript:void(0)" onclick="">Implament</a></li>
                     <li class="active">Shop</li>
                 </ul>
             </div>
@@ -87,7 +87,7 @@
                             <a href="#" class="btn btn-primary">Add to Cart</a>
                             <ul class="list-inline">
                                 <li> SKU: product-111</li>
-                                <li>Categories: <a href="#">@Html.DisplayFor(modelItem => item.ItemDevision)</a>
+                                <li>Categories: <a asp-action="Search" name="Phrase" id="Phrase"  value="@Model.FirstOrDefault().ItemDevision.ToString()">@Html.DisplayFor(modelItem => item.ItemDevision)</a>
                             </ul>
                         </div><!-- end shop meta -->
                     </div><!-- end desc -->
@@ -101,8 +101,8 @@
                     <div class="shop-extra">
                         <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#home">Description</a></li>
-                            <li><a data-toggle="tab" href="#menu1">Additional information</a></li>
-                            <li><a data-toggle="tab" href="#menu2">Reviews (2)</a></li>
+                            <li><a data-toggle="tab" href="#menu1">Reviews</a></li>
+                            <!--<li><a data-toggle="tab" href="#menu2">Reviews (2)</a></li>-->
 
                         </ul>
 
@@ -110,63 +110,54 @@
                             <div id="home" class="tab-pane fade in active">
                                 <p>@Html.DisplayFor(modelItem => item.Description)</p>
 
-                                <p>Phasellus finibus mauris leo, quis commodo elit pellentesque quis. Phasellus a justo in enim maximus dictum nec interdum erat. Integer varius justo id nunc vulputate scelerisque. Curabitur maximus tristique magna. Nulla ut laoreet turpis, vel porta mauris. Suspendisse et varius orci, eget ullamcorper lacus. Duis accumsan odio at elit facilisis semper.</p>
+                                <p>Bullshit, Bullshit </p>
                             </div>
                             <div id="menu1" class="tab-pane fade">
-                                <h3>Additional information</h3>
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>Weight</strong></td>
-                                            <td>4.5 kg</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Colors</strong></td>
-                                            <td>Brown, Black</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Size</strong></td>
-                                            <td>50cm x 30cm</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div id="menu2" class="tab-pane fade">
-                                <h3>Reviews</h3>
+                                <h3>Customers Reviews</h3>
+                                <div id="comment-section">
 
-                                <p>Your email address will not be published. Required fields are marked *</p>
-                                <!--
+                                </div>
+                                <input style="display:none" type="submit" id="getComments" asp-controller="Reviews" asp-action="Get" asp-route-id="@Model.FirstOrDefault().id" />
+                                <button id="New" type="button" data-toggle="tab" href="#menu2" class="btn btn-primary">New Review</button>
+
+                                <div id="menu2" class="tab-pane fade">
+                                    <h3>Reviews</h3>
+
+                                    <p>Your email address will not be published. Required fields are marked *</p>
+                                    <p>Your Rating</p>
                                     <div class="rating">
-                                        <p>Your Rating</p>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
+                                        <i id="star1" value="1" class="fa fa-star ratings_stars" data-rating="1"></i>
+                                        <i id="star2" value="2" class="fa fa-star ratings_stars" data-rating="2"></i>
+                                        <i id="star3" value="3" class="fa fa-star ratings_stars" data-rating="3"></i>
+                                        <i id="star4" value="4" class="fa fa-star ratings_stars" data-rating="4"></i>
+                                        <i id="star5" value="5" class="fa fa-star ratings_stars" data-rating="5"></i>
                                     </div>
-                                 -->
-                                <span class="rating">
-                                    <span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
-                                </span>
 
-                                <hr class="invis">
+                                    <br />
+                                    <input id="rating" style="display:none" />
 
-                                <form class="big-contact-form row" role="search">
-                                    <div class="col-md-12">
-                                        <textarea class="form-control" placeholder="Your reviews.."></textarea>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Enter your name..">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="email" class="form-control" placeholder="Enter email..">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                </form>
+
+                                    <hr class="invis">
+
+                                    <form class="big-contact-form row" role="search">
+                                        <div class="col-md-12">
+                                            <input type="text" name="CommentTitle" id="CommentTitle" class="form-control" placeholder="In a nutshell.."/>
+                                            <textarea name="CommentBody" id="CommentBody" class="form-control" placeholder="Your reviews.."></textarea>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="username" disabled class="form-control" value="@ViewBag.username" placeholder="@ViewBag.username">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="email" id="email" disabled class="form-control" value="@ViewBag.email" placeholder="@ViewBag.email">
+                                            <input type="text" id="ItemId" style="display:none" value="@Html.DisplayFor(modelItem => item.id)" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="button" id="sendReview" value="@ViewBag.id" class="btn btn-primary">Submit</button>
+                                            <input style="display:none" type="submit" id="send" asp-controller="Reviews" asp-action="Create" />
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
 
                     </div><!-- end shop-extra -->
 
@@ -318,4 +309,5 @@
         </div><!-- end boxed -->
 
     </div><!-- end container -->
+    </div>
 </section>
