@@ -70,7 +70,6 @@ namespace projectWEB.Controllers
         [Authorize]
         public async Task<IActionResult> Mainshop()
         {
-            setCategoriesMenu();
             return View(await _context.Item.ToListAsync());
         }
 

@@ -15,24 +15,27 @@
             <div class="col"></div>
             <div class="col-7">
                 <h2 class="display-4" style="text-align: center">Cart Overview</h2>
-                <table class="table" style="width: 70%; margin: 0 auto;">
-                    <tr class="tr-titles">
-                        <th>Product</th>
-                        @* <th>Image</th>*@
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                    </tr>
+                @using (Html.BeginForm("Create", "Orders", FormMethod.Post, null))
+                {
+                    <table class="table" style="width: 70%; margin: 0 auto;">
+                        <tr class="tr-titles">
+                            <th>Product</th>
+                            @* <th>Image</th>*@
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
 
-                    <tr>
-                        <td>
-                            <a href="/cart/clear" class="btn btn-danger">Clear Cart</a>
-                        </td>
-                        <td colspan="4" class="text-right">
-                            <a href="@Url.Action("Checkout","Cart")" class="btn btn-success checkout">Checkout</a>
-                        </td>
-                    </tr>
-                </table>
+                        <tr>
+                            <td>
+                                <a href="/cart/clear" class="btn btn-danger">Clear Cart</a>
+                            </td>
+                            <td colspan="4" class="text-right">
+                                <input type="submit" value="Checkout" class="btn btn-success"/>
+                            </td>
+                        </tr>
+                    </table>
+                }
             </div>
             <div class="col"></div>
         </div>

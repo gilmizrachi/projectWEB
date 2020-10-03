@@ -2,26 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using projectWEB.Data;
 using projectWEB.Models;
 
 namespace projectWEB.Controllers
 {
-    public class OrdersController : Controller
+    public class OrdersController : BaseController
     {
-        private readonly projectWEBContext _context;
-
-        public OrdersController(projectWEBContext context)
+        public OrdersController(projectWEBContext context) : base(context)
         {
-            _context = context;
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> ListAllOrdersByDate()
         {
             var result = _context.Order.Where(o => o.user_id == int.Parse(HttpContext.Session.GetInt32("userId").ToString()))
                              .Select(order => order.date.Date)
@@ -32,7 +31,7 @@ namespace projectWEB.Controllers
         }
 
         // GET: Orders/Details/5
-        public async Task<IActionResult> Details(DateTime? date)
+        public async Task<IActionResult> SearchOneOrderByDate(DateTime? date)
         {
             if (date == null)
             {
@@ -44,12 +43,13 @@ namespace projectWEB.Controllers
                            join i in _context.Item on o.item_id equals i.id
                            join c in _context.Category on i.ItemDevision equals c.id.ToString()
                            where o.date.Date == date
-                           select new MyDetails 
+                           select new OrderDetails
                            {
-                               name = i.ItemName,
-                               quantity = o.item_quantity,
-                               price = i.price,
-                               category = c.name
+                               order_id = o.id,
+                               item_name = i.ItemName,
+                               item_quantity = o.item_quantity,
+                               item_price = i.price,
+                               item_category = c.name
                            }).ToList();
 
             if (details == null)
@@ -57,29 +57,44 @@ namespace projectWEB.Controllers
                 return NotFound();
             }
             ViewBag.Details = details;
-            return View();
+            return View("Details");
         }
 
-        // GET: Orders/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Orders/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,item_id,item_quantity,date,user_id")] Order order)
+        public async Task<IActionResult> Create()
         {
-            if (ModelState.IsValid)
+            var claims = HttpContext.User.Claims;
+
+            var value = HttpContext.Session.GetString("cart");
+            Dictionary<int, ItemInCart> cart = JsonConvert.DeserializeObject<Dictionary<int, ItemInCart>>(value);
+            var itemsInCart = cart.Values.ToList();
+            Order[] orders = new Order[itemsInCart.Count];
+            for (int i = 0; i < itemsInCart.Count; i++)
             {
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                Order ord = new Order
+                {
+                    item_id = itemsInCart[i].id,
+                    item_quantity = itemsInCart[i].quantity,
+                    user_id = int.Parse(HttpContext.Session.GetInt32("userId").ToString()),
+                    date = DateTime.Now,
+                };
+                orders[i] = ord;
             }
-            return View(order);
+            _context.Order.AddRange(orders);
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                _context.SaveChanges();
+            }
+            HttpContext.Session.Remove("cart");
+            return RedirectToAction("Mainshop", "Items");
         }
 
         // GET: Orders/Edit/5
@@ -98,6 +113,7 @@ namespace projectWEB.Controllers
             return View(order);
         }
 
+        // UpdateQuantity
         // POST: Orders/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -114,7 +130,9 @@ namespace projectWEB.Controllers
             {
                 try
                 {
-                    _context.Update(order);
+                    var orderr = await _context.Order.FirstOrDefaultAsync(o => o.id == id);
+                    orderr.item_quantity = order.item_quantity;
+                    _context.Update(orderr);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -128,9 +146,8 @@ namespace projectWEB.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(order);
+            return RedirectToAction("ListAllOrdersByDate", "Orders");
         }
 
         // GET: Orders/Delete/5
@@ -159,7 +176,7 @@ namespace projectWEB.Controllers
             var order = await _context.Order.FindAsync(id);
             _context.Order.Remove(order);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("ListAllOrdersByDate", "Orders");
         }
 
         private bool OrderExists(int id)

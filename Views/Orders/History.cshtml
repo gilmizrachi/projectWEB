@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewData["Title"] = "Orders History";
+    Layout = "~/Views/Shared/_shopLayout.cshtml";
+}
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -6,23 +10,24 @@
     <title>History</title>
 </head>
 <body>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Date
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-      @foreach (var item in ViewBag.History) {
-             <tr>
-                  <td>
-                      <a href="@Url.Action("Details","Orders", new { date = item.Date })">@item.Date.ToString().Replace(" 0:00:00","")</a>
-                  </td>
-             </tr>
-      }
-    </tbody>
-</table>
+    <table class="table" style="margin: auto 20%; margin-bottom: 500px !important;">
+        <thead>
+            <tr>
+                <th>
+                    Order Date
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.History)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action("SearchOneOrderByDate","Orders", new { date = item.Date })">@item.Date.ToString().Replace(" 0:00:00", "")</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </body>
 </html>

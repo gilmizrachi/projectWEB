@@ -21,7 +21,6 @@ namespace projectWEB.Controllers
         // GET: Cart
         public ActionResult Index()
         {
-            setCategoriesMenu();
             return View();
         }
 
@@ -174,41 +173,6 @@ namespace projectWEB.Controllers
         public string GetCart()
         {
             return HttpContext.Session.GetString("cart");
-        }
-
-        [Authorize]
-        public async Task<IActionResult> Checkout()
-        {
-            var claims = HttpContext.User.Claims;
-
-            var value = HttpContext.Session.GetString("cart");
-            Dictionary<int, ItemInCart> cart = JsonConvert.DeserializeObject<Dictionary<int, ItemInCart>>(value);
-            var itemsInCart = cart.Values.ToList();
-            Order[] orders = new Order[itemsInCart.Count];
-            for (int i = 0; i < itemsInCart.Count; i++)
-            {
-                Order ord = new Order
-                {
-                    item_id = itemsInCart[i].id,
-                    item_quantity = itemsInCart[i].quantity,
-                    user_id = int.Parse(HttpContext.Session.GetInt32("userId").ToString()),
-                    date = DateTime.Now,
-                };
-                orders[i] = ord;
-            }
-            _context.Order.AddRange(orders);
-
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                _context.SaveChanges();
-            }
-            HttpContext.Session.Remove("cart");
-            return RedirectToAction("Mainshop", "Items");
         }
     }
 }

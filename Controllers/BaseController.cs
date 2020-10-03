@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using projectWEB.Data;
 
 namespace projectWEB.Controllers
@@ -22,6 +23,12 @@ namespace projectWEB.Controllers
             ViewBag.cart = HttpContext.Session.GetString("cart");
             ViewBag.size = HttpContext.Session.GetInt32("size");
             ViewBag.total = HttpContext.Session.GetString("total");
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            setCategoriesMenu();
         }
     }
 }
