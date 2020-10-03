@@ -23,16 +23,6 @@ namespace projectWEB.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            //var query = from o in _context.Order
-            //            join ru in _context.RegisteredUsers on o.user_id equals ru.id into oru
-            //            from x in oru.DefaultIfEmpty()
-            //            select new
-            //            {
-            //                UserName = x.UserName,
-            //                UsergroupName = u.UsergroupName,
-            //                Price = (x == null ? String.Empty : x.Price)
-            //            };
-
             var result = _context.Order.Where(o => o.user_id == int.Parse(HttpContext.Session.GetInt32("userId").ToString()))
                              .Select(order => order.date.Date)
                              .Distinct()

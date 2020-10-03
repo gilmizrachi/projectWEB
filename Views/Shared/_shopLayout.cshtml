@@ -174,13 +174,16 @@
             
             <div class="col-3" style="width: 14%; position: absolute; z-index: 123;">
                 <ul class="list-group">
-                    @foreach (var item in ViewBag.modelCategory)
+                    @if (ViewBag.modelCategory != null)
                     {
-                        <a href="@Url.Action("showProductsOfCategory","Categories", new {id = item.id})">
-                            <li class="list-group-item">
-                                @(item.name)
-                            </li>
-                        </a>
+                        @foreach (var item in ViewBag.modelCategory)
+                        {
+                            <a href="@Url.Action("showProductsOfCategory", "Categories", new { id = item.id })">
+                                <li class="list-group-item">
+                                    @(item.name)
+                                </li>
+                            </a>
+                        }
                     }
                 </ul>
                 <div class="cart-menu bg-dark text-white p-3 mt-3" style="background-color: #343a40!important; color: white; min-height:60px;">

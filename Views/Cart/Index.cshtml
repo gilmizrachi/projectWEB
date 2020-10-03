@@ -67,7 +67,7 @@
                         + '<span>' + data[i].quantity + '</span>'
                         + '<a href="@Url.Action("Add", "Cart")?id=' + data[i].id +'&cartView=true" class="btn-success btn-sm">+</a>'
                         + '<a href="@Url.Action("Subtract", "Cart")?id=' + data[i].id +'&cartView=true" class="btn-success btn-sm" style="background-color:#007bff;border-color:#007bff">-</a>'
-                        + '<a href="@Url.Action("Remove", "Cart")?id=' + data[i].id + '&cartView=true" class="btn-success btn-sm" style="background-color:#d9534f;border-color:#d9534f">remove</a>'
+                        + '<a href="@Url.Action("Delete", "Cart")?id=' + data[i].id + '&cartView=true" class="btn-success btn-sm" style="background-color:#d9534f;border-color:#d9534f">remove</a>'
                         + '</td>');
                    var tdPrice = $('<td>' + data[i].price + '</td>');
                    var tdTotal = $('<td>' + data[i].price * data[i].quantity + '</td>');

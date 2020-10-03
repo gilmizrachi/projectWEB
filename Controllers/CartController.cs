@@ -94,6 +94,35 @@ namespace projectWEB.Controllers
             }
         }
 
+        [Authorize]
+        public async Task<IActionResult> Subtract(int id)
+        {
+            var items = _context.Item.Where(u => u.id == id);
+            Item item = items.FirstOrDefault();
+            ISession session = HttpContext.Session;
+
+            var value = session.GetString("cart");
+            Dictionary<int, ItemInCart> cart = JsonConvert.DeserializeObject<Dictionary<int, ItemInCart>>(value);
+
+            int quantity = cart[id].quantity;
+            if (quantity == 1)
+            {
+                cart.Remove(id);
+                if (cart.Count == 0)
+                {
+                    session.Remove("cart");
+                    return RedirectToAction("Mainshop", "Items");
+                }
+            } else
+            {
+                quantity -= 1;
+                cart.Remove(id);
+                cart.Add(id, new ItemInCart(id, item.ItemName, item.price, quantity));           
+            }
+            session.SetString("cart", JsonConvert.SerializeObject(cart));
+            return RedirectToAction("Index", "Cart");
+        }
+
         // GET: Cart/Edit/5
         public ActionResult Edit(int id)
         {
@@ -118,9 +147,21 @@ namespace projectWEB.Controllers
         }
 
         // GET: Cart/Delete/5
+        [Authorize]
         public ActionResult Delete(int id)
         {
-            return View();
+            ISession session = HttpContext.Session;
+
+            var value = session.GetString("cart");
+            Dictionary<int, ItemInCart> cart = JsonConvert.DeserializeObject<Dictionary<int, ItemInCart>>(value);
+            cart.Remove(id);
+            if (cart.Count == 0)
+            {
+                session.Remove("cart");
+                return RedirectToAction("Mainshop", "Items");
+            }
+            session.SetString("cart", JsonConvert.SerializeObject(cart));
+            return RedirectToAction("Index", "Cart");
         }
 
         // POST: Cart/Delete/5
@@ -146,7 +187,7 @@ namespace projectWEB.Controllers
         }
 
         [Authorize]
-        public void Checkout()
+        public async Task<IActionResult> Checkout()
         {
             var claims = HttpContext.User.Claims;
 
@@ -176,6 +217,8 @@ namespace projectWEB.Controllers
                 Console.WriteLine(e);
                 _context.SaveChanges();
             }
+            HttpContext.Session.Remove("cart");
+            return RedirectToAction("Mainshop", "Items");
         }
     }
 }
