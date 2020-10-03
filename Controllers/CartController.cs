@@ -164,21 +164,11 @@ namespace projectWEB.Controllers
             return RedirectToAction("Index", "Cart");
         }
 
-        // POST: Cart/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [Authorize]
+        public ActionResult DeleteCart()
         {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            HttpContext.Session.Remove("cart");
+            return RedirectToAction("Mainshop", "Items");
         }
 
         public string GetCart()
