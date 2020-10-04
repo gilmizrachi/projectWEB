@@ -16,7 +16,8 @@ namespace projectWEB.Migrations
                     item_id = table.Column<int>(nullable: false),
                     item_quantity = table.Column<int>(nullable: false),
                     date = table.Column<DateTime>(nullable: false),
-                    user_id = table.Column<int>(nullable: false)
+                    user_id = table.Column<int>(nullable: false),
+                    order_number = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

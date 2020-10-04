@@ -23,17 +23,17 @@ namespace projectWEB.Controllers
         public async Task<IActionResult> ListAllOrdersByDate()
         {
             var result = _context.Order.Where(o => o.user_id == int.Parse(HttpContext.Session.GetInt32("userId").ToString()))
-                             .Select(order => order.date.Date)
+                             .Select(order => new  { order.date.Date, order.order_number } )
                              .Distinct()
-                             .OrderByDescending(order => order.Date);
+                             .OrderByDescending(order => order.Date);    
             ViewBag.History = result.ToList();
             return View("History"); 
         }
 
         // GET: Orders/Details/5
-        public async Task<IActionResult> SearchOneOrderByDate(DateTime? date)
+        public async Task<IActionResult> SearchByOrderNumber(int order_number)
         {
-            if (date == null)
+            if (order_number == null)
             {
                 return NotFound();
             }
@@ -42,14 +42,15 @@ namespace projectWEB.Controllers
             var details = (from o in _context.Order
                            join i in _context.Item on o.item_id equals i.id
                            join c in _context.Category on i.ItemDevision equals c.id.ToString()
-                           where o.date.Date == date
+                           where o.order_number == order_number
                            select new OrderDetails
                            {
-                               order_id = o.id,
+                               order_number = o.order_number,
                                item_name = i.ItemName,
                                item_quantity = o.item_quantity,
                                item_price = i.price,
-                               item_category = c.name
+                               item_category = c.name,
+                               order_id = o.id
                            }).ToList();
 
             if (details == null)
@@ -65,8 +66,16 @@ namespace projectWEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create()
         {
-            var claims = HttpContext.User.Claims;
-
+            //var claims = HttpContext.User.Claims;
+            Random RandNum = new Random();
+            int order_number = RandNum.Next(1000000, 9999999);
+            IQueryable<Order> tmp = null;
+            tmp = _context.Order.Where(o => o.order_number == order_number);
+            while (tmp != null && tmp.Count() != 0)
+            {
+                order_number = RandNum.Next(1000000, 9999999);
+                tmp = _context.Order.Where(o => o.order_number == order_number);
+            }
             var value = HttpContext.Session.GetString("cart");
             Dictionary<int, ItemInCart> cart = JsonConvert.DeserializeObject<Dictionary<int, ItemInCart>>(value);
             var itemsInCart = cart.Values.ToList();
@@ -79,6 +88,7 @@ namespace projectWEB.Controllers
                     item_quantity = itemsInCart[i].quantity,
                     user_id = int.Parse(HttpContext.Session.GetInt32("userId").ToString()),
                     date = DateTime.Now,
+                    order_number = order_number,
                 };
                 orders[i] = ord;
             }

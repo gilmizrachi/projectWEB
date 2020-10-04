@@ -15,7 +15,7 @@
         <thead>
             <tr>
                 <th>
-                    Order ID
+                    Order Number
                 </th>
                 <th>
                     Item Name
@@ -36,7 +36,7 @@
             {
                 <tr>
                     <td>
-                        @item.order_id
+                        @item.order_number
                     </td>
                     <td>
                         @item.item_name
@@ -51,7 +51,7 @@
                         @item.item_category
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.order_id">Update quantity</a> | <a asp-action="Delete" asp-route-id="@item.order_id">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.order_id">Update Order</a> | <a asp-action="Delete" asp-route-id="@item.order_id">Delete</a>
                     </td>
                 </tr>
             }

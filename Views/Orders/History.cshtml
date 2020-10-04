@@ -16,16 +16,22 @@
                 <th>
                     Order Date
                 </th>
+                <th>
+                    Order Number
+                </th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in ViewBag.History)
+            @foreach (var item in (dynamic)ViewBag.History)
             {
-                <tr>
-                    <td>
-                        <a href="@Url.Action("SearchOneOrderByDate","Orders", new { date = item.Date })">@item.Date.ToString().Replace(" 0:00:00", "")</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @item.GetType().GetProperty("Date").GetValue(item, null).ToString().Replace(" 0:00:00", "")
+                </td>
+                <td>
+                    <a style="text-decoration:underline !important;" href="@Url.Action("SearchByOrderNumber","Orders", new { order_number = item.GetType().GetProperty("order_number").GetValue(item, null) })">@item.GetType().GetProperty("order_number").GetValue(item, null)</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

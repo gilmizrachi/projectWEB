@@ -8,6 +8,7 @@ namespace projectWEB.Models
     public class OrderDetails
     {
         public int order_id { get; set; }
+        public int order_number { get; set; }
         public string item_name { get; set; }
         public int item_quantity { get; set; }
         public int item_price { get; set; }
