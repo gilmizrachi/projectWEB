@@ -17,7 +17,7 @@ validatePassword = function () {
 confirm_password.change(validatePassword);
 password.change(validatePassword);
 
-/* $('#register').click(function () {
+ $('#register').click(function () {
     var signupform = {};
     //alert(sort);
     signupform.Username = $('#User-Name').val();
@@ -36,8 +36,8 @@ password.change(validatePassword);
                 $('#unspa').addClass("glyphicon glyphicon-ok form-control-feedback");
                 $('#emdiv').addClass("has-success has-feedback");
                 $('#emspa').addClass("glyphicon glyphicon-ok form-control-feedback");
-                $('alert-dismissible').show();
-                alert($(submit).val());
+                $('div.alert-dismissible').show().delay(5000);
+                $("form").submit();
                 break;
             case 2:
                 $('#undiv').addClass("has-error has-feedback");
@@ -54,4 +54,4 @@ password.change(validatePassword);
         }
     })
 
-});*/
+});

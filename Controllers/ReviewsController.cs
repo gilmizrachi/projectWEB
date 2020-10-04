@@ -35,7 +35,7 @@ namespace projectWEB.Controllers
             {
                 return NotFound();
             }
-
+            
             /* var reviews = (from a in _context.Reviews
                             where a.Item.id == id
                             select new { Email = a.registeredUsers.Email, Writer = a.registeredUsers.UserName, Comment = a.CommentBody, Title = a.CommentTitle }).ToList();

@@ -15,8 +15,25 @@ namespace projectWEB.Models
     }
     public class Transaction
     {
+        public void AddCart(Item CartItem)
+        {
+            if (this.Cart == null)
+            {
+                this.Cart = new List<Item>();
+                Cart.Add(CartItem);
+            }
+            else
+            {
+                Cart.Add(CartItem);
+            }
+            this.SumPrice += CartItem.price;
+        }
+        public List<Item> GetCart()
+        {
+            return this.Cart;
+        }
         public int Id { get; set; }
-        public ICollection<Item> Cart { get; set; }
+        public  List<Item> Cart { get; set; }
         public DateTime TranscationDate { get; set; }
         public RegisteredUsers Customer { get; set; }
         public float SumPrice { get; set; }

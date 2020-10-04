@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace projectWEB.Controllers
 {
+    [Authorize]
     public class ItemsController : Controller
     {
         private readonly projectWEBContext _context;
@@ -25,18 +26,13 @@ namespace projectWEB.Controllers
         }
 
         // GET: Items
-        [Authorize]
-        public async Task<IActionResult> index()
-        {
-            //return View(await _context.Item.ToListAsync());
-            return View();
-        }
+
         /*
         public  IActionResult Index()
         {
             return View();
         } */
-       // [Authorize]
+        
         public async Task<IActionResult> Item_Details(int id)
         {
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
@@ -56,6 +52,7 @@ namespace projectWEB.Controllers
             return View("Mainshop",await result.ToListAsync());
            
         }
+       
         [HttpPost]
         public async Task<IActionResult> Sort(string Sortby)
         {
@@ -74,7 +71,8 @@ namespace projectWEB.Controllers
        // [Authorize]
         public async Task<IActionResult> Mainshop()
         {
-           // HttpContext.Session.SetString()
+            ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
+            // HttpContext.Session.SetString()
             return View(await _context.Item.ToListAsync());
         }
 
@@ -83,7 +81,7 @@ namespace projectWEB.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        [Authorize(Roles ="SalesPerson,Supervisor")]
         public async Task<IActionResult> Create([Bind("id,ItemName,price,ItemDevision,Description,amount")] Item item)
         {
             if (ModelState.IsValid)
@@ -94,7 +92,21 @@ namespace projectWEB.Controllers
             }
             return View(item);
         }
+        [Authorize(Roles ="SalesPerson,Supervisor,Admin")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var item = await _context.Item.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return View(item);
+        }
         /*
                 // GET: Items/Details/5
                 public async Task<IActionResult> Details(int? id)

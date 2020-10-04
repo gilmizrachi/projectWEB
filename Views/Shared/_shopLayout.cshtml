@@ -16,8 +16,8 @@
     <meta name="author" content="">
 
     <!-- Site Icons -->
-    <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="~/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
@@ -88,6 +88,7 @@
                                 <a class="google" href="#" data-tooltip="tooltip" data-placement="bottom" title="Google Plus"><i class="fa fa-google-plus"></i></a>
                                 <a class="linkedin" href="#" data-tooltip="tooltip" data-placement="bottom" title="Linkedin"><i class="fa fa-linkedin"></i></a>
                                 <a class="pinterest" href="#" data-tooltip="tooltip" data-placement="bottom" title="Pinterest"><i class="fa fa-pinterest"></i></a>
+                                <a class="fa fa-user" asp-controller="RegisteredUsers" asp-action="DoLogout" data-tooltip="tooltip" data-placement="bottom" title="LogOut"><i class="fa fa-sign-out"></i></a>
                             </div><!-- end social -->
                         </div><!-- end left -->
                     </div><!-- end row -->
@@ -104,13 +105,13 @@
                             <span class="icon-bar"></span>
                         </button>
                         <div class="logo-normal">
-                            <a class="navbar-brand" asp-action="index"><img src="~/images/logo-dark.png" alt=""></a>
+                            <a class="navbar-brand" asp-action="Mainshop"><img src="~/images/logo-dark.png" alt=""></a>
                         </div>
                     </div>
 
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a asp-action="index">Home</a></li>
+                            <li><a asp-action="Mainshop">Home</a></li>
                             <li class="dropdown yamm-fw yamm-half">
                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle active">Mega Menu <b class="fa fa-angle-down"></b></a>
                                 <ul class="dropdown-menu">
@@ -157,16 +158,17 @@
                                     <li><a asp-action="item_details">Shop Single</a></li> <!-- TODO: single item view -->
                                 </ul>
                             </li>
+                            @if (ViewBag.membertype=="Admin") { 
                             <li class="dropdown hassubmenu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">op.menu <span class="fa fa-angle-down"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin<span class="fa fa-angle-down"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Obj one</a></li>
-                                    <li><a href="#">Obj two</a></li>
-                                    <li><a href="#">Obj four</a></li>
-                                    <li><a href="#l">Haha, jk</a></li>
+                                    <li><a asp-controller="RegisteredUsers" asp-action="Index">Users</a></li>
+                                    <li><a asp-controller="Items" asp-action="Index">Items</a></li>
+                                    <li><a href="#">Orders</a></li>
+                                    <li><a href="#">Haha, jk</a></li>
                                     <li><a href="#">Obj five</a></li>
                                 </ul>
-                            </li>
+                            </li>}
                             <li><a href="#">Contact</a></li> <!-- TODO -->
                             <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
                             <li class="side-menu"><a class="shopicon" href="#"><i class="fa fa-shopping-bag"></i></a></li>
@@ -174,6 +176,7 @@
                     </div>
                     <div class="side">
                         <a href="#" class="close-side"><i class="fa fa-times"></i></a>
+                        <a asp-controller="Transactions" asp-action="MyCart" style="display:none" id="GetCart"></a>
                         <li class="cart-box">
                             <ul class="cart-list">
                                 <li>

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "_LoginLayout";
 }
 
 <h1>Index</h1>
@@ -24,6 +25,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.MemberType)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditCard)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -43,10 +47,14 @@
                 @Html.DisplayFor(modelItem => item.MemberType)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.CreditCard)
+            </td>
+            @if (ViewBag.membertype == "Admin") { 
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
-            </td>
+            </td>}
         </tr>
 }
     </tbody>

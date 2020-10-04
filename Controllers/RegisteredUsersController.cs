@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using projectWEB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -38,14 +40,14 @@ namespace projectWEB.Controllers
 
             var claimsIdentity  = new ClaimsIdentity(
                 claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties { };
+            var authProperties = new AuthenticationProperties {};
 
 
             await HttpContext.SignInAsync(
               CookieAuthenticationDefaults.AuthenticationScheme,
                new ClaimsPrincipal(claimsIdentity),
                authProperties);
-
+           // var userId = HttpContext.Request.Cookies;
             //return Redirect("/items/index");
 
             /* moved this to check another kind of auth 
@@ -57,7 +59,11 @@ namespace projectWEB.Controllers
           //  RedirectToAction( "item","Items");
           */
         }
-
+        public async Task<ViewResult> DoLogout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return View("Login");
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -69,20 +75,24 @@ namespace projectWEB.Controllers
                 //throw f
                 return View();
                 }
-                if (ModelState.IsValid)
+            ModelState.Remove("CreditCard");
+            if (ModelState.IsValid)
                 {
                // RegisteredUsers registeredUsers = new RegisteredUsers() { UserName = UserName, Email = Email, Password = Password };
                 _context.Add(registeredUsers);
                     await _context.SaveChangesAsync();
                 var users = _context.RegisteredUsers.First(u => u.UserName == registeredUsers.UserName);
                 signin(users);
-                return View("index", Index());
-                }
+                return RedirectToAction("Mainshop", "Items");
+            }
                 return View("item","Items");
             
         }
+        /* public IActionResult OhhNo()
+        {
 
-        /*
+        }
+        
          public async IActionResult Signup([Bind("Id,UserName,Email,Password,MemberType")] RegisteredUsers registeredUsers)
          {
              if (ModelState.IsValid)
@@ -113,7 +123,7 @@ namespace projectWEB.Controllers
         [HttpPost]
         public IActionResult Login(String Username, String Password)
         {
-            var users = _context.RegisteredUsers.Where(u => u.UserName == Username && u.Password == Password).First();
+            var users = _context.RegisteredUsers.Where(u => u.UserName.ToLower() == Username.ToLower() && u.Password == Password).First();
 
             if (users != null)
             {
@@ -157,9 +167,10 @@ namespace projectWEB.Controllers
 
 
 
-        // GET: RegisteredUsers
+        [Authorize(Roles ="Admin,Supervisor")]
         public async Task<IActionResult> Index()
         {
+            ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
             return View(await _context.RegisteredUsers.ToListAsync());
         }
         /*

@@ -9,12 +9,12 @@
         @foreach (var item in Model)
         {
             <div class="media">
-                <p class="pull-right"><small>5 days ago</small></p>
+                <p class="pull-right"><small>@DateTime.Today.Subtract(item.Reviews.PublishTime).Days Days ago</small></p>
                 <a class="media-left" href="#">
-                    <img src="upload/Avatar.png" alt="" class="img-circle">
+                    <img src="/images/Avatar.png" alt="" class="img-circle">
                 </a>
                 <div class="media-body">
-                    <h4 class="media-heading user_name">By: @Html.DisplayFor(modelItem => item.registeredUsers.UserName)</h4>
+                    <h4 class="media-heading user_name"> By: @Html.DisplayFor(modelItem => item.registeredUsers.UserName)</h4>
                     <p>@Html.DisplayFor(modelItem => item.Reviews.CommentTitle)</p>
                     <p>@Html.DisplayFor(modelItem => item.Reviews.CommentBody)</p>
                     <a href="mailto:@Html.DisplayFor(modelItem=>item.registeredUsers.Email)" class="btn btn-primary btn-sm">Send Email</a>

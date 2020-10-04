@@ -20,5 +20,7 @@ namespace projectWEB.Data
         public DbSet<projectWEB.Data.Item> Item { get; set; }
 
         public DbSet<projectWEB.Models.Reviews> Reviews { get; set; }
+
+        public DbSet<projectWEB.Models.Transaction> Transaction { get; set; }
     }
 }

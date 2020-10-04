@@ -31,7 +31,13 @@ namespace projectWEB
             services.AddDbContext<projectWEBContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("projectWEBContext")));
             services.AddSession(Options => Options.IdleTimeout = TimeSpan.FromMinutes(10));
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => 
+            {
+                 options.LoginPath = "/";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                options.Cookie.Name = "ProjectWeb";
+               // options.Cookie.Expiration = TimeSpan.FromMinutes(30);
+            });
             services.ConfigureApplicationCookie(opts => opts.LoginPath = "/");
 
 
@@ -47,9 +53,11 @@ namespace projectWEB
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                //app.UseStatusCodePagesWithReExecute("/error/{0}");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -60,6 +68,8 @@ namespace projectWEB
             app.UseAuthentication();
 
             app.UseAuthorization();
+            
+          //  app.UseCookiePolicy();
             
             app.UseEndpoints(endpoints =>
             {

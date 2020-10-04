@@ -40,7 +40,7 @@
 	    $("#preloader").on(500).fadeOut();
 	    $(".preloader").on(600).fadeOut("slow");
 	});
-
+//Sort function for mainshop page-> fully working + tested
 $('.selectpicker').on('changed.bs.select', function (e) {
 	var sort = this.options[this.selectedIndex].value;
 	
@@ -53,7 +53,7 @@ $('.selectpicker').on('changed.bs.select', function (e) {
 		{
 			url: '/items/sort/',
 			type: 'POST',
-			data: Sortby,//.replace(/\?/g, '/'),
+			data: Sortby,
 			success: function (result) {
 				$('#shop-grid').html(result);
 			}
@@ -68,7 +68,7 @@ $('.selectpicker').on('changed.bs.select', function (e) {
 	});
 
 });
-
+//add comment for item -> fully working + tested 
 $("#sendReview").click(function () {
 	var data = {};
 	data.ItemId =$("#ItemId").val();
@@ -76,9 +76,8 @@ $("#sendReview").click(function () {
 	data.CommentBody = $("#CommentBody").val();
 	data.CommentTitle = $("#CommentTitle").val();
 	data.__RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();;
-	//data.publishdate = 'PublishTime=' + Date.now().toString;
-	//alert(data.publishdate);
-		alert(data.__RequestVerificationToken);
+
+	//	alert(data.__RequestVerificationToken);
 	var url = $("#send").attr("formaction");
 
 
@@ -86,10 +85,10 @@ $("#sendReview").click(function () {
 		{
 			url: url,
 			type: 'POST',
-			data: data,//.replace(/\?/g, '/'),
+			data: data,
 			success: function (result) {
 				
-				alert(result);
+				//alert(result);
 				$("#menu1").hide();
 				getitemcomments();
 			}
@@ -97,22 +96,14 @@ $("#sendReview").click(function () {
 		});
 		
 });
-/*
-	$('#loader').hide();
-	$(document).ajaxStart(function () {
-		$('div.row.blog-grid.shop-grid').empty();
-		$('#loader').show();
-	}).ajaxStop(function () {
-		$('#loader').hide();
-	});
-	*/
+//animation for rating stars
 $('.ratings_stars').hover(
-	// Handles the mouseover
+	
 	function () {
 		$(this).prevAll().andSelf().addClass('ratings_over');
 		$(this).nextAll().removeClass('ratings_vote');
 	},
-	// Handles the mouseout
+	
 	function () {
 		$(this).prevAll().andSelf().removeClass('ratings_over');
 
@@ -124,8 +115,11 @@ $('.ratings_stars').hover(
 	var rating = $(this).data('rating');
 	//alert(rating);
 	// Get the rating from the selected star
-	$('#rating').val(rating); // Set the value of the hidden rating form element
+	$('#rating').val(rating); // Set the value of the hidden rating form element - need to update at DB
 });
+
+//pulls comment section on every item single view -> fully working
+//TODO: static representation of item rating at item details page 
 $(document).ready( function () {
 	$('.nav-tabs a[href="#menu1"]').on('show.bs.tab',getitemcomments = function (e) {
 
@@ -178,12 +172,12 @@ $(".input-group-addon.close-search").on("click", function () {
 	$(".top-search").slideUp();
 });
 
-// ------------------------------------------------------------------------------ //
-// Toggle Side Menu .attr-nav
-// ------------------------------------------------------------------------------ //
+
+//side bar cart on shop layout
 $("nav.navbar.bootsnav ").each(function () {
 	$("li.side-menu > a", this).on("click", function (e) {
 		e.preventDefault();
+		listCart();
 		$("nav.navbar.bootsnav > .side").toggleClass("on");
 		$("body").toggleClass("on-side");
 	});
@@ -193,3 +187,27 @@ $(".side .close-side").on("click", function (e) {
 	$("nav.navbar.bootsnav > .side").removeClass("on");
 	$("body").removeClass("on-side");
 });
+//pulls list of items for current user ---not yet finished--- 
+listCart= function () {
+	var cart = $("#GetCart").attr("href");
+	$.ajax(
+		{
+			url: cart,
+			type: 'GET',
+			success: function (items) {
+				$('ul.cart-list').html(items);
+			}
+		});
+};
+//react to "add to cart" buttons both on mainshop or single item view
+$("#AddToCart").click( takeme = function(){
+	carturl = $("#AddToCart").attr("formaction");
+	$.ajax({
+		url: carturl,
+		type: 'GET',
+		success: function() { alert("success "+ carturl.val() ); }
+	})
+});
+
+$("#AddCartLink").click(takeme);
+	

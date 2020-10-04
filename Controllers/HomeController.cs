@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,11 +21,19 @@ namespace projectWEB.Controllers
 
         public IActionResult Index1()
         {
+            ViewBag.test2 =  HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
+            ViewBag.test = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Name)?.Value;
+
             return View();
         }
 
         public IActionResult Privacy()
         {
+            
+            return View();
+        }
+        public IActionResult OhhNo(int? id)
+        {   ViewBag.ErrorId = id;
             return View();
         }
 

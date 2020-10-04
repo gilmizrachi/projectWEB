@@ -82,12 +82,13 @@
                         <h3>@Html.DisplayFor(modelItem => item.ItemName)</h3>
                         <small>@Html.DisplayFor(modelItem => item.price)</small>
                         <p>@Html.DisplayFor(modelItem => item.Description)</p>
-
+                        @if (ViewBag.membertype == "SalesPerson")
+                        {<a asp-action="Edit" asp-route-id="@Model.FirstOrDefault().id">Edit</a>}
                         <div class="shop-meta">
-                            <a href="#" class="btn btn-primary">Add to Cart</a>
+                            <button type="button" id="AddToCart" asp-controller="Transactions" asp-action="Addtocart" asp-route-id="@Model.FirstOrDefault().id" class="btn btn-primary"> Add To Cart</button>
                             <ul class="list-inline">
                                 <li> SKU: product-111</li>
-                                <li>Categories: <a asp-action="Search" name="Phrase" id="Phrase"  value="@Model.FirstOrDefault().ItemDevision.ToString()">@Html.DisplayFor(modelItem => item.ItemDevision)</a>
+                                <li>Categories: <a asp-action="Search" name="Phrase" id="Phrase" value="@Model.FirstOrDefault().ItemDevision.ToString()">@Html.DisplayFor(modelItem => item.ItemDevision)</a>
                             </ul>
                         </div><!-- end shop meta -->
                     </div><!-- end desc -->
