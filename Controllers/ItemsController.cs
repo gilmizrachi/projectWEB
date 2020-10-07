@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using projectWEB.Data;
-
+using projectWEB.Models;
 
 namespace projectWEB.Controllers
 {
@@ -37,7 +37,7 @@ namespace projectWEB.Controllers
         public async Task<IActionResult> Item_Details(int id)
         {
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
-            return View( _context.Item.Where(u=>u.id==id));
+            return View( _context.Item.Where(u=>u.ID==id));
         }
         public IActionResult Create()
         {
@@ -46,7 +46,7 @@ namespace projectWEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Search(string Phrase)
         {
-            var result = _context.Item.Where(str => str.ItemName.Contains(Phrase) || str.ItemDevision.Contains(Phrase) || str.Description.Contains(Phrase));
+            var result = _context.Item.Where(str => str.ProductName.Contains(Phrase) || str.ItemDevision.Contains(Phrase) || str.Description.Contains(Phrase));
             return View("Mainshop", await result.ToListAsync());
 
         }
@@ -56,8 +56,8 @@ namespace projectWEB.Controllers
 
             if (Sortby == "1") { return View(await _context.Item.OrderByDescending(p => p.price).ToListAsync()); }
             else if (Sortby == "2") { return View(await _context.Item.OrderBy(p => p.price).ToListAsync()); }
-            else if (Sortby == "3") { return View(await _context.Item.OrderByDescending(p => p.id).ToListAsync()); }
-            else if (Sortby == "4") { return View(await _context.Item.OrderBy(p => p.id).ToListAsync()); }
+            else if (Sortby == "3") { return View(await _context.Item.OrderByDescending(p => p.ID).ToListAsync()); }
+            else if (Sortby == "4") { return View(await _context.Item.OrderBy(p => p.ID).ToListAsync()); }
             else { return View("Mainshop"); }
 
         }

@@ -46,7 +46,7 @@ namespace projectWEB.Controllers
                new ClaimsPrincipal(claimsIdentity),
                authProperties);
 
-            HttpContext.Session.SetInt32("userId", user.id);
+            HttpContext.Session.SetInt32("userId", int.Parse(user.Id));
             //return Redirect("/items/index");
 
             /* moved this to check another kind of auth 

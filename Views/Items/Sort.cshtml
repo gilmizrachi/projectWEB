@@ -13,13 +13,13 @@
                 <div class="image-wrap entry">
                     <img src="~/upload/shop_01.jpg" alt="" class="img-responsive"> <!-- TODO redirect to image method -->
                     <div class="magnifier">
-                        <a asp-action="item_details" asp-route-id="@item.id" title=""><i class="flaticon-add"></i></a>
+                        <a asp-action="item_details" asp-route-id="@item.ID" title=""><i class="flaticon-add"></i></a>
                     </div>
                 </div>
                 <!-- end image-wrap -->
                 <div class="course-details shop-box text-center">
                     <h4>
-                        <a asp-action="item_details" asp-route-id="@item.id" title="">@Html.DisplayFor(modelItem => item.ItemName)</a>
+                        <a asp-action="item_details" asp-route-id="@item.ID" title="">@Html.DisplayFor(modelItem => item.ProductName)</a>
                         <small>@Html.DisplayFor(modelItem => item.ItemDevision)</small>
                     </h4>
                 </div>

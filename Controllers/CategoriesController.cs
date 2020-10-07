@@ -34,7 +34,7 @@ namespace projectWEB.Controllers
             }
 
             var category = await _context.Category
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.ID == id);
             if (category == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace projectWEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,name")] Category category)
         {
-            if (id != category.id)
+            if (id != category.ID)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace projectWEB.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.id))
+                    if (!CategoryExists(category.ID))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace projectWEB.Controllers
             }
 
             var category = await _context.Category
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.ID == id);
             if (category == null)
             {
                 return NotFound();
@@ -145,7 +145,7 @@ namespace projectWEB.Controllers
 
         private bool CategoryExists(int id)
         {
-            return _context.Category.Any(e => e.id == id);
+            return _context.Category.Any(e => e.ID == id);
         }
 
         public async Task<IActionResult> showProductsOfCategory(int id)

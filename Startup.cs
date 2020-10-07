@@ -11,6 +11,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using projectWEB.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using projectWEB.Models;
+using projectWEB.App_Start;
 
 namespace projectWEB
 {
@@ -29,12 +33,18 @@ namespace projectWEB
             services.AddControllersWithViews();
 
             services.AddDbContext<projectWEBContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("projectWEBContext")));
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSession(Options => Options.IdleTimeout = TimeSpan.FromMinutes(10));
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-            services.ConfigureApplicationCookie(opts => opts.LoginPath = "/");
-
-
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, config =>
+                 {
+                     config.LoginPath = new PathString("/login");
+                 });
+            services.AddControllersWithViews();
+            services.AddIdentity<RegisteredUsers, IdentityRole>().AddEntityFrameworkStores<projectWEBContext>()
+      .AddDefaultTokenProviders().AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>();
+            services.AddScoped<IUserClaimsPrincipalFactory<RegisteredUsers>, CustomClaimsPrincipalFactory>();
+            services.AddScoped<IDbInitializer, DbInitializer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,15 +62,18 @@ namespace projectWEB
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseSession();
-
-            app.UseAuthentication();
-
-            app.UseAuthorization();
             
+            app.UseAuthentication();
+            app.UseAuthorization();
+            //var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            //using (var scope = scopeFactory.CreateScope())
+            //{
+            //    var dbInitializer = scope.ServiceProvider.GetService<IDbInitializer>();
+            //    dbInitializer.Initialize();
+            //    dbInitializer.SeedData();
+            //}
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

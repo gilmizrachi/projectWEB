@@ -42,13 +42,13 @@ namespace projectWEB.Controllers
         {
             try
             {
-                var items = _context.Item.Where(u => u.id == id);
+                var items = _context.Item.Where(u => u.ID == id);
                 Item item = items.FirstOrDefault();
                 ISession session = HttpContext.Session;
                 if (HttpContext.Session.GetString("cart") == null)
                 {
                     Dictionary<int, ItemInCart> cart = new Dictionary<int, ItemInCart>();
-                    cart.Add(id, new ItemInCart(id, item.ItemName, item.price, 1));
+                    cart.Add(id, new ItemInCart(id, item.ProductName, item.price, 1));
                     session.SetString("cart", JsonConvert.SerializeObject(cart));
                 }
                 else
@@ -59,11 +59,11 @@ namespace projectWEB.Controllers
                     {
                         int quantity = cart[id].quantity + 1;
                         cart.Remove(id);
-                        cart.Add(id, new ItemInCart(id, item.ItemName, item.price, quantity));
+                        cart.Add(id, new ItemInCart(id, item.ProductName, item.price, quantity));
                     }
                     else
                     {
-                        cart.Add(id, new ItemInCart(id, item.ItemName, item.price, 1));
+                        cart.Add(id, new ItemInCart(id, item.ProductName, item.price, 1));
                     }
                     session.SetString("cart", JsonConvert.SerializeObject(cart));
                 }

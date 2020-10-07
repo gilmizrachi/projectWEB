@@ -12,10 +12,10 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ItemName)
+            @Html.DisplayNameFor(model => model.ProductName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ItemName)
+            @Html.DisplayFor(model => model.ProductName)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.price)
@@ -44,6 +44,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

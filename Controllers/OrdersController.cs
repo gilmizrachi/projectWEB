@@ -51,12 +51,12 @@ namespace projectWEB.Controllers
 
             //var order = _context.Order.Where(o => o.date.Date == date);
             var details = (from o in _context.Order
-                           join i in _context.Item on o.item_id equals i.id
-                           join c in _context.Category on i.ItemDevision equals c.id.ToString()
+                           join i in _context.Item on o.item_id equals i.ID
+                           join c in _context.Category on i.ItemDevision equals c.ID.ToString()
                            where o.date.Date == date
                            select new MyDetails 
                            {
-                               name = i.ItemName,
+                               name = i.ProductName,
                                quantity = o.item_quantity,
                                price = i.price,
                                category = c.name
@@ -115,7 +115,7 @@ namespace projectWEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,item_id,item_quantity,date,user_id")] Order order)
         {
-            if (id != order.id)
+            if (id != order.ID)
             {
                 return NotFound();
             }
@@ -129,7 +129,7 @@ namespace projectWEB.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OrderExists(order.id))
+                    if (!OrderExists(order.ID))
                     {
                         return NotFound();
                     }
@@ -152,7 +152,7 @@ namespace projectWEB.Controllers
             }
 
             var order = await _context.Order
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.ID == id);
             if (order == null)
             {
                 return NotFound();
@@ -174,7 +174,7 @@ namespace projectWEB.Controllers
 
         private bool OrderExists(int id)
         {
-            return _context.Order.Any(e => e.id == id);
+            return _context.Order.Any(e => e.ID == id);
         }
     }
 }
