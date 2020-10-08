@@ -23,8 +23,8 @@ namespace projectWEB.Controllers
         public async Task<IActionResult> ListAllOrdersByDate()
         {
             var result = _context.Order.Where(o => o.user_id == int.Parse(HttpContext.Session.GetInt32("userId").ToString()))
-                             .Select(order => new  { order.date.Date, order.order_number } )
-                             .Distinct()
+                             .GroupBy(o => new { o.order_number, o.date.Date })
+                             .Select(order => order.Key  )
                              .OrderByDescending(order => order.Date);    
             ViewBag.History = result.ToList();
             return View("History"); 

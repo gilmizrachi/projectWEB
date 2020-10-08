@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using projectWEB.Data;
-
+using Microsoft.AspNetCore.Http;
 
 namespace projectWEB.Controllers
 {
@@ -70,6 +70,38 @@ namespace projectWEB.Controllers
         [Authorize]
         public async Task<IActionResult> Mainshop()
         {
+            // The current user most popular items category.
+            var mostPopularDev = (from o in _context.Order
+                           join i in _context.Item on o.item_id equals i.id
+                           where o.user_id == int.Parse(HttpContext.Session.GetInt32("userId").ToString())
+                           group i by i.ItemDevision into g
+                           select new
+                           {
+                               Devision = g.Key,
+                               count = g.Count(),
+                           }).OrderByDescending(x => x.count).FirstOrDefault();
+
+
+            if (mostPopularDev != null)
+            {
+                // All items which belong to the most popular devision and bought by user
+                var items = (from i in _context.Item
+                             join o in _context.Order on i.id equals o.item_id
+                             where i.ItemDevision == mostPopularDev.Devision && o.user_id == int.Parse(HttpContext.Session.GetInt32("userId").ToString())
+                             select i.id
+                             ).ToList();
+
+                if (items != null && items.Count != 0)
+                {
+                    // Select 1 item from user's most popular devision that he hasn't buy already.
+                    var item = _context.Item.Where(i => !items.Contains(i.id) && mostPopularDev.Devision == i.ItemDevision).FirstOrDefault();
+                    if (item != null)
+                    {
+                        ViewBag.RecommendedItem = item;
+                    }
+                }
+            }
+       
             return View(await _context.Item.ToListAsync());
         }
 
