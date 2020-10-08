@@ -33,12 +33,37 @@ namespace projectWEB
             services.AddControllersWithViews();
 
             services.AddDbContext<projectWEBContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseSqlServer(Configuration.GetConnectionString("projectWEBContext")));
             services.AddSession(Options => Options.IdleTimeout = TimeSpan.FromMinutes(10));
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 0;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                //options.User.AllowedUserNameCharacters =
+                //"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                //options.User.RequireUniqueEmail = false;
+            });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                  .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, config =>
                  {
+                     config.Cookie.HttpOnly = true;
+                     config.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                      config.LoginPath = new PathString("/login");
+                     config.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                     config.SlidingExpiration = true;
                  });
             services.AddControllersWithViews();
             services.AddIdentity<RegisteredUsers, IdentityRole>().AddEntityFrameworkStores<projectWEBContext>()
@@ -78,7 +103,7 @@ namespace projectWEB
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=RegisteredUsers}/{action=login}/{id?}");
+                    pattern: "{controller=RegisteredUsers}/{action=signup}/{id?}");
             });
             
             

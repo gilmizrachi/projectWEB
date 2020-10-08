@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using projectWEB.Data;
 using projectWEB.Models;
 using System;
@@ -12,17 +15,27 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+
+
 namespace projectWEB.Controllers
 {
     public class RegisteredUsersController : Controller
     {
         private readonly projectWEBContext _context;
-
-        public RegisteredUsersController(projectWEBContext context)
+        private readonly UserManager<RegisteredUsers> _userManager;
+        private readonly SignInManager<RegisteredUsers> _signInManager;
+        private readonly ILogger _logger;
+        public RegisteredUsersController(projectWEBContext context, UserManager<RegisteredUsers> userManager,
+                    SignInManager<RegisteredUsers> signInManager,
+                    ILogger<RegisteredUsersController> logger)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
         }
-
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult signup()
         {
             return View();
@@ -33,7 +46,7 @@ namespace projectWEB.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name,user.UserName),
-                new Claim(ClaimTypes.Role,user.MemberType.ToString()),
+                //new Claim(ClaimTypes.Role,user.MemberType.ToString()),
             };
 
             var claimsIdentity  = new ClaimsIdentity(
@@ -61,26 +74,33 @@ namespace projectWEB.Controllers
 
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> signup(string UserName,string Email,string Password) 
-        public async Task<IActionResult> Signup([Bind("UserName,Email,Password")] RegisteredUsers registeredUsers)
+        public async Task<IActionResult> Signup([Bind("FullName,UserName,Email,Password")] RegisteredUsers registeredUsers)
         {
-                if((_context.RegisteredUsers.Where(u => u.UserName == registeredUsers.UserName).Count())>0)
-                {
-                //throw f
+            if ((_context.RegisteredUsers.Where(u => u.UserName == registeredUsers.UserName).Count()) > 0)
+            {
                 return View();
-                }
-                if (ModelState.IsValid)
+            }
+            if (ModelState.IsValid)
+            {
+                var result = await _userManager.CreateAsync(registeredUsers, registeredUsers.Password);
+                if (result.Succeeded)
                 {
-               // RegisteredUsers registeredUsers = new RegisteredUsers() { UserName = UserName, Email = Email, Password = Password };
-                _context.Add(registeredUsers);
+                    _context.Add(registeredUsers);
                     await _context.SaveChangesAsync();
-                var users = _context.RegisteredUsers.First(u => u.UserName == registeredUsers.UserName);
-                signin(users);
-                return View("index", Index());
+
+                    _logger.LogInformation("User created a new account with password.");
+
+                    await _signInManager.SignInAsync(registeredUsers, isPersistent: false);
+                    _logger.LogInformation("User created a new account with password.");
+                    return View("index", Index());
                 }
-                return View("item","Items");
-            
+                AddErrors(result);
+            }
+            // If we got this far, something failed, redisplay form
+            return View("item", "Items");
+
         }
 
         /*
@@ -133,7 +153,30 @@ namespace projectWEB.Controllers
 
 
       
-        
+        #region Helpers
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+        }
+
+        #endregion
+
         // GET: RegisteredUsers
         public async Task<IActionResult> Index()
         {
