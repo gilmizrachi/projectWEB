@@ -70,16 +70,26 @@ namespace projectWEB.Controllers
         [Authorize]
         public async Task<IActionResult> Mainshop()
         {
+            setUserRecommendations();     
+            return View(await _context.Item.ToListAsync());
+        }
+
+        private void setUserRecommendations()
+        {
+            if (ViewBag.RecommendedItem != null)
+            {
+                return;
+            }
             // The current user most popular items category.
             var mostPopularDev = (from o in _context.Order
-                           join i in _context.Item on o.item_id equals i.id
-                           where o.user_id == int.Parse(HttpContext.Session.GetInt32("userId").ToString())
-                           group i by i.ItemDevision into g
-                           select new
-                           {
-                               Devision = g.Key,
-                               count = g.Count(),
-                           }).OrderByDescending(x => x.count).FirstOrDefault();
+                                  join i in _context.Item on o.item_id equals i.id
+                                  where o.user_id == int.Parse(HttpContext.Session.GetInt32("userId").ToString())
+                                  group i by i.ItemDevision into g
+                                  select new
+                                  {
+                                      Devision = g.Key,
+                                      count = g.Count(),
+                                  }).OrderByDescending(x => x.count).FirstOrDefault();
 
 
             if (mostPopularDev != null)
@@ -101,8 +111,6 @@ namespace projectWEB.Controllers
                     }
                 }
             }
-       
-            return View(await _context.Item.ToListAsync());
         }
 
         // POST: Items/Create
