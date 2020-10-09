@@ -22,7 +22,7 @@ namespace projectWEB.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Category.ToListAsync());
+            return View(await _context.Categories.ToListAsync());
         }
      
         // GET: Categories/Details/5
@@ -33,7 +33,7 @@ namespace projectWEB.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category
+            var category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (category == null)
             {
@@ -73,7 +73,7 @@ namespace projectWEB.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category.FindAsync(id);
+            var category = await _context.Categories.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
@@ -124,7 +124,7 @@ namespace projectWEB.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category
+            var category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (category == null)
             {
@@ -145,13 +145,13 @@ namespace projectWEB.Controllers
 
         private bool CategoryExists(int id)
         {
-            return _context.Category.Any(e => e.ID == id);
+            return _context.Categories.Any(e => e.ID == id);
         }
 
         public async Task<IActionResult> showProductsOfCategory(int id)
         {
             setCategoriesMenu();
-            var items = await (_context.Item.Where(i => i.ItemDevision == id.ToString())).ToListAsync();
+            var items = await (_context.Products.Where(i => i.ID == id)).ToListAsync();
             return View("~/Views/Items/mainshop.cshtml", items);
         }
     }

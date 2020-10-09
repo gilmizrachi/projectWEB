@@ -1,13 +1,11 @@
-﻿using projectWEB.Models;
-using projectWEB.Services;
+﻿using projectWEB.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace projectWEB.Data
+namespace projectWEB.Models
 {
     public class Category : BaseEntity
     {
@@ -24,8 +22,8 @@ namespace projectWEB.Data
         public int? PictureID { get; set; }
         public virtual Picture Picture { get; set; }
 
-        public virtual List<Item> Products { get; set; }
-        public virtual List<CategoryRecord> CategoryRecords { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<CategoryRecord> CategoryRecords { get; set; }
 
     }
 
@@ -33,9 +31,7 @@ namespace projectWEB.Data
     {
         public int CategoryID { get; set; }
         public virtual Category Category { get; set; }
-
         public int LanguageID { get; set; }
-
         public string Name { get; set; }
         public string Summary { get; set; }
         public string Description { get; set; }
