@@ -1,0 +1,52 @@
+﻿<!-- Font Awesome -->
+<link href="~/lib/fontawesome-free-5.13.0-web/css/all.min.css" rel="stylesheet" />
+
+<script>
+    $(function () {
+        $('img').Lazy({
+            scrollDirection: 'vertical',
+            effect: 'fadeIn',
+            visibleOnly: false,
+            onError: function (element) {
+                console.log('error loading ' + element.data('src'));
+            },
+            onFinishedAll: function () {
+                console.log('all images loaded')
+            }
+        });
+    });
+</script>
+<script src="~/Content/Slinky/slinky.min.js"></script>
+
+<script src="~/bundles/content/fscripts"></script>
+
+
+@if (true || !string.IsNullOrEmpty(ConfigurationsHelper.WhatsAppNumber))
+{
+    <a href="https://wa.me/@ConfigurationsHelper.WhatsAppNumber" class="whatsapp-floater" target="_blank">
+        <i class="fab fa-whatsapp whatsapp-float-icon"></i>
+    </a>
+}
+
+<a id="changeMode" class="pointerCursor mode-floater" title="@(SessionHelper.DarkMode ? ("PP.Header.Menu.DisableDarkMode") : ("PP.Header.Menu.EnableDarkMode"))">
+    <i class="fas fa-adjust mode-float-icon"></i>
+</a>
+
+@if (SessionHelper.DarkMode)
+{
+    <script src="~/lib/darkreader-4.9.16/darkreader.min.js"></script>
+
+    <script>
+        if ($(".darkreader")[0]) {
+            console.log("Darkreader Extension detected");
+        } else {
+            DarkReader.setFetchMethod(window.fetch);
+            DarkReader.enable({
+                brightness: 100,
+                contrast: 90,
+                sepia: 10
+            });
+        }
+    </script>
+}
+

@@ -1,0 +1,255 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using projectWEB.Helpers 
+@using projectWEB.Extensions 
+<header class="header-section">
+    <div class="header-top">
+        <div class="container">
+            <div class="ht-left">
+                @if (!string.IsNullOrEmpty(projectWEB.Helpers.ConfigurationsHelper.Email))
+                {
+                    <div class="mail-service">
+                        <i class="fa fa-envelope"></i>
+                        <a class="text-dark" href="mailto://@projectWEB.Helpers.ConfigurationsHelper.Email" target="_blank">
+                            @projectWEB.Helpers.ConfigurationsHelper.Email
+                        </a>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(projectWEB.Helpers.ConfigurationsHelper.PhoneNumber))
+                {
+                    <div class="phone-service">
+                        <i class="fa fa-phone"></i>
+                        <a class="text-dark" href="tell:@projectWEB.Helpers.ConfigurationsHelper.PhoneNumber" target="_blank">
+                            @projectWEB.Helpers.ConfigurationsHelper.PhoneNumber
+                        </a>
+                    </div>
+                }
+            </div>
+            <div class="ht-right">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    var hiUserMessage = "PP.Header.Menu.HiUser".Replace("{user}", User.Identity.Name);
+
+                    <div class="login-panel login-panel-last">
+                        <a href="#" id="btnLogOff" title="@("PP.Header.Menu.LogOff")">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    </div>
+
+                    if (User.IsInRole("Administrator"))
+                    {
+                        <div class="login-panel">
+                            <a href="@Url.Dashboard()" title="@("PP.Header.Menu.Dashboard")">
+                                <i class="fas fa-user-shield"></i>
+                            </a>
+                        </div>
+                    }
+
+                    <div class="login-panel">
+                        <a href="@Url.UserProfile()" title="@hiUserMessage">
+                            @Html.UserAvatar(User.Identity.GetUserPicture(), "image rounded-circle", style: "width: 20px; height: 20px", alt: hiUserMessage)
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="login-panel login-panel-last">
+                        <a href="@Url.Login()" title="@("PP.Header.Menu.Account")">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    </div>
+                }
+               
+                @if (!string.IsNullOrEmpty(ConfigurationsHelper.FacebookURL) ||
+                    !string.IsNullOrEmpty(ConfigurationsHelper.TwitterURL) ||
+                    !string.IsNullOrEmpty(ConfigurationsHelper.InstagramURL) ||
+                    !string.IsNullOrEmpty(ConfigurationsHelper.LinkedInURL) ||
+                    !string.IsNullOrEmpty(ConfigurationsHelper.WhatsAppNumber))
+                {
+                    <div class="top-social">
+                        @if (!string.IsNullOrEmpty(ConfigurationsHelper.FacebookURL))
+                        {
+                            <a title="Facebook" href="@ConfigurationsHelper.FacebookURL" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        }
+                        @if (!string.IsNullOrEmpty(ConfigurationsHelper.TwitterURL))
+                        {
+                            <a title="Twitter" href="@ConfigurationsHelper.TwitterURL" target="_blank"><i class="fab fa-twitter"></i></a>
+                        }
+                        @if (!string.IsNullOrEmpty(ConfigurationsHelper.InstagramURL))
+                        {
+                            <a title="Instagram" href="@ConfigurationsHelper.InstagramURL" target="_blank"><i class="fab fa-instagram"></i></a>
+                        }
+                        @if (!string.IsNullOrEmpty(ConfigurationsHelper.LinkedInURL))
+                        {
+                            <a title="LinkedIn" href="@ConfigurationsHelper.LinkedInURL" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        }
+                        @if (!string.IsNullOrEmpty(ConfigurationsHelper.WhatsAppNumber))
+                        {
+                            <a title="WhatsApp" href="https://wa.me/@ConfigurationsHelper.WhatsAppNumber" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div style="background:#343434;">
+        <div class="container">
+            <div class="inner-header pb-3">
+                <div class="row align-items-center py-0 py-lg-2 pt-1">
+                    <div class="col-lg-2 col-md-3 my-3">
+                        <div class="logo d-flex align-items-center justify-content-between">
+                            <a href="@Url.Home()">
+                                <img style="width:100%;object-fit:contain" class="img-fluid" src="~/Content/images/site/logo(3).png" alt="Alternate Text" />
+                            </a>
+                            @if (!string.IsNullOrEmpty(ConfigurationsHelper.PhoneNumber))
+                            {
+                                <div class="phone-service text-white d-block d-sm-none">
+                                    <i class="fa fa-phone"></i>
+                                    <a class="text-white" href="tell:@ConfigurationsHelper.PhoneNumber" target="_blank">
+                                        @ConfigurationsHelper.PhoneNumber
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-6 col-7 order-1 order-sm-0 px-0 px-sm-3">
+                        <form class="advanced-search" action="@Url.SearchProducts()">
+                            <div class="input-group">
+                                <button type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                <input type="text" name="q" placeholder="@("PP.Header.SearchPlaceholder")" value="@(ViewBag.SearchTerm)" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="cart-info" class="col-lg-3 col-md-3 col-2 pr-0 pr-sm-3">
+                        <ul class="nav-right">
+                            <li class="cart-icon cartMenu">
+                                <span class="pointerCursor">
+                                    <a class="text-center">
+                                        <i class=" fas fa-shopping-cart"></i>
+                                        <span class="countholder">0</span>
+                                    </a>
+                                    @*<span class="cart-price ltr-dir" dir="ltr"></span>*@
+                                </span>
+                                <div class="cart-hover">
+                                    <div class="cart-items-modal"></div>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="spinner-border my-5 bloader" role="status" style="display:none">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="nav-item">
+        <div class="container-fluid">
+            @await Component.InvokeAsync("Categories")
+
+            @*@{ Html.RenderAction("CategoriesMenu", "Categories"); }*@
+            <nav class="nav-menu mobile-menu">
+                <ul>
+                    <li class="@Html.MenuItemClass("Home", "Index")">
+                        <a href="@Url.Home()">
+                            <i class="fas fa-home mr-2"></i>
+                            @("PP.Header.Menu.Home")
+                        </a>
+                    </li>
+                    <li class="d-block d-sm-none">
+                        @await Component.InvokeAsync("CategoriesMenuMobile");}
+                    </li>
+
+                    <li class="@Html.MenuItemClass("Home", "Search")">
+                        <a href="@Url.SearchProducts()">
+                            <i class="fas fa-pallet mr-2"></i>
+                            @("PP.Header.Menu.Products")
+                        </a>
+                    </li>
+                    <li class="@Html.MenuItemClass("Orders", "Tracking")">
+                        <a href="@Url.OrderTrack()">
+                            <i class="fas fa-trailer mr-2"></i>
+                            @("PP.Header.Menu.Tracking")
+                        </a>
+                    </li>
+                    <li class="@Html.MenuItemClass("Cart", "Cart")">
+                        <a href="@Url.Cart()">
+                            <i class="fas fa-cart-arrow-down mr-2"></i>
+                            @("PP.Header.Menu.ShoppingCart")
+                        </a>
+                    </li>
+                    <li class="@Html.MenuItemClass("Cart", "Checkout")">
+                        <a href="@Url.Checkout()">
+                            <i class="fas fa-money-check mr-2"></i>
+                            @("PP.Header.Menu.Checkout")
+                        </a>
+                    </li>
+                    @*<li class="@Html.MenuItemClass("Orders", "Checkout")">
+                    <a href="@Url.Checkout()">
+                        @("PP.Header.Menu.Checkout".Localized())
+                    </a>
+                    <ul class="dropdown">
+                        <li>
+                            <a href="@Url.Cart()">
+                                @("PP.Header.Menu.ShoppingCart".Localized())
+                            </a>
+                        </li>
+                    </ul>
+                </li>*@
+                    @*@if (User.Identity.IsAuthenticated)
+                {
+                    <li>
+                        <a href="#">
+                            @("PP.Header.Menu.Account".Localized())
+                        </a>
+                        <ul class="dropdown">
+                            @if (User.IsInRole("Administrator"))
+                            {
+                                <li>
+                                    <a href="@Url.Dashboard()">
+                                        @("PP.Header.Menu.Dashboard".Localized())
+                                    </a>
+                                </li>
+                            }
+                            <li>
+                                <a href="@Url.UserProfile()">
+                                    @("PP.Header.Menu.Profile".Localized())
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" id="btnLogOff">
+                                    @("PP.Header.Menu.LogOff".Localized())
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li class="@Html.MenuItemClass("Users", "Login")">
+                        <a href="@Url.Login()">@("PP.Header.Menu.Login".Localized())</a>
+                    </li>
+                }*@
+                </ul>
+            </nav>
+            <div id="mobile-menu-wrap">
+            </div>
+        </div>
+    </div>
+</header>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <form id="logOffForm" method="post" action="@Url.Logoff()">
+        @Html.AntiForgeryToken()
+    </form>
+
+    <script>
+        $("#btnLogOff").click(function () {
+            $("#logOffForm").submit();
+        });
+    </script>
+}

@@ -1,0 +1,73 @@
+﻿@using projectWEB.Helpers
+<footer class="footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="footer-left">
+                    @* TODO: We should be able to localize the application name along with Logo and Address *@
+                    <div class="footer-logo">
+                        <a href="@Url.RouteUrl("Home")">
+                            <h5>
+                                @ConfigurationsHelper.ApplicationName
+                            </h5>
+                        </a>
+                    </div>
+                    <p>
+                        @projectWEB.Helpers.ConfigurationsHelper.ApplicationIntro
+                        <br />
+                        @Html.Raw(string.Format("{0}<br/>{1}",ConfigurationsHelper.AddressLine1, ConfigurationsHelper.AddressLine2))
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="footer-widget">
+                    <h5>@("PP.Footer.Information")</h5>
+                    @*<ul>
+                        <li><a href="@Url.RouteUrl("AboutUs")">@("PP.Footer.Information.AboutUs")</a></li>
+                        <li><a href="@Url.RouteUrl("ContactUs")">@("PP.Footer.Information.ContactUs")</a></li>
+                        <li><a href="@Url.RouteUrl("PrivacyPolicy")">@("PP.Footer.Information.PrivacyPolicy"))</a></li>
+                        <li><a href="@Url.RouteUrl("RefundPolicy")">@("PP.Footer.Information.RefundPolicy".)</a></li>
+                        <li><a href="@Url.RouteUrl("TermsConditions")">@("PP.Footer.Information.TermsAndConditions")</a></li>
+                    </ul>*@
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="footer-widget">
+                    <h5>@("PP.Footer.Account")</h5>
+                    <ul>
+                        <li><a href="@Url.RouteUrl("UserProfile")">@("PP.Footer.Account.MyProfile")</a></li>
+                        <li><a href="@Url.RouteUrl("orders")">@("PP.Footer.Account.MyOrders")</a></li>
+                        <li><a href="@Url.RouteUrl("Cart")">@("PP.Footer.Account.MyCart")</a></li>
+                        <li><a href="@Url.RouteUrl("Checkout")">@("PP.Footer.Account.Checkout")</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                @await Html.PartialAsync("_NewsLetterWidget")
+            </div>
+        </div>
+    </div>
+    <div class="copyright-reserved" style="display:block">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 copyrights-widget">
+                    <div class="copyright-text">
+                        <i title="Copyrights" class="fas fa-copyright dont-transform text-warning"></i>
+                        @Html.Raw("PP.Footer.CopyrightsMessage".Replace("{application}", "<a href='" + Url.RouteUrl("Home") + "'>" + ConfigurationsHelper.ApplicationName + "</a>").Replace("{date}", DateTime.Now.Year.ToString()))
+                        <br />
+                    </div>
+                    <div class="payment-pic text-white">
+                        <img src="~/Content/templates/fashi/img/payment-method.png" />
+                    </div>
+                </div>
+                <div class='col-lg-12 py-2 ft-widget'>
+                    <small class='text-muted'>
+                        <span>
+                        @*    <i class='fas fa-laptop-code text-success' title='Software'></i> Developed by <a href='#' target='_blank'>Elxan Quliyev</a>.*@
+                        </span>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
