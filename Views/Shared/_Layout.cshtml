@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @await Html.PartialAsync("_MetaTags", baseModel)
+    @await Html.PartialAsync("_MetaTags",baseModel)
     @await Html.PartialAsync("_HeaderStylesScripts")
     @RenderSection("IncludeHeaderStylesScripts", false)
     @*<link href="~/MetisMenu/metismenujs.min.css" rel="stylesheet" />*@
@@ -19,7 +19,6 @@
     <link href="~/Slinky/slinky2.min.css" rel="stylesheet" />
 </head>
 <body>
-
     @await Html.PartialAsync("_Header")
 
     @RenderBody()

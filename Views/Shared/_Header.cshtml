@@ -59,29 +59,10 @@
                     </div>
                 }
                
-                @if (!string.IsNullOrEmpty(ConfigurationsHelper.FacebookURL) ||
-                    !string.IsNullOrEmpty(ConfigurationsHelper.TwitterURL) ||
-                    !string.IsNullOrEmpty(ConfigurationsHelper.InstagramURL) ||
-                    !string.IsNullOrEmpty(ConfigurationsHelper.LinkedInURL) ||
+                @if (
                     !string.IsNullOrEmpty(ConfigurationsHelper.WhatsAppNumber))
                 {
-                    <div class="top-social">
-                        @if (!string.IsNullOrEmpty(ConfigurationsHelper.FacebookURL))
-                        {
-                            <a title="Facebook" href="@ConfigurationsHelper.FacebookURL" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        }
-                        @if (!string.IsNullOrEmpty(ConfigurationsHelper.TwitterURL))
-                        {
-                            <a title="Twitter" href="@ConfigurationsHelper.TwitterURL" target="_blank"><i class="fab fa-twitter"></i></a>
-                        }
-                        @if (!string.IsNullOrEmpty(ConfigurationsHelper.InstagramURL))
-                        {
-                            <a title="Instagram" href="@ConfigurationsHelper.InstagramURL" target="_blank"><i class="fab fa-instagram"></i></a>
-                        }
-                        @if (!string.IsNullOrEmpty(ConfigurationsHelper.LinkedInURL))
-                        {
-                            <a title="LinkedIn" href="@ConfigurationsHelper.LinkedInURL" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                        }
+                    <div class="top-social">                       
                         @if (!string.IsNullOrEmpty(ConfigurationsHelper.WhatsAppNumber))
                         {
                             <a title="WhatsApp" href="https://wa.me/@ConfigurationsHelper.WhatsAppNumber" target="_blank"><i class="fab fa-whatsapp"></i></a>
@@ -98,7 +79,7 @@
                     <div class="col-lg-2 col-md-3 my-3">
                         <div class="logo d-flex align-items-center justify-content-between">
                             <a href="@Url.Home()">
-                                <img style="width:100%;object-fit:contain" class="img-fluid" src="~/Content/images/site/logo(3).png" alt="Alternate Text" />
+                                <img style="width:100%;object-fit:contain" class="img-fluid" src="~/images/site/logo(3).png" alt="Alternate Text" />
                             </a>
                             @if (!string.IsNullOrEmpty(ConfigurationsHelper.PhoneNumber))
                             {
@@ -148,9 +129,8 @@
     
     <div class="nav-item">
         <div class="container-fluid">
-            @await Component.InvokeAsync("Categories")
 
-            @*@{ Html.RenderAction("CategoriesMenu", "Categories"); }*@
+            @{ Html.RenderAction("CategoriesMenu", "Categories"); }
             <nav class="nav-menu mobile-menu">
                 <ul>
                     <li class="@Html.MenuItemClass("Home", "Index")">
@@ -160,7 +140,7 @@
                         </a>
                     </li>
                     <li class="d-block d-sm-none">
-                        @await Component.InvokeAsync("CategoriesMenuMobile");}
+                        @{Html.RenderAction("CategoriesMenuMobile", "Categories");}
                     </li>
 
                     <li class="@Html.MenuItemClass("Home", "Search")">

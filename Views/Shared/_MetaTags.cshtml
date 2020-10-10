@@ -14,15 +14,9 @@
 <meta property="og:url" content="@Model.PageURL.ToSiteURL()" />
 <meta property="og:image" content="@Model.PageImageURL.ToSiteURL()" />
 <meta property="og:type" content="website" />
-
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:site" content="@projectWEB.Helpers.ConfigurationsHelper.TwitterUsername" />
-<meta name="twitter:creator" content="@projectWEB.Helpers.ConfigurationsHelper.TwitterUsername" />
+<meta name="robots" content="index, follow" />
 
 @foreach (var canonicalURL in Model.PageCanonicalURLs)
 {
     <link rel="canonical" href="@canonicalURL" />
 }
-
-<meta name="robots" content="index, follow" />
-

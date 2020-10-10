@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using projectWEB.Data;
 using projectWEB.Models;
+using projectWEB.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,69 +26,52 @@ namespace projectWEB.Controllers
         private readonly projectWEBContext _context;
         private readonly UserManager<RegisteredUsers> _userManager;
         private readonly SignInManager<RegisteredUsers> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger _logger;
         public RegisteredUsersController(projectWEBContext context, UserManager<RegisteredUsers> userManager,
-                    SignInManager<RegisteredUsers> signInManager,
+                    SignInManager<RegisteredUsers> signInManager, RoleManager<IdentityRole> roleManager,
                     ILogger<RegisteredUsersController> logger)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _logger = logger;
         }
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult signup()
+        public ActionResult Register()
         {
-            return View();
+            return View(new RegisterViewModel());
         }
-        [HttpPost]
-        private async void signin(RegisteredUsers user)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name,user.UserName),
-                //new Claim(ClaimTypes.Role,user.MemberType.ToString()),
-            };
-
-            var claimsIdentity  = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties { };
-
-
-            await HttpContext.SignInAsync(
-              CookieAuthenticationDefaults.AuthenticationScheme,
-               new ClaimsPrincipal(claimsIdentity),
-               authProperties);
-
-            HttpContext.Session.SetInt32("userId", int.Parse(user.Id));
-            //return Redirect("/items/index");
-
-            /* moved this to check another kind of auth 
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authproperties = new AuthenticationProperties { /* ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10)* / };
-            //  var userPrincipal = new ClaimsPrincipal(new[] { claimsIdentity });
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authproperties);
-            // HttpContext.Session.SetString("Logged", "5");
-          //  RedirectToAction( "item","Items");
-          */
-        }
-
-
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Signup([Bind("FullName,UserName,Email,Password")] RegisteredUsers registeredUsers)
+        [Route("Register")]
+        public async Task<JsonResult> Register(RegisterViewModel model)
         {
-            if ((_context.RegisteredUsers.Where(u => u.UserName == registeredUsers.UserName).Count()) > 0)
+            if (_context.RegisteredUsers.Where(u => u.UserName == model.Username).Count() > 0)
             {
-                return View();
+                return Json(new { Success = true, Messages = string.Join("<br />", "This User already exists") });
+
             }
             if (ModelState.IsValid)
             {
-                var result = await _userManager.CreateAsync(registeredUsers, registeredUsers.Password);
+                RegisteredUsers registeredUsers = new RegisteredUsers()
+                {
+                    FullName = model.FullName,
+                    UserName = model.Username,
+                    Email = model.Email,
+                    RegisteredOn = DateTime.Now
+                };
+                var result = await _userManager.CreateAsync(registeredUsers, model.Password);
                 if (result.Succeeded)
                 {
+                    if (await _roleManager.RoleExistsAsync("User"))
+                    {
+                        //assign User role to newly registered user
+                        await _userManager.AddToRoleAsync(registeredUsers, "User");
+                    }
                     _context.Add(registeredUsers);
                     await _context.SaveChangesAsync();
 
@@ -94,65 +79,228 @@ namespace projectWEB.Controllers
 
                     await _signInManager.SignInAsync(registeredUsers, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return View("index", Index());
+                    return Json(new { Success = true });
                 }
-                AddErrors(result);
+                else
+                {
+                    // If we got this far, something failed, redisplay form
+                    AddErrors(result);
+                    return Json(new { Success = false, Messages = string.Join("<br />", result) });
+                }
+            }
+            return new JsonResult(new object());;
+        }
+        public async Task<IActionResult> ChangeAvatar()
+        {
+            string userId = _userManager.GetUserId(User);
+
+            ProfileDetailsViewModel model = new ProfileDetailsViewModel
+            {
+                User = await _userManager.FindByIdAsync(userId)
+            };
+
+            return PartialView("_ChangeAvatar", model);
+        }
+        public async Task<JsonResult> UpdateAvatar(int pictureID)
+        {
+            if (pictureID > 0 && User.Identity.IsAuthenticated)
+            {
+                string userId = _userManager.GetUserId(User);
+                var user = await _userManager.FindByIdAsync(userId);
+
+                if (user != null)
+                {
+                    user.PictureID = pictureID;
+
+                    var result = await _userManager.UpdateAsync(user);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    return new JsonResult( new { Success = result.Succeeded, Message = string.Join("\n", result.Errors) });
+                }
+            }
+            else
+            {
+                return new JsonResult( new { Success = false, Message = "Invalid User" });
+            }
+
+            return new JsonResult(new object()); ;
+        }
+        //[HttpPost]
+        //private async void signin(RegisteredUsers user)
+        //{
+        //    var claims = new List<Claim>
+        //    {
+        //        new Claim(ClaimTypes.Name,user.UserName),
+        //        //new Claim(ClaimTypes.Role,user.MemberType.ToString()),
+        //    };
+
+        //    var claimsIdentity  = new ClaimsIdentity(
+        //        claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        //    var authProperties = new AuthenticationProperties { };
+
+
+        //    await HttpContext.SignInAsync(
+        //      CookieAuthenticationDefaults.AuthenticationScheme,
+        //       new ClaimsPrincipal(claimsIdentity),
+        //       authProperties);
+
+        //    HttpContext.Session.SetInt32("userId", int.Parse(user.Id));
+        //    //return Redirect("/items/index");
+
+        //    /* moved this to check another kind of auth 
+        //    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        //    var authproperties = new AuthenticationProperties { /* ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10)* / };
+        //    //  var userPrincipal = new ClaimsPrincipal(new[] { claimsIdentity });
+        //    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authproperties);
+        //    // HttpContext.Session.SetString("Logged", "5");
+        //  //  RedirectToAction( "item","Items");
+        //  */
+        //}
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> loginAsync(string returnUrl)
+        { // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            return View(new LoginViewModel() { ReturnUrl = returnUrl });
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> Login(LoginViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User logged in.");
+                    return Json(new { Success = true, RequiresVerification = false });
+                }
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning("User account locked out.");
+                    return Json(new { Success = false, Messages = "PP.Login.Validation.LockedOut" });
+                }
+                else 
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return Json(new { Success = false, Messages = "PP.Login.Validation.InvalidLoginAttempt" });
+                }
+                
             }
             // If we got this far, something failed, redisplay form
-            return View("item", "Items");
 
+            return Json(new { Success = false, Messages = "PP.Login.Validation.InvalidLoginAttempt" });
+            
         }
-
-        /*
-         public async IActionResult Signup([Bind("Id,UserName,Email,Password,MemberType")] RegisteredUsers registeredUsers)
-         {
-             if (ModelState.IsValid)
-             {
-                 if (ModelState.IsValid)
-                 {
-                     _context.Add(registeredUsers);
-                     await _context.SaveChangesAsync();
-                     return RedirectToAction(nameof(Index));
-                 }
-                 return View(registeredUsers);
-             }
-
-         }
-         /*
-         public async Task<IActionResult> Login()
-         {
-             return View(await _context.RegisteredUsers.ToListAsync());
-         }
-
-         */
-        public IActionResult login()
+        public async Task<IActionResult> UserProfileAsync(string tab)
         {
-            return View();
-        }
-
-       
-        [HttpPost]
-        public IActionResult Login(String Username, String Password)
-        {
-            var users = _context.RegisteredUsers.Where(u => u.UserName == Username && u.Password == Password).First();
-
-            if (users != null)
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            ProfileDetailsViewModel model = new ProfileDetailsViewModel
             {
-                signin(users);
-                return RedirectToAction("mainshop","Items");//View(nameof(Index),);
+                ActiveTab = tab,
+
+                User = user
+            };
+
+            if (model.User == null) return NotFound();
+            bool isAjaxCall = HttpContext.Request.Headers["x-requested-with"] == "XMLHttpRequest";
+
+            if (isAjaxCall)
+            {
+                return PartialView("_UserProfile", model);
             }
-            //  return View( _context.RegisteredUsers.ToListAsync());
+            else
+            {
+                return View(model);
+            }
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Lockout()
+        {
             return View();
         }
-        /*
-                private void signin()
+        [HttpPost]
+        public async Task<JsonResult> UpdateProfile(UpdateProfileDetailsViewModel model)
+        {
+            if (model != null && User.Identity.IsAuthenticated)
+            {
+                string userId = _userManager.GetUserId(User);
+
+                var user = await _userManager.FindByIdAsync(userId);
+
+                if (user != null)
                 {
-                   // HttpContext.Session.SetString("Logged", "5");
+                    user.FullName = model.FullName;
+                    user.Email = model.Email;
+                    user.UserName = model.Username;
+                    user.PhoneNumber = model.PhoneNumber;
+                    user.Country = model.Country;
+                    user.City = model.City;
+                    user.Address = model.Address;
+                    user.ZipCode = model.ZipCode;
+
+                    var result = await _userManager.UpdateAsync(user);
+
+                    return Json( new { Success = result.Succeeded, Message = string.Join("\n", result.Errors) });
                 }
-        */
+            }
+            else
+            {
+                return Json(new { Success = false, Message = "Invalid User" });
+            }
+
+            return new JsonResult(new object());;
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+        public async Task<IActionResult> ChangePassword()
+        {
+            string userId = _userManager.GetUserId(User);
+
+            ProfileDetailsViewModel model = new ProfileDetailsViewModel
+            {
+                User = await _userManager.FindByIdAsync(userId)
+            };
+
+            return PartialView("_ChangePassword", model);
+        }
 
 
-      
+        public async Task<JsonResult> UpdatePassword(UpdatePasswordViewModel model)
+        {
+            if (model != null && User.Identity.IsAuthenticated)
+            {
+                string userId = _userManager.GetUserId(User);
+
+                var user = await _userManager.FindByIdAsync(userId);
+
+                if (user != null)
+                {
+                    var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return Json(new { Success = result.Succeeded, Message = string.Join("\n", result.Errors) });
+
+                }
+            }
+            else
+            {
+                return Json(new { Success = false, Message = "Invalid User" });
+            }
+
+            return new JsonResult(new object());
+        }
         #region Helpers
 
         private void AddErrors(IdentityResult result)
@@ -176,141 +324,51 @@ namespace projectWEB.Controllers
         }
 
         #endregion
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View(new ForgotPasswordViewModel());
+        }
 
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string code, string userId)
+        {
+            ResetPasswordViewModel model = new ResetPasswordViewModel
+            {
+                Code = code,
+                UserId = userId
+            };
+
+            return string.IsNullOrEmpty(code) || string.IsNullOrEmpty(userId) ? View("Error") : View(model);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            if (user != null)
+            {
+                var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+
+                if (!result.Succeeded)
+                {
+                    return Json( new { Success = result.Succeeded, Messages = string.Join("\n", result.Errors) });
+                }
+                else
+                {
+                    return Json(new { Success = result.Succeeded, Messages = "Your password has been reset. Please login with your updated credentials now." });
+                }
+            }
+            else
+            {
+                return Json(new { Success = false, Messages = "Unable to reset password." });
+            }
+        }
         // GET: RegisteredUsers
         public async Task<IActionResult> Index()
         {
             return View(await _context.RegisteredUsers.ToListAsync());
         }
-        /*
-         * 
-         *   public IActionResult Index()
-        {
-            return View();
-        }
-        // GET: RegisteredUsers/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var registeredUsers = await _context.RegisteredUsers
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (registeredUsers == null)
-            {
-                return NotFound();
-            }
-
-            return View(registeredUsers);
-        }
-
-        // GET: RegisteredUsers/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: RegisteredUsers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,UserName,Email,Password,MemberType")] RegisteredUsers registeredUsers)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(registeredUsers);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(registeredUsers);
-        }
-
-        // GET: RegisteredUsers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var registeredUsers = await _context.RegisteredUsers.FindAsync(id);
-            if (registeredUsers == null)
-            {
-                return NotFound();
-            }
-            return View(registeredUsers);
-        }
-
-        // POST: RegisteredUsers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,UserName,Email,Password,MemberType")] RegisteredUsers registeredUsers)
-        {
-            if (id != registeredUsers.id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(registeredUsers);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RegisteredUsersExists(registeredUsers.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(registeredUsers);
-        }
-
-        // GET: RegisteredUsers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var registeredUsers = await _context.RegisteredUsers
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (registeredUsers == null)
-            {
-                return NotFound();
-            }
-
-            return View(registeredUsers);
-        }
-
-        // POST: RegisteredUsers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var registeredUsers = await _context.RegisteredUsers.FindAsync(id);
-            _context.RegisteredUsers.Remove(registeredUsers);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool RegisteredUsersExists(int id)
-        {
-            return _context.RegisteredUsers.Any(e => e.id == id);
-        } */
     }
 }
