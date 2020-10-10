@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using projectWEB.Data;
 using projectWEB.Models;
 using System.Web.Mvc.Html;
-
+using projectWEB.ViewModels;
+using projectWEB.Services;
+using projectWEB.Helpers;
 
 namespace projectWEB.Controllers
 {
@@ -24,7 +26,37 @@ namespace projectWEB.Controllers
         {
             return View(await _context.Categories.ToListAsync());
         }
-     
+        public IActionResult CategoriesMenu()
+        {
+            CategoriesMenuViewModel model = new CategoriesMenuViewModel();
+
+            var categories = CategoriesService.Instance.GetCategories();
+
+            if (categories != null && categories.Count > 0)
+            {
+                //remove uncategorized category from categories list.
+                categories = categories.Where(x => x.ID != 1).ToList();
+
+                model.CategoryWithChildrens = CategoryHelpers.MakeCategoriesHierarchy(categories);
+            }
+
+            return View("_CategoriesMenu", model);
+        }
+        public IActionResult CategoriesMenuMobile()
+        {
+            CategoriesMenuViewModel model = new CategoriesMenuViewModel();
+
+            var categories = CategoriesService.Instance.GetCategories();
+
+            if (categories != null && categories.Count > 0)
+            {
+                //remove uncategorized category from categories list.
+                categories = categories.Where(x => x.ID != 1).ToList();
+
+                model.CategoryWithChildrens = CategoryHelpers.MakeCategoriesHierarchy(categories);
+            }
+            return PartialView("_CategoriesMenuMobile", model);
+        }
         // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -153,6 +185,21 @@ namespace projectWEB.Controllers
             setCategoriesMenu();
             var items = await (_context.Products.Where(i => i.ID == id)).ToListAsync();
             return View("~/Views/Items/mainshop.cshtml", items);
+        }
+        public IActionResult FeaturedCategories(int recordSize = 8)
+        {
+            var categories = CategoriesService.Instance.GetFeaturedCategories(recordSize: recordSize);
+
+            return PartialView("_FeaturedCategoriesHomeSection", categories);
+        }
+        public IActionResult ProductsByFeaturedCategories(int recordSize = 5)
+        {
+            ProductsByFeaturedCategoriesViewModel model = new ProductsByFeaturedCategoriesViewModel
+            {
+                Categories = CategoriesService.Instance.GetFeaturedCategories(recordSize: recordSize)
+            };
+
+            return PartialView("_ProductsByFeaturedCategories", model);
         }
     }
 

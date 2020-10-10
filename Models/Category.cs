@@ -9,9 +9,6 @@ namespace projectWEB.Models
 {
     public class Category : BaseEntity
     {
-        [Required]
-        public string name { get; set; }
-
         public int? ParentCategoryID { get; set; }
         public virtual Category ParentCategory { get; set; }
         public bool isFeatured { get; set; }
