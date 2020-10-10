@@ -1,0 +1,16 @@
+﻿@model projectWEB.ViewModels.ProductsViewModel
+
+@if (Model != null)
+{
+    <div class="filter-widget">
+        <h4 class="fw-title">@("PP.Search.SearchProducts")</h4>
+        <form class="advanced-search" action="@Url.SearchProducts()">
+            <div class="input-group">
+                <input type="text" name="q" placeholder="@("PP.Search.SearchProductsPlaceholder")" value="@Model.SearchTerm" required>
+                <button type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+}

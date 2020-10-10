@@ -1,9 +1,5 @@
 ﻿@model projectWEB.ViewModels.PageViewModel
 
-<div id="preloder">
-    <div class="loader"></div>
-</div>
-
 @{
     if (Model != null)
     {
@@ -15,31 +11,24 @@
 
 
     <div class="d-flex justify-content-end">
-        <div class="col-lg-9 pr-md-0">
+        <div class="col">
             @{Html.RenderAction("HomeSliders", "Home");}
-            @{Html.RenderAction("FeaturedCategories", "Categories", new { recordSize = 3, isForHomePage = true }); }
-
+            <div id="mobileCategory">
+                <div class="sidebar-nav mx-2 mb-5">
+                    @{Html.RenderAction("CategoriesMenuMobile", "Categories");}
+                </div>
+               
+                @{
+                    Html.RenderAction("RelatedProducts", "Products", new { categoryID = 0, recordSize = projectWEB.Shared.Enums.RecordSizeEnums.Size12 });
+                }
+            </div>
         </div>
     </div>
-
-    @*<div class="col-lg-12">
-            <div class="section-title">
-                <strong>@("PP.Header.Menu.Products".Localized())</strong>
-            </div>
-        </div>*@
 
     Html.RenderAction("ProductsByFeaturedCategories", "Categories", new { recordSize = 3 });
 
 }
-<div id="mobileCategory">
-    @{
-        Html.RenderAction("RelatedProducts", "Products", new { categoryID = 0, recordSize = projectWEB.Shared.Enums.RecordSizeEnums.Size12 });
-    }
 
-    <div class="sidebar-nav mx-2">
-        @{Html.RenderAction("CategoriesMenuMobile", "Categories");}
-    </div>
-</div>
 
 <div class="container-fluid my-4 pb-4">
     <div class="row">
@@ -136,22 +125,3 @@
         </div>
     </div>
 }
-<script>
-    $(function () {
-        $(".depart-hover").addClass("activeCategory");
-    })
-
-</script>
-<!--Start of Tawk.to Script-->
-<script type="text/javascript">
-    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-    (function () {
-        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-        s1.async = true;
-        s1.src = 'https://embed.tawk.to/5f315d33ed9d9d2627099f86/default';
-        s1.charset = 'UTF-8';
-        s1.setAttribute('crossorigin', '*');
-        s0.parentNode.insertBefore(s1, s0);
-    })();
-</script>
-<!--End of Tawk.to Script-->

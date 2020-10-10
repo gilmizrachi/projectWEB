@@ -15,6 +15,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using projectWEB.Models;
 using projectWEB.App_Start;
+using projectWEB.Shared.Helpers;
+using projectWEB.Extensions;
+using projectWEB.Helpers;
+using projectWEB.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace projectWEB
 {
@@ -31,6 +36,7 @@ namespace projectWEB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            //services.AddHttpContextAccessor();
 
             services.AddDbContext<projectWEBContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("projectWEBContext")));
@@ -65,9 +71,10 @@ namespace projectWEB
                      config.AccessDeniedPath = "/Identity/Account/AccessDenied";
                      config.SlidingExpiration = true;
                  });
-            services.AddControllersWithViews();
+
+            services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddIdentity<RegisteredUsers, IdentityRole>().AddEntityFrameworkStores<projectWEBContext>()
-      .AddDefaultTokenProviders().AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>();
+      .AddDefaultTokenProviders().AddRoleManager<RoleManager<IdentityRole>>().AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>();
             services.AddScoped<IUserClaimsPrincipalFactory<RegisteredUsers>, CustomClaimsPrincipalFactory>();
             services.AddScoped<IDbInitializer, DbInitializer>();
         }
@@ -89,7 +96,8 @@ namespace projectWEB
             app.UseStaticFiles();
             app.UseRouting();
             app.UseSession();
-            
+            app.UseHttpContext();
+            ConfigurationsHelper.UpdateConfigurations(ConfigurationsService.Instance.GetAllConfigurations());
             app.UseAuthentication();
             app.UseAuthorization();
             //var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
@@ -99,14 +107,17 @@ namespace projectWEB
             //    dbInitializer.Initialize();
             //    dbInitializer.SeedData();
             //}
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=RegisteredUsers}/{action=signup}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            
-            
+            app.UseMvcWithRoutes();
+
+
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿/*  ---------------------------------------------------
-    Author: Sajjad Arif Gul
-    Author URI: https://sajjadgul.com/
----------------------------------------------------------  */
-
-$(document).ready(function () {
+﻿$(document).ready(function () {
     //update the price and total items displayed in cart section on page 
     updateCartInfo();
 

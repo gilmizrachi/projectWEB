@@ -1,0 +1,77 @@
+[
+  {
+    "outputFileName": "wwwroot/app/css/bundlecss.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap-4.4.1/css/bootstrap.min.css",
+      "wwwroot/templates/fashi/css/owl.carousel.min.css",
+      "wwwroot/templates/fashi/css/nice-select.css",
+      "wwwroot/lib/jquery-ui-1.12.1/jquery-ui.min.css",
+      "wwwroot/templates/fashi/css/slicknav.min.css",
+      "wwwroot/templates/fashi/css/style24.css",
+      "wwwroot/css/site.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/app/js/bundlehscripts.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-3.4.1/jquery.min.js",
+      "wwwroot/lib/sweetalert2-9.10.7/sweetalert2.all.min.js",
+      "wwwroot/lib/jquery-ui-1.12.1/jquery-ui.min.js",
+      "wwwroot/lib/jquery-validation-1.19.1/jquery.validate.min.js",
+      "wwwroot/lib/jquery.cookie-1.4.1/jquery.cookie.js",
+      "wwwroot/lib/jquery.lazy-1.7.10/jquery.lazy.min.js",
+      "wwwroot/js/site.js"
+    ],
+    "minify": {
+      "enabled": true
+
+    },
+    "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/app/js/bundlefscript.js",
+    "inputFiles": [
+      "wwwroot/lib/popperjs-1.16.0/popper.js",
+      "wwwroot/lib/bootstrap-4.4.1/js/bootstrap.min.js",
+      "wwwroot/templates/fashi/js/jquery.nice-select.min.js",
+      "wwwroot/templates/fashi/js/jquery.zoom.min.js",
+      "wwwroot/lib/ms-dropdown-3.5.2/jquery.dd.min.js",
+      "wwwroot/templates/fashi/js/jquery.slicknav1.js",
+      "wwwroot/templates/fashi/js/owl.carousel.min.js",
+      "wwwroot/templates/fashi/js/main1.js"
+    ],
+    "minify": {
+      "enabled": true
+
+    },
+    "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/app/css/bundledashboard.css",
+    "inputFiles": [
+      "wwwroot/templates/sbadmin2/css/sb-admin-2.min.css", //this also has Bootstrap in it
+      "wwwroot/lib/jquery-ui-1.12.1/jquery-ui.min.css",
+      "wwwroot/css/dashboard.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/app/js/bundledashboardscripts.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery-3.4.1/jquery.min.js",
+      "wwwroot/lib/sweetalert2-9.10.7/sweetalert2.all.min.js",
+      "wwwroot/lib/jquery-ui-1.12.1/jquery-ui.min.js",
+      "wwwroot/lib/jquery-validation-1.19.1/jquery.validate.min.js",
+      "wwwroot/lib/jquery.cookie-1.4.1/jquery.cookie.js",
+      "wwwroot/lib/moment.js-2.24.0/moment.min.js",
+      "wwwroot/lib/popperjs-1.16.0/popper.js",
+      "wwwroot/lib/bootstrap-4.4.1/js/bootstrap.min.js",
+      "wwwroot/lib/ms-dropdown-3.5.2/jquery.dd.min.js",
+      "wwwroot/js/dashboard.js"
+    ],
+    "minify": {
+      "enabled": true
+
+    },
+    "sourceMap": true
+  }
+]

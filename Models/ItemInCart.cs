@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace projectWEB.Models
 {
+    [NotMapped]
     public class ItemInCart
     {
         public int id { get; set; }
