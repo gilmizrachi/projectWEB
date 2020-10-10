@@ -17,7 +17,7 @@ namespace projectWEB.Controllers
         }
         public void setCategoriesMenu()
         {
-            var modelCategory = _context.Category.ToList();
+            var modelCategory = _context.Categories.ToList();
             ViewBag.modelCategory = modelCategory;
             ViewBag.cart = HttpContext.Session.GetString("cart");
             ViewBag.size = HttpContext.Session.GetInt32("size");

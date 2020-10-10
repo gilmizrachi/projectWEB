@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\sass\**" />
+    <Content Remove="wwwroot\sass\**" />
+    <EmbeddedResource Remove="wwwroot\sass\**" />
+    <None Remove="wwwroot\sass\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Migrations\20200912223913_member_type.cs" />
     <Compile Remove="Migrations\20200912223913_member_type.Designer.cs" />
     <Compile Remove="Migrations\20200913073921_init1.cs" />
@@ -25,14 +32,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\sass\style.scss" />
+    <None Include="Views\Home\SearchFilters\_BrandsFilter.cshtml" />
+    <None Include="Views\Home\SearchFilters\_CategoriesFilter.cshtml" />
+    <None Include="Views\Home\SearchFilters\_ColorsFilter.cshtml" />
+    <None Include="Views\Home\SearchFilters\_ListingFilters.cshtml" />
+    <None Include="Views\Home\SearchFilters\_PriceRangeFilter.cshtml" />
+    <None Include="Views\Home\SearchFilters\_SearchInputFilter.cshtml" />
+    <None Include="Views\Home\SearchFilters\_SizesFilter.cshtml" />
+    <None Include="Views\Home\SearchFilters\_TagsFilter.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="System.Web" Version="4.0.0.0" />
+    <PackageReference Include="BundlerMinifier.Core" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ApiExplorer" Version="2.2.0" />
@@ -47,14 +63,17 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Owin" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.1.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.Owin.Security.Interop" Version="2.1.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.1" />
   </ItemGroup>
 
 </Project>

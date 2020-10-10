@@ -11,7 +11,6 @@ namespace projectWEB.Services
     {
         #region Define as Singleton
         private static CategoriesService _Instance;
-        private string _connectionString = "Server=(localdb)\\mssqllocaldb;Database=projectWEBContext-41c7de9e-2271-4758-ab70-3722452649e9;Trusted_Connection=True;MultipleActiveResultSets=true";
 
         public static CategoriesService Instance
         {
@@ -33,9 +32,7 @@ namespace projectWEB.Services
 
         public List<Category> GetCategories(int? pageNo = 1, int? recordSize = 0)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                              .UseSqlServer(_connectionString)
-                              .Options;
+            var options = DataContextHelper.GetNewContext();
 
             using (var context = new projectWEBContext(options))
             {
@@ -60,9 +57,7 @@ namespace projectWEB.Services
 
         public List<Category> GetFeaturedCategories(int? pageNo = 1, int? recordSize = 0, bool includeProducts = false)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                               .UseSqlServer(_connectionString)
-                               .Options;
+            var options = DataContextHelper.GetNewContext();
 
             using (var context = new projectWEBContext(options))
             {
@@ -91,9 +86,7 @@ namespace projectWEB.Services
 
         public List<CategoryRecord> GetCategoriesRecordsByCategory(int categoryID, int? pageNo = 1, int? recordSize = 0)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                               .UseSqlServer(_connectionString)
-                               .Options;
+            var options = DataContextHelper.GetNewContext();
 
             using (var context = new projectWEBContext(options))
             {
@@ -117,9 +110,7 @@ namespace projectWEB.Services
 
         public List<CategoryRecord> GetCategoriesRecordsByLanguage(int languageID, int? pageNo = 1, int? recordSize = 0)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                              .UseSqlServer(_connectionString)
-                              .Options;
+            var options = DataContextHelper.GetNewContext();
 
             using (var context = new projectWEBContext(options))
             {
@@ -143,9 +134,7 @@ namespace projectWEB.Services
 
         public List<Category> GetAllTopLevelCategories(int? pageNo = 1, int? recordSize = 0)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                              .UseSqlServer(_connectionString)
-                              .Options;
+            var options = DataContextHelper.GetNewContext();
 
             using (var context = new projectWEBContext(options))
             {
@@ -169,9 +158,7 @@ namespace projectWEB.Services
 
         public Category GetCategoryByID(int ID)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                              .UseSqlServer(_connectionString)
-                              .Options;
+            var options = DataContextHelper.GetNewContext();
 
             using (var context = new projectWEBContext(options))
             {
@@ -183,9 +170,7 @@ namespace projectWEB.Services
 
         public CategoryRecord GetCategoryRecordByID(int ID)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                             .UseSqlServer(_connectionString)
-                             .Options;
+            var options = DataContextHelper.GetNewContext();
 
             using (var context = new projectWEBContext(options))
             {
@@ -197,9 +182,7 @@ namespace projectWEB.Services
 
         public Category GetCategoryByName(string sanitizedCategoryName)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                              .UseSqlServer(_connectionString)
-                              .Options;
+            var options = DataContextHelper.GetNewContext();
 
             using (var context = new projectWEBContext(options))
             {
@@ -211,9 +194,7 @@ namespace projectWEB.Services
 
         public bool SaveCategory(Category category)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                             .UseSqlServer(_connectionString)
-                             .Options;
+            var options = DataContextHelper.GetNewContext();
 
             using (var context = new projectWEBContext(options))
             {
@@ -225,9 +206,7 @@ namespace projectWEB.Services
 
         public bool SaveCategoryRecord(CategoryRecord categoryRecord)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                             .UseSqlServer(_connectionString)
-                             .Options;
+            var options = DataContextHelper.GetNewContext();
 
             using (var context = new projectWEBContext(options))
             {
@@ -239,9 +218,7 @@ namespace projectWEB.Services
 
         public bool UpdateCategory(Category category)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                             .UseSqlServer(_connectionString)
-                             .Options;
+            var options = DataContextHelper.GetNewContext();
 
             using (var context = new projectWEBContext(options))
             {
@@ -255,9 +232,7 @@ namespace projectWEB.Services
         
         public bool UpdateCategoryRecord(CategoryRecord categoryRecord)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                             .UseSqlServer(_connectionString)
-                             .Options;
+            var options = DataContextHelper.GetNewContext();
 
             using (var context = new projectWEBContext(options))
             {
@@ -271,9 +246,7 @@ namespace projectWEB.Services
 
         public bool DeleteCategory(int ID)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                             .UseSqlServer(_connectionString)
-                             .Options;
+            var options = DataContextHelper.GetNewContext();
 
             using (var context = new projectWEBContext(options))
             {
@@ -289,9 +262,11 @@ namespace projectWEB.Services
 
         public List<Category> SearchCategories(int? parentCategoryID, string searchTerm, int? pageNo, int recordSize, out int count)
         {
-            var options = new DbContextOptionsBuilder<projectWEBContext>()
-                             .UseSqlServer(_connectionString)
-                             .Options;
+            //var options = new DbContextOptionsBuilder<projectWEBContext>()
+            //                 .UseSqlServer(_connectionString)
+            //                 .Options;
+            var options = DataContextHelper.GetNewContext();
+
 
             using (var context = new projectWEBContext(options))
             {
