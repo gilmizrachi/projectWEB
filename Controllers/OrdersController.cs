@@ -91,6 +91,7 @@ namespace projectWEB.Controllers
                     order_number = order_number,
                 };
                 orders[i] = ord;
+                subtractItemQuantity(itemsInCart[i].id, itemsInCart[i].quantity);
             }
             _context.Order.AddRange(orders);
 
@@ -105,6 +106,16 @@ namespace projectWEB.Controllers
             }
             HttpContext.Session.Remove("cart");
             return RedirectToAction("Mainshop", "Items");
+        }
+
+        // Subtract the orderAmount from the overall amount
+        private void subtractItemQuantity(int id, int orderAmount)
+        {
+            var items = _context.Item.Where(u => u.id == id);
+            Item item = items.FirstOrDefault();
+            item.amount -= orderAmount;
+            _context.Item.Update(item);
+            _context.SaveChanges();
         }
 
         // GET: Orders/Edit/5
