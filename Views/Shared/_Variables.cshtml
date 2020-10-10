@@ -1,0 +1,23 @@
+﻿@using Newtonsoft.Json;
+
+<script>    
+    var cartItems = @(Html.Raw(JsonConvert.SerializeObject(SessionHelper.CartItems)));
+
+    const DIR = "ltr";
+    const ISRTL = DIR == 'rtl';
+    const CURRENCYSYMBOL = "@ConfigurationsHelper.CurrencySymbol";
+    const PRICECURRENCYPOSITION = "@ConfigurationsHelper.PriceCurrencyPosition.Replace("{currency}", ConfigurationsHelper.CurrencySymbol)";
+    const DIGITSAFTERDECIMAL = "@ConfigurationsHelper.DigitsAfterDecimalPoint";
+    
+
+    const CARTURL = "@Url.Cart()";
+    const CARTFETCHURL = "@Url.Cart(isPopup: true)";
+    const ADDITEMTOCARTURL = "@Url.AddItemToCart()";
+    const GETCARTITEMSURL = "@Url.GetCartItems()";
+    const CHANGEMODEURL = "@Url.ChangeMode()";
+        
+    const RESOURCE_ADDINGPRODUCTTOCART = '@("PP.Shopping.ItemAddingToCart")';
+    const RESOURCE_ERRORHEADING = '@("PP.Message.Error")';
+    const RESOURCE_GENERICERRORMESSAGE = '@("PP.Message.GenericErrorMessage")';
+    const RESOURCE_MENULABEL = '@("PP.Menu")';
+</script>

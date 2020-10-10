@@ -14,8 +14,6 @@ namespace projectWEB.App_Start
     public class DbInitializer : IDbInitializer
     {
         private readonly IServiceScopeFactory _scopeFactory;
-        public int EnglishLanguageID { get; set; }
-
         public DbInitializer(IServiceScopeFactory scopeFactory)
         {
             this._scopeFactory = scopeFactory;
@@ -115,13 +113,12 @@ namespace projectWEB.App_Start
             CategoryRecord uncategorizedEnRecord = new CategoryRecord()
             {
                 Category = uncategorized,
-                LanguageID = EnglishLanguageID, //global
                 Name = "Uncategorized",
                 Description = "Products that are not categorized. uncategorised, unclassified - not arranged in any specific grouping.",
                 ModifiedOn = DateTime.Now
             };
 
-            context.Category.Add(uncategorized);
+            context.Categories.Add(uncategorized);
             context.CategoryRecords.Add(uncategorizedEnRecord);
             context.SaveChanges();
         }

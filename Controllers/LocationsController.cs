@@ -23,7 +23,7 @@ namespace projectWEB.Controllers
         public async Task<IActionResult> Index()
         {
             string markers = "[";
-            foreach (var item in _context.Location.ToList())
+            foreach (var item in _context.Locations.ToList())
             {
 
                 markers += "{";
@@ -34,7 +34,7 @@ namespace projectWEB.Controllers
             }
             markers += "];";
             ViewBag.Markers = markers;
-            return View(await _context.Location.ToListAsync());
+            return View(await _context.Locations.ToListAsync());
         }
 
         // GET: Locations/Details/5
@@ -45,8 +45,8 @@ namespace projectWEB.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Location
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var location = await _context.Locations
+                .FirstOrDefaultAsync(m => m.ID == id);
             if (location == null)
             {
                 return NotFound();
@@ -85,7 +85,7 @@ namespace projectWEB.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Location.FindAsync(id);
+            var location = await _context.Locations.FindAsync(id);
             if (location == null)
             {
                 return NotFound();
@@ -100,7 +100,7 @@ namespace projectWEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Lat,Lng")] Location location)
         {
-            if (id != location.Id)
+            if (id != location.ID)
             {
                 return NotFound();
             }
@@ -114,7 +114,7 @@ namespace projectWEB.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LocationExists(location.Id))
+                    if (!LocationExists(location.ID))
                     {
                         return NotFound();
                     }
@@ -136,8 +136,8 @@ namespace projectWEB.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Location
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var location = await _context.Locations
+                .FirstOrDefaultAsync(m => m.ID == id);
             if (location == null)
             {
                 return NotFound();
@@ -151,15 +151,15 @@ namespace projectWEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var location = await _context.Location.FindAsync(id);
-            _context.Location.Remove(location);
+            var location = await _context.Locations.FindAsync(id);
+            _context.Locations.Remove(location);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool LocationExists(int id)
         {
-            return _context.Location.Any(e => e.Id == id);
+            return _context.Locations.Any(e => e.ID == id);
         }
     }
 }

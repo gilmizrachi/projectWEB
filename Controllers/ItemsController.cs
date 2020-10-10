@@ -25,7 +25,7 @@ namespace projectWEB.Controllers
         [Authorize]
         public async Task<IActionResult> index2()
         {
-            return View(await _context.Item.ToListAsync());
+            return View(await _context.Products.ToListAsync());
             //return View();
         }
         /*
@@ -37,7 +37,7 @@ namespace projectWEB.Controllers
         public async Task<IActionResult> Item_Details(int id)
         {
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
-            return View( _context.Item.Where(u=>u.ID==id));
+            return View( _context.Products.Where(u=>u.ID==id));
         }
         public IActionResult Create()
         {
@@ -46,24 +46,25 @@ namespace projectWEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Search(string Phrase)
         {
-            var result = _context.Item.Where(str => str.ProductName.Contains(Phrase) || str.ItemDevision.Contains(Phrase) || str.Description.Contains(Phrase));
-            return View("Mainshop", await result.ToListAsync());
+            //var result = _context.Products.Where(str => str..Contains(Phrase) || str.ItemDevision.Contains(Phrase) || str.Description.Contains(Phrase));
+            //return View("Mainshop", await result.ToListAsync());
+            return View();
 
         }
         [HttpPost]
         public async Task<IActionResult> Sort(string Sortby)
         {
 
-            if (Sortby == "1") { return View(await _context.Item.OrderByDescending(p => p.price).ToListAsync()); }
-            else if (Sortby == "2") { return View(await _context.Item.OrderBy(p => p.price).ToListAsync()); }
-            else if (Sortby == "3") { return View(await _context.Item.OrderByDescending(p => p.ID).ToListAsync()); }
-            else if (Sortby == "4") { return View(await _context.Item.OrderBy(p => p.ID).ToListAsync()); }
-            else { return View("Mainshop"); }
-
+            //if (Sortby == "1") { return View(await _context.Products.OrderByDescending(p => p.price).ToListAsync()); }
+            //else if (Sortby == "2") { return View(await _context.Products.OrderBy(p => p.price).ToListAsync()); }
+            //else if (Sortby == "3") { return View(await _context.Products.OrderByDescending(p => p.ID).ToListAsync()); }
+            //else if (Sortby == "4") { return View(await _context.Products.OrderBy(p => p.ID).ToListAsync()); }
+            //else { return View("Mainshop"); }    
+            return View();
         }
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Item.ToListAsync());
+            return View(await _context.Products.ToListAsync());
 
             //return View();
         }
@@ -71,7 +72,7 @@ namespace projectWEB.Controllers
         public async Task<IActionResult> Mainshop()
         {
             setCategoriesMenu();
-            return View(await _context.Item.ToListAsync());
+            return View(await _context.Products.ToListAsync());
         }
 
         // POST: Items/Create
@@ -80,15 +81,15 @@ namespace projectWEB.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("id,ItemName,price,ItemDevision,Description,amount")] Item item)
+        public async Task<IActionResult> Create([Bind("id,ItemName,price,ItemDevision,Description,amount")] Product product)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(item);
+                _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(item);
+            return View(product);
         }
 
         /*

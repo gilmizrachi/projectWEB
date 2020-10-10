@@ -15,11 +15,9 @@ namespace projectWEB.Models
         [NotMapped]
         public string ProductName { get; set; }
         public int ProductID { get; set; }
-        public virtual Item Product { get; set; }
+        public virtual Product Product { get; set; }
 
-        /// <summary>
-        /// Item Price is in Order Item because we can have a scenerio where we might charge less or greater than the Product Price.
-        /// </summary>
+        // Item Price is here cus we can have a scenerio where we might charge less or greater than the Product Price
         public decimal ItemPrice { get; set; }
 
         public int Quantity { get; set; }

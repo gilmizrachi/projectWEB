@@ -10,18 +10,7 @@ namespace projectWEB.Models
 {
     public class Order : BaseEntity
     {
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //[Required]
-        //public int id { get; set; }
-        public int item_id { get; set; }
-        public int item_quantity { get; set; }
-        public DateTime date { get; set; }
-        public int user_id { get; set; }
-
-
-
-
+        public string CustomerID { get; set; }
         public string CustomerName { get; set; }
         public string CustomerEmail { get; set; }
         public string CustomerPhone { get; set; }
@@ -45,8 +34,8 @@ namespace projectWEB.Models
         public int? PromoID { get; set; }
         public virtual Promo Promo { get; set; }
 
-        public virtual List<OrderItem> OrderItems { get; set; }
-        public virtual List<OrderHistory> OrderHistory { get; set; }
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public virtual ICollection<OrderHistory> OrderHistory { get; set; }
     }
     public enum PaymentMethods
     {
