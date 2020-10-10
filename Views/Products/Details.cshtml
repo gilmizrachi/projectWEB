@@ -1,0 +1,543 @@
+﻿@model projectWEB.ViewModels.ProductDetailsViewModel
+
+@section IncludeHeaderStylesScripts{
+    <link href="~/lib/drift-1.4.0/drift-basic.min.css" rel="stylesheet" />
+    <script src="~/lib/drift-1.4.0/Drift.min.js"></script>
+    <link href="~/SwipePl/photoswipe.css" rel="stylesheet" />
+    <!-- Skin CSS file (styling of UI - buttons, caption, etc.)
+         In the folder of skin CSS file there are also:
+         - .png and .svg icons sprite,
+         - preloader.gif (for browsers that do not support CSS animations) -->
+
+    <link href="~/SwipePl/default-skin/default-skin.css" rel="stylesheet" />
+}
+
+@if (Model != null && Model.Product != null)
+{
+    var currentLanguageProductRecord = Model.Product.ProductRecords.FirstOrDefault(x => x.LanguageID == 1);
+
+    var currentLanguageCategoryRecord = Model.Product.Category.CategoryRecords.FirstOrDefault(x => x.LanguageID == 1);
+
+    Model.PageTitle = currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Empty;
+    Model.PageDescription = currentLanguageProductRecord != null ? currentLanguageProductRecord.Summary : string.Empty;
+    Model.PageURL = Url.ProductDetails(category: Model.Product.Category.SanitizedName, ID: Model.Product.ID);
+
+    var thumbnail = Model.Product.ProductPictures != null ? Model.Product.ProductPictures.Count == 1 ? Model.Product.ProductPictures.FirstOrDefault() : Model.Product.ProductPictures.Count > 0 ? Model.Product.ProductPictures.Where(x => x.PictureID == Model.Product.ThumbnailPictureID).FirstOrDefault() : null : null;
+
+    if (thumbnail != null)
+    {
+        Model.PageImageURL = PictureHelper.PageImageURL(thumbnail.Picture.URL, isCompletePath: true);
+    }
+    else
+    {
+        Model.PageImageURL = PictureHelper.PageImageURL("products.jpg");
+    }
+
+    var productPrice = Model.Product.Discount.HasValue && Model.Product.Discount.Value > 0 ? Model.Product.Discount.Value : Model.Product.Price;
+
+    var haveParentCategory = Model.Product.Category != null && Model.Product.Category.ParentCategory != null;
+
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text product-more">
+                        <a href="@Url.Home()">
+                            <i class="fas fa-home mr-1"></i>
+                            @("PP.Header.Menu.Home")
+                        </a>
+                        @if (haveParentCategory)
+                        {
+                            var currentLanguageParentCategoryRecord = Model.Product.Category.ParentCategory.CategoryRecords.FirstOrDefault(x => x.LanguageID == 1);
+
+                            <a href="@Url.SearchProducts(category: Model.Product.Category.ParentCategory.SanitizedName)">@(currentLanguageParentCategoryRecord != null ? currentLanguageParentCategoryRecord.Name : string.Empty)</a>
+                        }
+                        <a href="@Url.SearchProducts(category: Model.Product.Category.SanitizedName)">@(currentLanguageCategoryRecord != null ? currentLanguageCategoryRecord.Name : string.Empty)</a>
+                        <span>@(currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Empty)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="product-shop spad page-details">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    @if (Model.Product.ProductPictures != null && Model.Product.ProductPictures.Count > 0)
+                    {
+                        var i = 0;
+                        var firstProductPicture = Model.Product.ProductPictures.First();
+
+                        <div id="carouselIndicators" class="product-gallery-carousel carousel slide" data-ride="carousel">
+                            @if (Model.Product.ProductPictures.Count > 1)
+                            {
+                                <ol class="carousel-indicators product-carousel-indicators">
+                                    @foreach (var picture in Model.Product.ProductPictures)
+                                    {
+                                        var active = picture == firstProductPicture ? "active" : string.Empty;
+
+                                        <li class="@active" data-target="#carouselIndicators" data-slide-to="@i"></li>
+
+                                        i++;
+                                    }
+                                </ol>
+                            }
+                        <div class="carousel-inner product-carousel-inner my-gallery" role="listbox">
+                            @{
+                                var j = 0;
+                            }
+                            @foreach (var productPicture in Model.Product.ProductPictures)
+                            {
+                                j++;
+
+                                var active = productPicture == firstProductPicture ? "active" : string.Empty;
+
+                                <figure class="carousel-item @active text-center" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                                    <a href="/images/@productPicture.Picture.URL" itemprop="contentUrl" data-size="768x768">
+                                        @Html.PictureWithZoomAttribute(productPicture.Picture, "",style:"object-fit:contain", alt: currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Empty, id: string.Format("imgZoom{0}", j))
+                                    </a>
+                                </figure>
+
+                                @*<figure class="carousel-item @active text-center" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                                    <a href="/images/@thumbnail.Picture.URL" itemprop="contentUrl" data-size="1024x1024">
+                                        @Html.Picture(thumbnail.Picture.URL, "card-img-top", alt: "");
+                                    </a>
+                                </figure>*@
+                            }
+                        </div>
+                            @if (Model.Product.ProductPictures.Count > 1)
+                            {
+                                <a class="carousel-control-prev product-carousel-prev" href="#carouselIndicators" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>
+                                </a>
+                                <a class="carousel-control-next product-carousel-next" href="#carouselIndicators" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </a>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="col-lg-6" id="productSummaryContainer">
+                    <div class="product-details">
+                        <div class="pd-title">
+                            <a href="@Url.SearchProducts(category: Model.Product.Category.SanitizedName)">
+                                <span>
+                                    @(currentLanguageCategoryRecord != null ? currentLanguageCategoryRecord.Name : string.Empty)
+                                </span>
+                            </a>
+                            <h2>
+                                @(currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Empty)
+                            </h2>
+                        </div>
+                        <div class="pd-rating">
+                            @{
+                                var totalComments = Model.Rating.TotalRatings;// Model.Comments != null && Model.Comments.Count > 0 ? Model.Comments.Select(x => x.Rating).ToList() : new List<int>();
+                                var averageRating = Model.Rating.AverageRating;// RatingsHelpers.GetAverageRating(totalComments);
+
+                                <span title="@("PP.ProductDetails.AverageRatingCount".Replace("{averageRating}", averageRating.ToString()).Replace("{totalComments}", totalComments.ToString()))">
+                                    @for (int i = 1; i <= averageRating; i++)
+                                    {
+                                        <i class="fas fa-star"></i>
+                                    }
+
+                                    @for (int i = 1; i <= (ConfigurationsHelper.DefaultRating - averageRating); i++)
+                                    {
+                                        <i class="far fa-star"></i>
+                                    }
+                                </span>
+                            }
+                        </div>
+                        <div class="pd-desc">
+                            <p>
+                                @(currentLanguageProductRecord != null ? currentLanguageProductRecord.Summary : string.Empty)
+                            </p>
+                            <h4 title="Price" class="ltr-dir">
+                                @if (Model.Product.Discount.HasValue && Model.Product.Discount.Value > 0)
+                                {
+                                    <span>
+                                        @Model.Product.Price.WithCurrency()
+                                    </span>
+                                }
+
+                                @productPrice.WithCurrency()
+                            </h4>
+                        </div>
+                        @if (false)
+                        {
+                            <div class="pd-color">
+                                <h6>Color</h6>
+                                <div class="pd-color-choose">
+                                    <div class="cc-item">
+                                        <input type="radio" id="cc-black">
+                                        <label for="cc-black"></label>
+                                    </div>
+                                    <div class="cc-item">
+                                        <input type="radio" id="cc-yellow">
+                                        <label for="cc-yellow" class="cc-yellow"></label>
+                                    </div>
+                                    <div class="cc-item">
+                                        <input type="radio" id="cc-violet">
+                                        <label for="cc-violet" class="cc-violet"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pd-size-choose">
+                                <h6>Sizes</h6>
+                                <div class="sc-item">
+                                    <input type="radio" id="sm-size">
+                                    <label for="sm-size">s</label>
+                                </div>
+                                <div class="sc-item">
+                                    <input type="radio" id="md-size">
+                                    <label for="md-size">m</label>
+                                </div>
+                                <div class="sc-item">
+                                    <input type="radio" id="lg-size">
+                                    <label for="lg-size">l</label>
+                                </div>
+                                <div class="sc-item">
+                                    <input type="radio" id="xl-size">
+                                    <label for="xl-size">xs</label>
+                                </div>
+                            </div>
+                        }
+                        <div class="quantity itemCartHolder">
+                            <div class="pro-qty">
+                                <span class="qtybtn dec">-</span>
+                                <input class="qtytxt" type="text" value="1">
+                                <span class="qtybtn inc">+</span>
+                            </div>
+                            <a data-id="@Model.Product.ID" data-price="@Model.Product.Price" class="btnAddToCart pointerCursor primary-btn pd-cart text-white">@("PP.Shopping.AddToCart")</a>
+                        </div>
+                        <div class="pd-share">
+                            <div class="pd-social">
+                                @{ Html.RenderPartial("_ShareOptions"); }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="product-tab">
+                <div class="tab-item">
+                    <ul class="nav" role="tablist">
+                        @if (currentLanguageProductRecord != null && !string.IsNullOrEmpty(currentLanguageProductRecord.Description))
+                        {
+                            <li>
+                                <a data-toggle="tab" href="#description-tab" role="tab">@("PP.ProductDetails.Description")</a>
+                            </li>
+                        }
+                        @if (currentLanguageProductRecord != null && currentLanguageProductRecord.ProductSpecifications != null && currentLanguageProductRecord.ProductSpecifications.Count > 0)
+                        {
+                            <li>
+                                <a data-toggle="tab" href="#specification-tab" role="tab" class="active">@("PP.ProductDetails.ProductSpecifications")</a>
+                            </li>
+                        }
+                        <li>
+                            <a data-toggle="tab" href="#reviews-tab" role="tab" >@("PP.ProductDetails.Reviews")</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-item-content">
+                    <div class="tab-content">
+                        @if (currentLanguageProductRecord != null && !string.IsNullOrEmpty(currentLanguageProductRecord.Description))
+                        {
+                            <div class="tab-pane fade-in" id="description-tab" role="tabpanel">
+                                <div class="product-content">
+                                    @Html.Raw(currentLanguageProductRecord.Description)
+                                </div>
+                            </div>
+                        }
+                        @if (currentLanguageProductRecord != null && currentLanguageProductRecord.ProductSpecifications != null && currentLanguageProductRecord.ProductSpecifications.Count > 0)
+                        {
+                            <div class="tab-pane fade active show" id="specification-tab" role="tabpanel">
+                                @{ Html.RenderPartial("_ProductSpecifications", currentLanguageProductRecord.ProductSpecifications); }
+                            </div>
+                        }
+                        <div class="tab-pane fade" id="reviews-tab" role="tabpanel">
+                            @{ Html.RenderAction("ProductComments", "Comments", new { productID = Model.Product.ID, recordSize = 10 }); }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    Html.RenderAction("RelatedProducts", "Products", new { categoryID = Model.Product.CategoryID, recordSize = projectWEB.Shared.Enums.RecordSizeEnums.Size6 });
+}
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script src="~/SwipePl/photoswipe.min.js"></script>
+<script src="~/SwipePl/photoswipe-ui-default.min.js"></script>
+<script>
+    var initPhotoSwipeFromDOM = function (gallerySelector) {
+
+        // parse slide data (url, title, size ...) from DOM elements 
+        // (children of gallerySelector)
+        var parseThumbnailElements = function (el) {
+            var thumbElements = el.childNodes,
+                numNodes = thumbElements.length,
+                items = [],
+                figureEl,
+                linkEl,
+                size,
+                item;
+
+            for (var i = 0; i < numNodes; i++) {
+
+                figureEl = thumbElements[i]; // <figure> element
+
+                // include only element nodes 
+                if (figureEl.nodeType !== 1) {
+                    continue;
+                }
+
+                linkEl = figureEl.children[0]; // <a> element
+
+                size = linkEl.getAttribute('data-size').split('x');
+
+                // create slide object
+                item = {
+                    src: linkEl.getAttribute('href'),
+                    w: parseInt(size[0], 10),
+                    h: parseInt(size[1], 10)
+                };
+
+
+
+                if (figureEl.children.length > 1) {
+                    // <figcaption> content
+                    item.title = figureEl.children[1].innerHTML;
+                }
+
+                if (linkEl.children.length > 0) {
+                    // <img> thumbnail element, retrieving thumbnail url
+                    item.msrc = linkEl.children[0].getAttribute('src');
+                }
+
+                item.el = figureEl; // save link to element for getThumbBoundsFn
+                items.push(item);
+            }
+
+            return items;
+        };
+
+        // find nearest parent element
+        var closest = function closest(el, fn) {
+            return el && (fn(el) ? el : closest(el.parentNode, fn));
+        };
+
+        // triggers when user clicks on thumbnail
+        var onThumbnailsClick = function (e) {
+            e = e || window.event;
+            e.preventDefault ? e.preventDefault() : e.returnValue = false;
+
+            var eTarget = e.target || e.srcElement;
+
+            // find root element of slide
+            var clickedListItem = closest(eTarget, function (el) {
+                return (el.tagName && el.tagName.toUpperCase() === 'FIGURE');
+            });
+
+            if (!clickedListItem) {
+                return;
+            }
+
+            // find index of clicked item by looping through all child nodes
+            // alternatively, you may define index via data- attribute
+            var clickedGallery = clickedListItem.parentNode,
+                childNodes = clickedListItem.parentNode.childNodes,
+                numChildNodes = childNodes.length,
+                nodeIndex = 0,
+                index;
+
+            for (var i = 0; i < numChildNodes; i++) {
+                if (childNodes[i].nodeType !== 1) {
+                    continue;
+                }
+
+                if (childNodes[i] === clickedListItem) {
+                    index = nodeIndex;
+                    break;
+                }
+                nodeIndex++;
+            }
+
+
+
+            if (index >= 0) {
+                // open PhotoSwipe if valid index found
+                openPhotoSwipe(index, clickedGallery);
+            }
+            return false;
+        };
+
+        // parse picture index and gallery index from URL (#&pid=1&gid=2)
+        var photoswipeParseHash = function () {
+            var hash = window.location.hash.substring(1),
+                params = {};
+
+            if (hash.length < 5) {
+                return params;
+            }
+
+            var vars = hash.split('&');
+            for (var i = 0; i < vars.length; i++) {
+                if (!vars[i]) {
+                    continue;
+                }
+                var pair = vars[i].split('=');
+                if (pair.length < 2) {
+                    continue;
+                }
+                params[pair[0]] = pair[1];
+            }
+
+            if (params.gid) {
+                params.gid = parseInt(params.gid, 10);
+            }
+
+            return params;
+        };
+
+        var openPhotoSwipe = function (index, galleryElement, disableAnimation, fromURL) {
+            var pswpElement = document.querySelectorAll('.pswp')[0],
+                gallery,
+                options,
+                items;
+
+            items = parseThumbnailElements(galleryElement);
+
+            // define options (if needed)
+            options = {
+
+                // define gallery index (for URL)
+                galleryUID: galleryElement.getAttribute('data-pswp-uid'),
+
+                getThumbBoundsFn: function (index) {
+                    // See Options -> getThumbBoundsFn section of documentation for more info
+                    var thumbnail = items[index].el.getElementsByTagName('img')[0], // find thumbnail
+                        pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+                        rect = thumbnail.getBoundingClientRect();
+
+                    return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
+                }
+
+            };
+
+            // PhotoSwipe opened from URL
+            if (fromURL) {
+                if (options.galleryPIDs) {
+                    // parse real index when custom PIDs are used 
+                    // http://photoswipe.com/documentation/faq.html#custom-pid-in-url
+                    for (var j = 0; j < items.length; j++) {
+                        if (items[j].pid == index) {
+                            options.index = j;
+                            break;
+                        }
+                    }
+                } else {
+                    // in URL indexes start from 1
+                    options.index = parseInt(index, 10) - 1;
+                }
+            } else {
+                options.index = parseInt(index, 10);
+            }
+
+            // exit if index not found
+            if (isNaN(options.index)) {
+                return;
+            }
+
+            if (disableAnimation) {
+                options.showAnimationDuration = 0;
+            }
+
+            // Pass data to PhotoSwipe and initialize it
+            gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+            gallery.init();
+        };
+
+        // loop through all gallery elements and bind events
+        var galleryElements = document.querySelectorAll(gallerySelector);
+
+        for (var i = 0, l = galleryElements.length; i < l; i++) {
+            galleryElements[i].setAttribute('data-pswp-uid', i + 1);
+            galleryElements[i].onclick = onThumbnailsClick;
+        }
+
+        // Parse URL and open gallery if it contains #&pid=3&gid=1
+        var hashData = photoswipeParseHash();
+        if (hashData.pid && hashData.gid) {
+            openPhotoSwipe(hashData.pid, galleryElements[hashData.gid - 1], true, true);
+        }
+    };
+
+    // execute above function
+    initPhotoSwipeFromDOM('.my-gallery');
+
+</script>
