@@ -30,7 +30,7 @@ namespace projectWEB.Controllers
         public async Task<IActionResult> Recomended()
         {
             var rating = _context.Reviews.Where(i => i.Rate > 0).OrderByDescending(i => i.Rate).GroupBy(i=>i.Item);
-
+           // var similar = 
                           
                           
             return View(await _context.AlsoTry.ToListAsync());

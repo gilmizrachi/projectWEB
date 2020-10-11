@@ -31,17 +31,16 @@ namespace projectWEB.Controllers
                 return StatusCode(200);
            var profile = new AlsoTry() { registeredUsers = registeredUsers };
             profile.Transaction = _context.Transaction.Where(u => u.Customer.id == registeredUsers.id&&u.Status==0).First();
-            //context: _context.Add(profile);
+
             var c = new AlsoTriesController(_context);
             c.NewProfile(profile);
-             //_context.AlsoTry.Add(profile);
-           //await _context.SaveChangesAsync();
+
             _context.SaveChanges();
              
             
            
           
-            var bullshit = _context.AlsoTry.Where(u => u.registeredUsers == registeredUsers && u.IsActive == true);
+  
             return StatusCode(200);
         }
         public IActionResult signup()

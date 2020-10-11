@@ -48,30 +48,49 @@ namespace projectWEB.Controllers
 
             return View();
         }
-
-
-       /* public void UpdateCookie(IEnumerable<Item> data)
+/*
+        private async void ValidateProfile(RegisteredUsers registeredUsers)
         {
-            var analytics = from d in data
-                            select new { id = d.id, category = d.ItemDevision };
-            var keepme = 
-            if (Request.Cookies["collector"] != null)
-            {
-                // Response.Cookies.Append(analytics.ToList())
-                CookieOptions cookieop = new CookieOptions();
-                cookieop.Expires = DateTime.Now.AddMinutes(3);
+            if (_context.AlsoTry.Where(u => u.registeredUsers == registeredUsers && u.IsActive == true).Count() > 0)
+                return;
+            var profile = new AlsoTry() { registeredUsers = registeredUsers };
+            profile.Transaction = _context.Transaction.Where(u => u.Customer.id == registeredUsers.id && u.Status == 0).First();
 
-                Response.Cookies.Append("collector",,)
-            }
+            var c = new AlsoTriesController(_context);
+            c.NewProfile(profile);
+
+            _context.SaveChanges();
+
         }
-       */
-        public async Task<IActionResult> Item_Details(int id)
+             public void UpdateCookie(IEnumerable<Item> data)
+             {
+                 var analytics = from d in data
+                                 select new { id = d.id, category = d.ItemDevision };
+                 var keepme = 
+                 if (Request.Cookies["collector"] != null)
+                 {
+                     // Response.Cookies.Append(analytics.ToList())
+                     CookieOptions cookieop = new CookieOptions();
+                     cookieop.Expires = DateTime.Now.AddMinutes(3);
+
+                     Response.Cookies.Append("collector",,)
+                 }
+             }
+            */
+            public async Task<IActionResult> Item_Details(int id)
         {
+            var it = _context.Item.Where(u => u.id == id);
+            var usr = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.SerialNumber)?.Value;
+            var Profile = _context.AlsoTry.Where(u => u.registeredUsers.id.ToString() == usr && u.IsActive).First();
+            Profile.V_Items.Add(it.First());
+            Profile.V_ItemNo += 1;
+            _context.Update(Profile);
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
             ViewBag.username = HttpContext.Session.GetString("username");
             ViewBag.email = HttpContext.Session.GetString("email");
             ViewBag.id = HttpContext.Session.GetString("userId");
-            return View( _context.Item.Where(u=>u.id==id));
+            await _context.SaveChangesAsync();
+            return View(it);
         }
         public IActionResult Create()
         {

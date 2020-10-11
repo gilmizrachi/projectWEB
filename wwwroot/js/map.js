@@ -87,7 +87,7 @@
             }
         ]
     }
-            ], center: new google.maps.LatLng(parseFloat('@ViewBag.location1.latt'), 34.771959), mapTypeId: google.maps.MapTypeId.ROADMAP
+            ], center: new google.maps.LatLng(31.970394, 34.771959), mapTypeId: google.maps.MapTypeId.ROADMAP
         }
         
         );
