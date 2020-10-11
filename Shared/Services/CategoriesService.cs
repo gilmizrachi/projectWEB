@@ -39,7 +39,7 @@ namespace projectWEB.Services
             {
                 var categories = context.Categories
                                                 .Where(x => !x.IsDeleted)
-                                                .OrderBy(x => x.ID).Include(x => x.CategoryRecords).Include(p => p.Products)
+                                                .OrderBy(x => x.ID).Include(x => x.CategoryRecords).Include(cp=>cp.CategoryRecords).Include(p => p.Products).ThenInclude(pc => pc.ProductRecords).Include(asd => asd.Products).ThenInclude(ps => ps.ProductPictures)
                                                 .AsQueryable();
 
                 if (recordSize.HasValue && recordSize.Value > 0)
@@ -64,7 +64,7 @@ namespace projectWEB.Services
             {
                 var categories = context.Categories
                                     .Where(x => !x.IsDeleted && x.isFeatured)
-                                    .OrderBy(x => x.ID).Include(x => x.CategoryRecords).Include(p => p.Products).ThenInclude(pc=>pc.ProductRecords)
+                                    .OrderBy(x => x.ID).Include(x => x.CategoryRecords).Include(p => p.Products).ThenInclude(pc => pc.ProductRecords).Include(asd => asd.Products).ThenInclude(ps => ps.ProductPictures)
                                     .AsQueryable();
 
                 if (recordSize.HasValue && recordSize.Value > 0)
@@ -163,7 +163,7 @@ namespace projectWEB.Services
 
             using (var context = new projectWEBContext(options))
             {
-                var category = context.Categories.Find(ID);
+                var category = context.Categories.Include(cp=>cp.CategoryRecords).Include(p => p.Products).ThenInclude(pc => pc.ProductRecords).Include(asd => asd.Products).ThenInclude(ps => ps.ProductPictures).FirstOrDefault(x=>x.ID == ID);
                 
                 return category != null && !category.IsDeleted ? category : null;
             }
@@ -187,7 +187,7 @@ namespace projectWEB.Services
 
             using (var context = new projectWEBContext(options))
             {
-                var category = context.Categories.FirstOrDefault(x => x.SanitizedName.Equals(sanitizedCategoryName));
+                var category = context.Categories.Include(cp=>cp.CategoryRecords).Include(p => p.Products).ThenInclude(pc => pc.ProductRecords).Include(asd => asd.Products).ThenInclude(ps => ps.ProductPictures).FirstOrDefault(x => x.SanitizedName.Equals(sanitizedCategoryName));
 
                 return category != null && !category.IsDeleted ? category : null;
             }
@@ -271,7 +271,7 @@ namespace projectWEB.Services
 
             using (var context = new projectWEBContext(options))
             {
-                var categories = context.Categories.Where(x => !x.IsDeleted).AsQueryable();
+                var categories = context.Categories.Where(x => !x.IsDeleted).Include(cp=>cp.CategoryRecords).Include(p => p.Products).ThenInclude(pc => pc.ProductRecords).Include(asd => asd.Products).ThenInclude(ps => ps.ProductPictures).AsQueryable();
 
                 if (!string.IsNullOrEmpty(searchTerm))
                 {

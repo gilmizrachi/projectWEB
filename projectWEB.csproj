@@ -36,10 +36,11 @@
     <None Include="Views\Home\SearchFilters\_CategoriesFilter.cshtml" />
     <None Include="Views\Home\SearchFilters\_ColorsFilter.cshtml" />
     <None Include="Views\Home\SearchFilters\_ListingFilters.cshtml" />
-    <None Include="Views\Home\SearchFilters\_PriceRangeFilter.cshtml" />
+    <None Include="Views\Shared\Components\PriceRangeFilter\_PriceRangeFilter.cshtml" />
     <None Include="Views\Home\SearchFilters\_SearchInputFilter.cshtml" />
     <None Include="Views\Home\SearchFilters\_SizesFilter.cshtml" />
     <None Include="Views\Home\SearchFilters\_TagsFilter.cshtml" />
+    <None Include="wwwroot\images\site\brand.svg" />
   </ItemGroup>
 
   <ItemGroup>

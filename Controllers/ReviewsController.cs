@@ -16,7 +16,8 @@ namespace projectWEB.Controllers
     {
         private readonly projectWEBContext _context;
         private readonly UserManager<RegisteredUsers> _userManager;
-        private readonly SignInManager<RegisteredUsers> _signInManager; public ReviewsController(projectWEBContext context, UserManager<RegisteredUsers> userManager,
+        private readonly SignInManager<RegisteredUsers> _signInManager; 
+        public ReviewsController(projectWEBContext context, UserManager<RegisteredUsers> userManager,
                     SignInManager<RegisteredUsers> signInManager)
         {
             _context = context;
@@ -72,47 +73,6 @@ namespace projectWEB.Controllers
             return PartialView("_ProductReviews", model);
         }
 
-        public async Task<IActionResult> UserReviews(string userID, string searchTerm, int? pageNo = 1, int entityID = 1, bool isPartial = false)
-        {
-            REviewsListingViewModel model = new REviewsListingViewModel
-            {
-                SearchTerm = searchTerm
-            };
-
-            if (!string.IsNullOrEmpty(userID))
-            {
-                model.User = await _userManager.FindByIdAsync(userID);
-            }
-            else
-            {
-                model.User = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
-            }
-
-            model.Reviews = SearchReviews(entityID: entityID, recordID: null, userID: model.User.Id, searchTerm: model.SearchTerm, pageNo: pageNo, recordSize: (int)RecordSizeEnums.Size10, count: out int reviewsCount);
-
-            if (model.Reviews != null && model.Reviews.Count > 0)
-            {
-                var productIDs = model.Reviews.Select(x => x.RecordID).ToList();
-
-                model.ReviewedProducts = GetProductsByIDs(productIDs);
-            }
-
-            model.Pager = new Pager(reviewsCount, pageNo, (int)RecordSizeEnums.Size10);
-
-            if (isPartial)
-            {
-                return PartialView("_UserReviewsListing", model);
-            }
-            else
-            {
-                return PartialView("_UserReviews", model);
-            }
-        }
-        public List<Product> GetProductsByIDs(List<int> IDs)
-        {
-            //var products = _context.Products.Include(x => x.ProductPictures).Include(p => p.ProductRecords).ThenInclude(ps => ps.ProductSpecifications).ToList();
-            return IDs.Select(id => _context.Products.Find(id)).Where(x => !x.IsDeleted && !x.Category.IsDeleted).OrderBy(x => x.ID).ToList();
-        }
         [HttpPost]
         public JsonResult DeleteReview(int ID)
         {

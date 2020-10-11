@@ -66,21 +66,21 @@
                                                     }
                                                     else
                                                     {
-                                                        if(Model.ActiveTab.Equals("change-password"))
+                                                        if (Model.ActiveTab.Equals("change-password"))
                                                         {
-                                                            Html.RenderAction("ChangePassword");
+                                                            @await Component.InvokeAsync("ChangePassword");
                                                         }
-                                                        else if(Model.ActiveTab.Equals("change-avatar"))
+                                                        else if (Model.ActiveTab.Equals("change-avatar"))
                                                         {
-                                                            Html.RenderAction("ChangeAvatar");
+                                                            @await Component.InvokeAsync("ChangeAvatar");
                                                         }
-                                                        else if(Model.ActiveTab.Equals("orders"))
+                                                        else if (Model.ActiveTab.Equals("orders"))
                                                         {
-                                                            Html.RenderAction("UserOrders", "Orders");
+                                                            @await Component.InvokeAsync("UserOrders");
                                                         }
-                                                        else if(Model.ActiveTab.Equals("comments"))
+                                                        else if (Model.ActiveTab.Equals("Reviews"))
                                                         {
-                                                            Html.RenderAction("UserComments", "Comments");
+                                                            @await Component.InvokeAsync("UserReviews");
                                                         }
                                                     }
                                                 </div>

@@ -254,16 +254,16 @@
                                 @{ Html.RenderPartial("_ProductSpecifications", currentLanguageProductRecord.ProductSpecifications); }
                             </div>
                         }
-                        <div class="tab-pane fade" id="reviews-tab" role="tabpanel">
-                            @{ Html.RenderAction("ProductComments", "Comments", new { productID = Model.Product.ID, recordSize = 10 }); }
-                        </div>
+                    <div class="tab-pane fade" id="reviews-tab" role="tabpanel">
+                        @await Component.InvokeAsync("ProductReviews", new { productID = Model.Product.ID, recordSize = 10 }); }
+                    </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    Html.RenderAction("RelatedProducts", "Products", new { categoryID = Model.Product.CategoryID, recordSize = projectWEB.Shared.Enums.RecordSizeEnums.Size6 });
+    @await Component.InvokeAsync("RelatedProducts", new { categoryID = Model.Product.CategoryID, recordSize = projectWEB.Shared.Enums.RecordSizeEnums.Size6 });
 }
 <!-- Root element of PhotoSwipe. Must have class pswp. -->
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">

@@ -16,8 +16,8 @@
 
     <div class="d-flex justify-content-end">
         <div class="col-lg-9 pr-md-0">
-            @{Html.RenderAction("HomeSliders", "Home");}
-            @{Html.RenderAction("FeaturedCategories", "Categories", new { recordSize = 3, isForHomePage = true }); }
+            @await Component.InvokeAsync("HomeSliders")
+            @await Component.InvokeAsync("FeaturedCategories", new { recordSize = 3, isForHomePage = true }); }
 
         </div>
     </div>
@@ -28,16 +28,16 @@
             </div>
         </div>*@
 
-    Html.RenderAction("ProductsByFeaturedCategories", "Categories", new { recordSize = 3 });
+    @await Component.InvokeAsync("ProductsByFeaturedCategories", new { recordSize = 3 });
 
 }
 <div id="mobileCategory">
     @{
-        Html.RenderAction("RelatedProducts", "Products", new { categoryID = 0, recordSize = projectWEB.Shared.Enums.RecordSizeEnums.Size12 });
+        @await Component.InvokeAsync("RelatedProducts", new { categoryID = 0, recordSize = projectWEB.Shared.Enums.RecordSizeEnums.Size12 });
     }
 
     <div class="sidebar-nav mx-2">
-        @{Html.RenderAction("CategoriesMenuMobile", "Categories");}
+        @await Component.InvokeAsync("CategoriesMenuMobile");}
     </div>
 </div>
 

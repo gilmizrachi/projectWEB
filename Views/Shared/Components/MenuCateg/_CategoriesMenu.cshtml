@@ -5,7 +5,7 @@
     <div class="nav-depart" style="width:26%">
         <div class="depart-btn">
             <i class="fas fa-bars"></i>
-            <span>@("PP.Header.Menu.Categories")</span>
+            <span>Categories</span>
             <ul class="depart-hover">
                 @foreach (var categoryWithChildren in Model.CategoryWithChildrens)
                 {
@@ -15,7 +15,7 @@
 
                     <li>
                         <a href="@Url.SearchProducts(category.SanitizedName)">
-                           asdasdasdasdasdasd
+                            @(currentLanguageCategoryRecord != null ? currentLanguageCategoryRecord.Name : string.Empty)
                         </a>
 
                         @if (categoryWithChildren.Children != null && categoryWithChildren.Children.Count > 0)

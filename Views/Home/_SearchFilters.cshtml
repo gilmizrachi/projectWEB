@@ -4,5 +4,5 @@
 {
     Html.RenderPartial("SearchFilters/_SearchInputFilter", Model);
     Html.RenderPartial("SearchFilters/_CategoriesFilter", Model);
-    Html.RenderAction("PriceRangeFilter", new { priceFrom = Model.PriceFrom, priceTo = Model.PriceTo });
+    @await Component.InvokeAsync("PriceRangeFilter", new { priceFrom = Model.PriceFrom, priceTo = Model.PriceTo });
 }

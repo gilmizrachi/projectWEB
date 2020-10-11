@@ -592,23 +592,6 @@ namespace projectWEB.Controllers
             ViewBag.History = result.ToList();
             return View("History");
         }
-        public IActionResult UserOrders(string userID, int? orderID, int? orderStatus, int? pageNo)
-        {
-            var pageSize = (int)RecordSizeEnums.Size10;
-
-            UserOrdersViewModel model = new UserOrdersViewModel
-            {
-                UserID = !string.IsNullOrEmpty(userID) ? userID : _userManager.GetUserId(User),
-                OrderID = orderID,
-                OrderStatus = orderStatus
-            };
-
-            model.UserOrders = SearchOrders(model.UserID, model.OrderID, model.OrderStatus, pageNo, pageSize, count: out int ordersCount);
-
-            model.Pager = new Pager(ordersCount, pageNo, pageSize);
-
-            return PartialView("_UserOrders", model);
-        }
         public IActionResult PrintInvoice(int orderID)
         {
             PrintInvoiceViewModel model = new PrintInvoiceViewModel

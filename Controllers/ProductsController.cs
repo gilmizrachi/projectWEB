@@ -32,23 +32,7 @@ namespace projectWEB.Controllers
                 return PartialView("_FeaturedProducts", model);
             }
         }
-        public IActionResult RelatedProducts(int categoryID, int recordSize = (int)RecordSizeEnums.Size6)
-        {
-            RelatedProductsViewModel model = new RelatedProductsViewModel
-            {
-                Products = ProductsService.Instance.SearchProducts(new List<int>() { categoryID }, null, null, null, null, 1, recordSize, out int count)
-            };
-
-            if (model.Products == null || model.Products.Count < (int)RecordSizeEnums.Size6)
-            {
-                //the realted products are less than the specfified RelatedProductsRecordsSize, so instead show featured products
-                model.Products = ProductsService.Instance.SearchFeaturedProducts(recordSize);
-                model.IsFeaturedProductsOnly = true;
-            }
-
-            return PartialView("_RelatedProducts", model);
-        }
-        public ProductsController(projectWEBContext context)
+       public ProductsController(projectWEBContext context)
         {
             _context = context;
         }

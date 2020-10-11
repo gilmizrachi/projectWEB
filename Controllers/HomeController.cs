@@ -31,15 +31,6 @@ namespace projectWEB.Controllers
 
             return View(new PageViewModel());
         }
-        public IActionResult HomeSliders()
-        {
-            HomeSlidersViewModel model = new HomeSlidersViewModel
-            {
-                SlidersConfigurations = ConfigurationsService.Instance.GetConfigurationsByType((int)ConfigurationTypes.Sliders)
-            };
-
-            return PartialView("_BannerSlider", model);
-        }
         public IActionResult Privacy()
         {
             return View();
@@ -83,17 +74,6 @@ namespace projectWEB.Controllers
 
             return View(model);
         }
-        public IActionResult PriceRangeFilter(decimal? priceFrom, decimal? priceTo)
-        {
-            var model = new PriceRangeFilterViewModel
-            {
-                PriceFrom = priceFrom,
-                PriceTo = priceTo,
-
-                MaxPrice = ProductsService.Instance.GetMaxProductPrice()
-            };
-
-            return PartialView("SearchFilters/_PriceRangeFilter", model);
-        }
+        
     }
 }

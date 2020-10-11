@@ -90,17 +90,6 @@ namespace projectWEB.Controllers
             }
             return new JsonResult(new object());;
         }
-        public async Task<IActionResult> ChangeAvatar()
-        {
-            string userId = _userManager.GetUserId(User);
-
-            ProfileDetailsViewModel model = new ProfileDetailsViewModel
-            {
-                User = await _userManager.FindByIdAsync(userId)
-            };
-
-            return PartialView("_ChangeAvatar", model);
-        }
         public async Task<JsonResult> UpdateAvatar(int pictureID)
         {
             if (pictureID > 0 && User.Identity.IsAuthenticated)
@@ -263,19 +252,7 @@ namespace projectWEB.Controllers
             _logger.LogInformation("User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
-        public async Task<IActionResult> ChangePassword()
-        {
-            string userId = _userManager.GetUserId(User);
-
-            ProfileDetailsViewModel model = new ProfileDetailsViewModel
-            {
-                User = await _userManager.FindByIdAsync(userId)
-            };
-
-            return PartialView("_ChangePassword", model);
-        }
-
-
+        
         public async Task<JsonResult> UpdatePassword(UpdatePasswordViewModel model)
         {
             if (model != null && User.Identity.IsAuthenticated)

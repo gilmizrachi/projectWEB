@@ -12,20 +12,20 @@
 
     <div class="d-flex justify-content-end">
         <div class="col">
-            @{Html.RenderAction("HomeSliders", "Home");}
+            @await Component.InvokeAsync("HomeSliders");
             <div id="mobileCategory">
                 <div class="sidebar-nav mx-2 mb-5">
-                    @{Html.RenderAction("CategoriesMenuMobile", "Categories");}
+                    @await Component.InvokeAsync("CategoriesMenuMobile");}
                 </div>
-               
+
                 @{
-                    Html.RenderAction("RelatedProducts", "Products", new { categoryID = 0, recordSize = projectWEB.Shared.Enums.RecordSizeEnums.Size12 });
+                    @await Component.InvokeAsync("RelatedProducts", new { categoryID = 0, recordSize = projectWEB.Shared.Enums.RecordSizeEnums.Size12 });
                 }
             </div>
         </div>
     </div>
 
-    Html.RenderAction("ProductsByFeaturedCategories", "Categories", new { recordSize = 3 });
+    @await Component.InvokeAsync("ProductsByFeaturedCategories", new { recordSize = 3 });
 
 }
 
@@ -45,83 +45,83 @@
 
 @if (true)
 {
-    <section class="latest-blog spad py-0">
-        <div class="benefit-items">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="single-benefit">
-                            <div class="sb-icon">
-                                <i class="fas fa-shipping-fast"></i>
-                            </div>
-                            <div class="sb-text">
-                                <h6>@("PP.Home.Showcase.FastDelivery")</h6>
-                                <p>@("PP.Home.Showcase.OnTimeDelivery")</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="single-benefit">
-                            <div class="sb-icon">
-                                <i class="fas fa-headset"></i>
-                            </div>
-                            <div class="sb-text">
-                                <h6>@("PP.Home.Showcase.247Support")</h6>
-                                <p>@("PP.Home.Showcase.AlwaysReadyToHelp")</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="single-benefit border-0">
-                            <div class="sb-icon">
-                                <i class="fas fa-user-shield"></i>
-                            </div>
-                            <div class="sb-text">
-                                <h6>@("PP.Home.Showcase.SecurePayments")</h6>
-                                <p>@("PP.Home.Showcase.SecurePaymentOptions")</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div style="background:transparent !important" class="partner-logo" title="@("PP.Home.Showcase.OurPartners")">
+<section class="latest-blog spad py-0">
+    <div class="benefit-items">
         <div class="container">
-            <div class="logo-carousel owl-carousel">
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img style="width:50%" class="img-fluid" src="~/images/Brands/1d9e100c-ff1f-4def-91b0-888f05dcabddamd.png" alt="">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="single-benefit">
+                        <div class="sb-icon">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <div class="sb-text">
+                            <h6>@("PP.Home.Showcase.FastDelivery")</h6>
+                            <p>@("PP.Home.Showcase.OnTimeDelivery")</p>
+                        </div>
                     </div>
                 </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img style="width:50%" class="img-fluid" src="~/images/Brands/47e3af93-907d-410b-a466-810fe3d60c1easus.png" alt="">
+                <div class="col-lg-4">
+                    <div class="single-benefit">
+                        <div class="sb-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div class="sb-text">
+                            <h6>@("PP.Home.Showcase.247Support")</h6>
+                            <p>@("PP.Home.Showcase.AlwaysReadyToHelp")</p>
+                        </div>
                     </div>
                 </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img style="width:50%" class="img-fluid" src="~/images/Brands/74c2eaa5-154c-4ab8-b62c-0aa13eeabfc8.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img style="width:50%" src="~/images/Brands/a884bc16-5593-415f-9953-94959eaa83baacer.png" alt="">
-                    </div>
-                </div>
-
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img style="width:50%" src="~/images/Brands/b3880879-dc49-4142-9fa3-35a7780386a7.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img style="width:50%" src="~/images/Brands/de5b2c0e-1715-4c36-a42f-fed6bdf33173intel.png" alt="">
+                <div class="col-lg-4">
+                    <div class="single-benefit border-0">
+                        <div class="sb-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="sb-text">
+                            <h6>@("PP.Home.Showcase.SecurePayments")</h6>
+                            <p>@("PP.Home.Showcase.SecurePaymentOptions")</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</section>
+
+<div style="background:transparent !important" class="partner-logo" title="@("PP.Home.Showcase.OurPartners")">
+    <div class="container">
+        <div class="logo-carousel owl-carousel">
+            <div class="logo-item">
+                <div class="tablecell-inner">
+                    <img style="width:50%" class="img-fluid" src="~/images/Brands/1d9e100c-ff1f-4def-91b0-888f05dcabddamd.png" alt="">
+                </div>
+            </div>
+            <div class="logo-item">
+                <div class="tablecell-inner">
+                    <img style="width:50%" class="img-fluid" src="~/images/Brands/47e3af93-907d-410b-a466-810fe3d60c1easus.png" alt="">
+                </div>
+            </div>
+            <div class="logo-item">
+                <div class="tablecell-inner">
+                    <img style="width:50%" class="img-fluid" src="~/images/Brands/74c2eaa5-154c-4ab8-b62c-0aa13eeabfc8.png" alt="">
+                </div>
+            </div>
+            <div class="logo-item">
+                <div class="tablecell-inner">
+                    <img style="width:50%" src="~/images/Brands/a884bc16-5593-415f-9953-94959eaa83baacer.png" alt="">
+                </div>
+            </div>
+
+            <div class="logo-item">
+                <div class="tablecell-inner">
+                    <img style="width:50%" src="~/images/Brands/b3880879-dc49-4142-9fa3-35a7780386a7.png" alt="">
+                </div>
+            </div>
+            <div class="logo-item">
+                <div class="tablecell-inner">
+                    <img style="width:50%" src="~/images/Brands/de5b2c0e-1715-4c36-a42f-fed6bdf33173intel.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 }
