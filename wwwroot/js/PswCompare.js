@@ -21,35 +21,65 @@ password.change(validatePassword);
     var signupform = {};
     //alert(sort);
     signupform.Username = $('#User-Name').val();
-    signupform.email = $('#email').val();
-    $.post("Validate", signupform, function (data, t) {
+     signupform.email = $('#email').val();
+     if (signupform.Username.length > 1 && signupform.email.length > 4) {
+         $.post("Validate", signupform, function (data, t) {
+             var stat = parseInt(data);
+             switch (stat) {
+                 case 0:
+                     $('#undiv').addClass("has-error has-feedback");
+                     $('#unspa').addClass("glyphicon glyphicon-remove form-control-feedback");
+                     $('#emdiv').addClass("has-error has-feedback");
+                     $('#emspa').addClass("glyphicon glyphicon-remove form-control-feedback");
+                     break;
+                 case 1:
+                     $('#undiv').addClass("has-success has-feedback");
+                     $('#unspa').addClass("glyphicon glyphicon-ok form-control-feedback");
+                     $('#emdiv').addClass("has-success has-feedback");
+                     $('#emspa').addClass("glyphicon glyphicon-ok form-control-feedback");
+                     $('div.alert-dismissible').show().delay(5000);
+                     $("form").submit();
+                     break;
+                 case 2:
+                     $('#undiv').addClass("has-error has-feedback");
+                     $('#unspa').addClass("glyphicon glyphicon-remove form-control-feedback");
+                     $('#emdiv').addClass("has-success has-feedback");
+                     $('#emspa').addClass("glyphicon glyphicon-ok form-control-feedback");
+                     break;
+                 case 3:
+                     $('#undiv').addClass("has-success has-feedback");
+                     $('#unspa').addClass("glyphicon glyphicon-ok form-control-feedback");
+                     $('#emdiv').addClass("has-error has-feedback");
+                     $('#emspa').addClass("glyphicon glyphicon-remove form-control-feedback");
+                     break;
+             }
+         })
+     }
+
+});
+
+$('#Signin').click(valcheck=function () {
+    var signinform = {};
+
+
+    signinform.Username = $('#Username').val();
+    signinform.password = $('#Password').val();
+    signinform.Remember = $(":checked").val();
+    $.post("RegisteredUsers/CheckValid", signinform, function (data) {
         var stat = parseInt(data);
         switch (stat) {
             case 0:
                 $('#undiv').addClass("has-error has-feedback");
-                $('#unspa').addClass("glyphicon glyphicon-remove form-control-feedback");
-                $('#emdiv').addClass("has-error has-feedback");
-                $('#emspa').addClass("glyphicon glyphicon-remove form-control-feedback");
+                $('#passdiv').addClass("has-error has-feedback");
+                $('div.alert-danger').show("fast");
                 break;
             case 1:
                 $('#undiv').addClass("has-success has-feedback");
-                $('#unspa').addClass("glyphicon glyphicon-ok form-control-feedback");
-                $('#emdiv').addClass("has-success has-feedback");
-                $('#emspa').addClass("glyphicon glyphicon-ok form-control-feedback");
-                $('div.alert-dismissible').show().delay(5000);
-                $("form").submit();
-                break;
-            case 2:
-                $('#undiv').addClass("has-error has-feedback");
-                $('#unspa').addClass("glyphicon glyphicon-remove form-control-feedback");
-                $('#emdiv').addClass("has-success has-feedback");
-                $('#emspa').addClass("glyphicon glyphicon-ok form-control-feedback");
-                break;
-            case 3:
-                $('#undiv').addClass("has-success has-feedback");
-                $('#unspa').addClass("glyphicon glyphicon-ok form-control-feedback");
-                $('#emdiv').addClass("has-error has-feedback");
-                $('#emspa').addClass("glyphicon glyphicon-remove form-control-feedback");
+                $('#passdiv').addClass("has-success has-feedback");
+                $('div.alert-danger').hide();
+                $('div.alert-success').show("slow");
+               // $('chkbox').on("checked", updatecookie());
+                $("form").delay(7000).submit();
                 break;
         }
     })

@@ -1,0 +1,51 @@
+﻿@model projectWEB.Models.AlsoTry
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+<h2>Create</h2>
+
+<h4>AlsoTry</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="S_Phrase" class="control-label"></label>
+                <input asp-for="S_Phrase" class="form-control" />
+                <span asp-validation-for="S_Phrase" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="V_ItemNo" class="control-label"></label>
+                <input asp-for="V_ItemNo" class="form-control" />
+                <span asp-validation-for="V_ItemNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceLimits" class="control-label"></label>
+                <input asp-for="PriceLimits" class="form-control" />
+                <span asp-validation-for="PriceLimits" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

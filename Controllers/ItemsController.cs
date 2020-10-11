@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using projectWEB.Data;
 using projectWEB.Models;
 using Microsoft.AspNetCore.Http;
+using projectWEB.Migrations;
 
 namespace projectWEB.Controllers
 {
@@ -32,7 +34,37 @@ namespace projectWEB.Controllers
         {
             return View();
         } */
-        
+        [AllowAnonymous]
+        public IActionResult Info()
+        {
+            ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
+           /*  var locations =[ ['<div class="infobox"><h3 class="title"><a href="#">Here we are</a></h3><span>Rishon Le Zion / Street</span><span> +972 3 444 55 66</span></div>',
+            31.970394,
+            34.771959,
+            1]]; 
+            ViewBag.location1.title= "info";
+            ViewBag.location1.latt = 31.970394;
+            ViewBag.location1.longt = 34.771959;*/
+
+            return View();
+        }
+
+
+       /* public void UpdateCookie(IEnumerable<Item> data)
+        {
+            var analytics = from d in data
+                            select new { id = d.id, category = d.ItemDevision };
+            var keepme = 
+            if (Request.Cookies["collector"] != null)
+            {
+                // Response.Cookies.Append(analytics.ToList())
+                CookieOptions cookieop = new CookieOptions();
+                cookieop.Expires = DateTime.Now.AddMinutes(3);
+
+                Response.Cookies.Append("collector",,)
+            }
+        }
+       */
         public async Task<IActionResult> Item_Details(int id)
         {
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
@@ -46,11 +78,49 @@ namespace projectWEB.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Search(string Phrase)
+        public async Task<IActionResult> Search(string? Phrase,string? byname,string? category,int byprice) //change the int in case of truble int to 
         {
+            var usr= HttpContext.User.FindFirst(x => x.Type == ClaimTypes.SerialNumber)?.Value;
+            var Profile = _context.AlsoTry.Where(u => u.registeredUsers.id.ToString() == usr && u.IsActive).First();
+            ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
+            if (Phrase != null) {
             var result = _context.Item.Where(str=>str.ItemName.Contains(Phrase)||str.ItemDevision.Contains(Phrase) || str.Description.Contains(Phrase));
-            return View("Mainshop",await result.ToListAsync());
-           
+                Profile.AddSearchedPhrase(Phrase);
+                _context.Update(Profile);
+                await _context.SaveChangesAsync();
+                return View("Mainshop", await result.ToListAsync());
+            }
+            else if(byname!=null||category!=null||byprice>0)
+            {
+                var localresult = _context.Item.Where(str => str.amount > 0);//ItemName.Contains(byname) || str.ItemDevision.Contains(category) || str.price.CompareTo(byprice)<0);
+                List<Item> result = new List<Item>();
+                result.AddRange(localresult.Distinct());
+                if (byprice > 0){
+                    Profile.AddSearchByPrice(byprice);
+                    //result.AddRange(localresult.Where(p => p.price < byprice));
+                    result.RemoveAll(p => p.price > byprice);
+                }
+                if (category != null){
+                    Profile.AddSearchedPhrase(category);
+                    //result.AddRange(localresult.Where(p => p.ItemDevision.Contains(category)));
+                    var comp = result.Where(p => p.ItemDevision.Contains(category));
+                    result.Clear();
+                    result.AddRange(comp);
+                }
+                if (byname != null) { 
+                    Profile.AddSearchedPhrase(byname);
+                    //result.AddRange(localresult.Where(p => p.ItemName.Contains(byname)));
+                    var comp = result.Where(p => p.ItemName.Contains(byname));
+                    result.Clear();
+                    result.AddRange(comp);
+                }
+                _context.Update(Profile);
+                await _context.SaveChangesAsync();
+                return View("Mainshop",  result.Distinct());
+            }
+            return View("Mainshop");
+
+
         }
        
         [HttpPost]

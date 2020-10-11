@@ -21,4 +21,9 @@ namespace projectWEB.Data
         public int amount { get; set; }
         public virtual ICollection<Reviews> Comments { get; set; }
     }
+
+    public class locations
+    {
+
+    }
 }

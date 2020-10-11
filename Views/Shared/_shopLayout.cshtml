@@ -54,16 +54,54 @@
                     <div id="div-forms">
                         <form asp-action="Search" id="login-form">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span class="flaticon-add" aria-hidden="true"></span>
+                                <span class="flaticon-add" aria-hidden="true" style="color:aliceblue"></span>
                             </button>
-                           
+
                             <div class="modal-body">
-
-                                <input class="form-control" name="Phrase" id="Phrase" type="text" placeholder="What you are looking for?" required />
-
-
+                                <input class="form-control" name="Phrase" id="Phrase" type="text" placeholder="What you are looking for?" />
                             </div>
+                            <a href="#advanced-search" class="btn btn-info" data-toggle="collapse">Advanced search</a>
+                            <div id="advanced-search" class="collapse">
+                                <div class="panel-group col-md-7" id="accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Item Name</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse1" class="panel-collapse collapse">
 
+                                            <input class="form-control" id="byname" name="byname" type="text" placeholder="Name of an item" />
+
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Category</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse2" class="panel-collapse collapse">
+
+                                            <input class="form-control" id="category" name="category" type="text" placeholder="Category (or even part of it)" />
+
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Max Price</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse3" class="panel-collapse collapse">
+
+                                            <input class="form-control" id="byprice" name="byprice" type="text" placeholder="Maximum price" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="submit" value="Search" class="btn btn-primary" style="display:none">
                         </form><!-- End # Login Form -->
                     </div><!-- End # DIV Form -->
                 </div>
@@ -158,18 +196,20 @@
                                     <li><a asp-action="item_details">Shop Single</a></li> <!-- TODO: single item view -->
                                 </ul>
                             </li>
-                            @if (ViewBag.membertype=="Admin") { 
-                            <li class="dropdown hassubmenu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin<span class="fa fa-angle-down"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a asp-controller="RegisteredUsers" asp-action="Index">Users</a></li>
-                                    <li><a asp-controller="Items" asp-action="Index">Items</a></li>
-                                    <li><a href="#">Orders</a></li>
-                                    <li><a href="#">Haha, jk</a></li>
-                                    <li><a href="#">Obj five</a></li>
-                                </ul>
-                            </li>}
-                            <li><a href="#">Contact</a></li> <!-- TODO -->
+                            @if (ViewBag.membertype == "Admin")
+                            {
+                                <li class="dropdown hassubmenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin<span class="fa fa-angle-down"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a asp-controller="RegisteredUsers" asp-action="Index">Users</a></li>
+                                        <li><a asp-controller="Items" asp-action="Index">Items</a></li>
+                                        <li><a href="#">Orders</a></li>
+                                        <li><a href="#">Haha, jk</a></li>
+                                        <li><a href="#">Obj five</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            <li><a asp-action="info">Contact</a></li> <!-- TODO -->
                             <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
                             <li class="side-menu"><a class="shopicon" href="#"><i class="fa fa-shopping-bag"></i></a></li>
                         </ul>
@@ -182,18 +222,9 @@
                                 <li>
                                     <a href="#" class="photo"><img src="images/img-pro-01.jpg" class="cart-thumb" alt=""></a>
                                     <h6><a href="#">Delica omtantur </a></h6>
-                                    <p>1x - <span class="price">$80.00</span></p>
+                                    
                                 </li>
-                                <li>
-                                    <a href="#" class="photo"><img src="images/img-pro-02.jpg" class="cart-thumb" alt=""></a>
-                                    <h6><a href="#">Omnes ocurreret</a></h6>
-                                    <p>1x - <span class="price">$60.00</span></p>
-                                </li>
-                                <li>
-                                    <a href="#" class="photo"><img src="images/img-pro-03.jpg" class="cart-thumb" alt=""></a>
-                                    <h6><a href="#">Agam facilisis</a></h6>
-                                    <p>1x - <span class="price">$40.00</span></p>
-                                </li>
+
                                 <li class="total">
                                     <a href="#" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
                                     <span class="float-right"><strong>Total</strong>: $180.00</span>
@@ -205,94 +236,119 @@
             </div><!-- end container -->
         </header>
 
-            @RenderBody()
+        @RenderBody()
 
-            <footer class="section footer noover">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4">
-                            <div class="widget clearfix">
-                                <h3 class="widget-title">Subscribe Our Newsletter</h3>
-                                <div class="newsletter-widget">
-                                    <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy policy</a>.</p>
-                                    <form class="form-inline" role="search">
-                                        <div class="form-1">
-                                            <input type="text" class="form-control" placeholder="Enter email here..">
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
-                                        </div>
-                                    </form>
-                                    <img src="~/images/payments.png" alt="" class="img-responsive">
-                                </div><!-- end newsletter -->
-                            </div><!-- end widget -->
-                        </div><!-- end col -->
+        <footer class="section footer noover">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                            <div class="newsletter-widget">
+                                <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy policy</a>.</p>
+                                <form class="form-inline" role="search">
+                                    <div class="form-1">
+                                        <input type="text" class="form-control" placeholder="Enter email here..">
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o"></i></button>
+                                    </div>
+                                </form>
+                                <img src="~/images/payments.png" alt="" class="img-responsive">
+                            </div><!-- end newsletter -->
+                        </div><!-- end widget -->
+                    </div><!-- end col -->
 
-                        <div class="col-lg-3 col-md-3">
-                            <div class="widget clearfix">
-                                <h3 class="widget-title">Bla Bla Footer</h3>
-                                <p>Would you like to change this into somthing useful? go ahed </p>
-                                <a href="#" class="readmore"> Another Bla Bla? add this to TODO list</a>
-                            </div><!-- end widget -->
-                        </div><!-- end col -->
+                    <div class="col-lg-3 col-md-3">
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">Bla Bla Footer</h3>
+                            <p>Would you like to change this into somthing useful? go ahed </p>
+                            <a href="#" class="readmore"> Another Bla Bla? add this to TODO list</a>
+                        </div><!-- end widget -->
+                    </div><!-- end col -->
 
-                        <div class="col-lg-3 col-md-3">
-                            <div class="widget clearfix">
-                                <h3 class="widget-title">Popular Tags</h3>
-                                <div class="tags-widget">
-                                    <ul class="list-inline">
-                                        <li><a href="#">Store</a></li>
-                                        <li><a href="#">Online</a></li>
-                                        <li><a href="#">Shop</a></li>
-                                        <li><a href="#">Blabla</a></li>
-                                        <li><a href="#">Bla</a></li>
-                                        <li><a href="#">wasting</a></li>
-                                        <li><a href="#">Time</a></li>
-                                        <li><a href="#">For css</a></li>
-                                        <li><a href="#">and html</a></li>
-                                        <li><a href="#">learning</a></li>
-                                    </ul>
-                                </div><!-- end list-widget -->
-                            </div><!-- end widget -->
-                        </div><!-- end col -->
-
-                        <div class="col-lg-2 col-md-2">
-                            <div class="widget clearfix">
-                                <h3 class="widget-title">Support</h3>
-                                <div class="list-widget">
-                                    <ul>
-                                        <li><a href="#">Terms of Use</a></li>
-                                        <li><a href="#">Copyrights</a></li>
-                                        <li><a href="#">Create a Ticket</a></li>
-                                        <li><a href="#">Pricing & Plans</a></li>
-                                        <li><a href="#">Carrier</a></li>
-                                        <li><a href="#">Trademark</a></li>
-                                    </ul>
-                                </div><!-- end list-widget -->
-                            </div><!-- end widget -->
-                        </div><!-- end col -->
-                    </div><!-- end row -->
-                </div><!-- end container -->
-            </footer><!-- end footer -->
-
-            <div class="copyrights">
-                <div class="container">
-                    <div class="clearfix">
-                        <div class="pull-left">
-                            <div class="cop-logo">
-                                <a href="#"><img src="~/images/logo.png" alt=""></a>
-                            </div>
-                        </div>
-
-                        <div class="pull-right">
-                            <div class="footer-links">
+                    <div class="col-lg-3 col-md-3">
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">Popular Tags</h3>
+                            <div class="tags-widget">
                                 <ul class="list-inline">
-                                    <li>Design? : <a href="#">Bootstrap</a></li>
+                                    <li><a href="#">Store</a></li>
+                                    <li><a href="#">Online</a></li>
+                                    <li><a href="#">Shop</a></li>
+                                    <li><a href="#">Blabla</a></li>
+                                    <li><a href="#">Bla</a></li>
+                                    <li><a href="#">wasting</a></li>
+                                    <li><a href="#">Time</a></li>
+                                    <li><a href="#">For css</a></li>
+                                    <li><a href="#">and html</a></li>
+                                    <li><a href="#">learning</a></li>
                                 </ul>
-                            </div>
+                            </div><!-- end list-widget -->
+                        </div><!-- end widget -->
+                    </div><!-- end col -->
+
+                    <div class="col-lg-2 col-md-2">
+                        <div class="widget clearfix">
+                            <h3 class="widget-title">Support</h3>
+                            <div class="list-widget">
+                                <ul>
+                                    <li><a href="#">Terms of Use</a></li>
+                                    <li><a href="#">Copyrights</a></li>
+                                    <li><a href="#">Create a Ticket</a></li>
+                                    <li><a href="#">Pricing & Plans</a></li>
+                                    <li><a href="#">Carrier</a></li>
+                                    <li><a href="#">Trademark</a></li>
+                                </ul>
+                            </div><!-- end list-widget -->
+                        </div><!-- end widget -->
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </footer><!-- end footer -->
+
+        <div class="copyrights">
+            <div class="container">
+                <div class="clearfix">
+                    <div class="pull-left">
+                        <div class="cop-logo">
+                            <a href="#"><img src="~/images/logo.png" alt=""></a>
                         </div>
                     </div>
-                </div><!-- end container -->
-            </div><!-- end copy -->
+
+                    <div class="pull-right">
+                        <div class="footer-links">
+                            <ul class="list-inline">
+                                <li>Design? : <a href="#">Bootstrap</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end container -->
+        </div><!-- end copy -->
     </div><!-- end wrapper -->
+    <div class="modal fade" id="confirm-pay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form asp-controller="RegisteredUsers" asp-action="AddPayment" id="addpay">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Purchase</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>To complete this purchase please enter a valid credit card number</p>
+                        <input class="form-control" name="cardno" id="cardno" type="password" placeholder="4580-1111-2222-3333" required />
+                        <p>Do you want to proceed?</p>
+                        <p class="debug-url"></p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-success btn-ok" id="confirmpayment" data-dismiss="modal">Pay Now!</a>
+                    </div>
+                    <a asp-controller="RegisteredUsers" asp-action="AddPayment" style="display:none" id="addpay"></a>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- jQuery Files -->
     <script src="~/js/jquery.min2.js"></script>
     <script src="~/js/bootstrap.min.js"></script>

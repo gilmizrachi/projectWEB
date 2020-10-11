@@ -10,14 +10,26 @@
         {
             <div class="media">
                 <p class="pull-right"><small>@DateTime.Today.Subtract(item.Reviews.PublishTime).Days Days ago</small></p>
+                <p class="pull-right">
+                    <div class="rating">
+                        @for (int rate = 0; rate < item.Reviews.Rate; rate++)
+                        {<i class="fa fa-star ratings_stars selected"></i>}
+                        @for (int rate = item.Reviews.Rate; rate < 5; rate++)
+                        {<i class="fa fa-star ratings_stars "></i>}
+                    </div>
+                </p>
                 <a class="media-left" href="#">
                     <img src="/images/Avatar.png" alt="" class="img-circle">
                 </a>
-                <div class="media-body">
-                    <h4 class="media-heading user_name"> By: @Html.DisplayFor(modelItem => item.registeredUsers.UserName)</h4>
-                    <p>@Html.DisplayFor(modelItem => item.Reviews.CommentTitle)</p>
-                    <p>@Html.DisplayFor(modelItem => item.Reviews.CommentBody)</p>
-                    <a href="mailto:@Html.DisplayFor(modelItem=>item.registeredUsers.Email)" class="btn btn-primary btn-sm">Send Email</a>
+                <div class="media-body panel">
+                    <div class="panel-heading">
+                        <h4 class="media-heading user_name"> By: @Html.DisplayFor(modelItem => item.registeredUsers.UserName)</h4>
+                        <p><strong>Title:</strong> @Html.DisplayFor(modelItem => item.Reviews.CommentTitle)</p>
+                    </div>
+                    <div class="panel-body">
+                        <p><strong>Content:</strong> @Html.DisplayFor(modelItem => item.Reviews.CommentBody)</p>
+                        <a href="mailto:@Html.DisplayFor(modelItem=>item.registeredUsers.Email)" class="btn btn-primary btn-sm">Send Email</a>
+                    </div>
                 </div>
             </div>
         }

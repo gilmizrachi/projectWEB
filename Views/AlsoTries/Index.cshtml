@@ -1,4 +1,4 @@
-﻿@model IEnumerable<projectWEB.Models.Transaction>
+﻿@model IEnumerable<projectWEB.Models.AlsoTry>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,16 +14,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TranscationDate)
+                @Html.DisplayNameFor(model => model.S_Phrase)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Customer)
+                @Html.DisplayNameFor(model => model.V_ItemNo)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SumPrice)
+                @Html.DisplayNameFor(model => model.PriceLimits)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                @Html.DisplayNameFor(model => model.IsActive)
             </th>
             <th></th>
         </tr>
@@ -32,19 +32,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.TranscationDate)
+                @Html.DisplayFor(modelItem => item.S_Phrase)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Customer.Email)
+                @Html.DisplayFor(modelItem => item.V_ItemNo)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SumPrice)
+                @Html.DisplayFor(modelItem => item.PriceLimits)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cart)
+                @Html.DisplayFor(modelItem => item.IsActive)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

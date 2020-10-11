@@ -4,10 +4,6 @@
     Layout = "~/Views/Shared/_shopLayout.cshtml";
 }
 
-<h2>View</h2>
-
-
-
 <section class="section lb p120">
     <div class="container">
         <div class="row">
@@ -52,7 +48,7 @@
                     <div class="row blog-grid shop-grid" id="shop-grid">
                     @if (Model != null)
                       {
-                        @foreach (var item in Model.Take(6))
+                        @foreach (var item in Model.Take(12))
                         {
                             <div class="col-md-3">
                                 <div class="course-box shop-wrapper">
@@ -73,8 +69,11 @@
                                     <div class="course-footer clearfix">
                                         <div class="pull-left">
                                             <ul class="list-inline">
-                                                <li><a href="#" id="AddCartLink"><i class="fa fa-shopping-basket"></i> Add Cart</a></li> <!-- TODO cart model -->
-                                                <input type="submit"style="display:none" asp-controller="Transaction" asp-action="Addtocart" asp-route-id="@item.id" id="AddToCart" />
+                                                @if (item.amount > 0) { 
+                                                <li><a href="#" id="AddCartLink" value='@item.id'><i class="fa fa-shopping-basket"></i> Add Cart</a><input type="hidden" style="display:none" asp-controller="Transactions" asp-action="Addtocart" asp-route-id="@item.id" id="AddToCart" /></li> <!-- TODO cart model -->
+                                                
+                                                }
+                                                else { <a> <i class="fa fa-truck">This item is currntly out of stock</i> </a>}
                                             </ul>
                                         </div><!-- end left -->
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using projectWEB.Data;
 
 namespace projectWEB.Migrations
 {
     [DbContext(typeof(projectWEBContext))]
-    partial class projectWEBContextModelSnapshot : ModelSnapshot
+    [Migration("20201010003401_recommendedfixed")]
+    partial class recommendedfixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,9 +27,6 @@ namespace projectWEB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AlsoTryId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -52,45 +51,9 @@ namespace projectWEB.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("AlsoTryId");
-
                     b.HasIndex("TransactionId");
 
                     b.ToTable("Item");
-                });
-
-            modelBuilder.Entity("projectWEB.Models.AlsoTry", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PriceLimits")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("S_Phrase")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TransactionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("V_ItemNo")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("registeredUsersid")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TransactionId");
-
-                    b.HasIndex("registeredUsersid");
-
-                    b.ToTable("AlsoTry");
                 });
 
             modelBuilder.Entity("projectWEB.Models.RegisteredUsers", b =>
@@ -187,24 +150,9 @@ namespace projectWEB.Migrations
 
             modelBuilder.Entity("projectWEB.Data.Item", b =>
                 {
-                    b.HasOne("projectWEB.Models.AlsoTry", null)
-                        .WithMany("V_Items")
-                        .HasForeignKey("AlsoTryId");
-
                     b.HasOne("projectWEB.Models.Transaction", null)
                         .WithMany("Cart")
                         .HasForeignKey("TransactionId");
-                });
-
-            modelBuilder.Entity("projectWEB.Models.AlsoTry", b =>
-                {
-                    b.HasOne("projectWEB.Models.Transaction", "Transaction")
-                        .WithMany()
-                        .HasForeignKey("TransactionId");
-
-                    b.HasOne("projectWEB.Models.RegisteredUsers", "registeredUsers")
-                        .WithMany()
-                        .HasForeignKey("registeredUsersid");
                 });
 
             modelBuilder.Entity("projectWEB.Models.Reviews", b =>

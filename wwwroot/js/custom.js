@@ -117,8 +117,10 @@ $('.ratings_stars').hover(
 	// Get the rating from the selected star
 	$('#rating').val(rating); // Set the value of the hidden rating form element - need to update at DB
 });
-
-//pulls comment section on every item single view -> fully working
+/*$(document).ready(function () {
+	alert(document.cookie);
+});*/
+//pulls comment section on every item single view -> fully working  
 //TODO: static representation of item rating at item details page 
 $(document).ready( function () {
 	$('.nav-tabs a[href="#menu1"]').on('show.bs.tab',getitemcomments = function (e) {
@@ -178,6 +180,7 @@ $("nav.navbar.bootsnav ").each(function () {
 	$("li.side-menu > a", this).on("click", function (e) {
 		e.preventDefault();
 		listCart();
+		removeitem();
 		$("nav.navbar.bootsnav > .side").toggleClass("on");
 		$("body").toggleClass("on-side");
 	});
@@ -199,8 +202,33 @@ listCart= function () {
 			}
 		});
 };
+
+$("#confirmpayment").on("click", function (e) {
+	e.preventDefault();
+	var card = {};
+	card.CreditCardNo = $("#cardno").val();
+	card.__RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
+
+	//	alert(card.__RequestVerificationToken);
+	//var url = $("#addpay").attr("href");
+	var url = "/RegisteredUsers/AddPayment";
+	$.ajax(
+		{
+			url: url,
+			type: 'POST',
+			data: card,
+			success: function (result) {
+				$.ajax({
+					url: "/Transactions/CommitToBuy",
+					type: 'GET'
+				});
+				alert("Done.");
+			}
+		});
+});
 //react to "add to cart" buttons both on mainshop or single item view
-$("#AddToCart").click( takeme = function(){
+$("#AddToCart").click(function (e) {
+	e.preventDefault();
 	carturl = $("#AddToCart").attr("formaction");
 	$.ajax({
 		url: carturl,
@@ -208,6 +236,28 @@ $("#AddToCart").click( takeme = function(){
 		success: function() { alert("success "+ carturl.val() ); }
 	})
 });
+// /Transactions/Addtocart/  #AddCartLink
+$('.list-inline a[href="#"]').on('click', function (e) {
+	e.preventDefault();
+	url = "/Transactions/Addtocart/" + $(this).attr('value');
+	$.ajax({
+		url: url,
+		type: 'GET',
+		success: function () { alert("success " + carturl.val()); }
+	})
+});
 
-$("#AddCartLink").click(takeme);
-	
+//#rmv-from-cart
+removeitem = function () {
+	$("#rmvme").on('click', function (e) {
+		e.preventDefault();
+		var remove = $(this).parent();
+		var removepanel = remove.next();
+		$.get(remove.attr("formaction"), function (data, status) {
+			if (data) {
+				//var id = $(this).val();
+				removepanel.fadeOut(3000);
+			}
+		});
+	});
+}

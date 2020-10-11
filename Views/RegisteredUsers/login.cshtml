@@ -5,24 +5,36 @@
 }
 
 <h1>Login</h1>
-<form asp-action="login" class="fh5co-form .animate-box" data-animate-effect="fadeIn">
+<div class="alert alert-success alert-dismissible" style="display:none">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success! </strong>You signed in successfully
+</div>
+<div class="alert alert-danger alert-dismissible" style="display:none">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Faild! </strong>Username Or Password is incorrect. Please try again
+</div>
+<form asp-action="login" class="fh5co-form .animate-box" data-animate-effect="fadeIn" onkeydown = "return (event.keyCode!=13);">
     <h2>Sign In</h2>
-    <div class="form-group">
+    <div class="form-group" id="undiv">
         <label for="Username" class="sr-only">Username</label>
-        <input asp-for="UserName" class="form-control" id="Username" placeholder="Username" autocomplete="off" name="Username">
+        <input asp-for="UserName" class="form-control" id="Username" placeholder="Enter User Name" autocomplete="off" name="Username">
     </div>
-    <div class="form-group">
+    <div class="form-group" id="passdiv">
         <label for="Password" class="sr-only">Password</label>
-        <input asp-for="Password" type="password" class="form-control" id="Password" placeholder="Password" autocomplete="off" name="Password" >
+        <input asp-for="Password" type="password" class="form-control" id="Password" placeholder="Enter Password" autocomplete="off" name="Password">
     </div>
     <div class="form-group">
-        <label for="remember"><input type="checkbox" id="remember"> Remember Me</label>
+        <label for="remember"><input type="checkbox" name="chkbox" id="remember"> Remember Me</label>
     </div>
     <div class="form-group">
         <p>Not registered? <a asp-action="signup">Sign Up</a> | <a href="forgot.html">Forgot Password?</a></p>
     </div>
     <div class="form-group">
-        <input type="submit" value="login" class="btn btn-primary">
+        <input type="button" value="Sign in" class="btn btn-primary" id="Signin">
+        <input type="submit"  style="display:none" value="login" class="btn btn-primary">
     </div>
 </form>
 <!-- END Sign In Form -->
+@section Scripts {
+    <script type="text/javascript" src="~/js/PswCompare.js"></script>
+}
