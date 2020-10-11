@@ -50,12 +50,26 @@
                     <td>
                         @item.item_category
                     </td>
+                    @if(DateTime.Today.AddDays(-1) - item.order_date.Date  == TimeSpan.FromDays(0) || DateTime.Today == item.order_date.Date)
+                    {                    
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.order_id">Update Order</a> | <a asp-action="Delete" asp-route-id="@item.order_id">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.order_id">Update Order</a> | <a asp-action="Delete" asp-route-id="@item.order_id">Cancel Order</a>
                     </td>
+                    } else
+                    {
+                    <td>
+                        <a onclick="myAlert()">Update Order</a> | <a onclick="myAlert()">Cancel Order</a>
+                    </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
+
+    <script type="text/javascript">
+        function myAlert() {
+            alert("You cannot edit or cancel order which was made over more than day ago!");
+        }        
+    </script>
 </body>
 </html>

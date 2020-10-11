@@ -13,5 +13,6 @@ namespace projectWEB.Models
         public int item_quantity { get; set; }
         public int item_price { get; set; }
         public string item_category { get; set; }
+        public DateTime order_date { get; set; }
     }
 }

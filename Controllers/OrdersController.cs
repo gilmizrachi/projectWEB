@@ -50,7 +50,8 @@ namespace projectWEB.Controllers
                                item_quantity = o.item_quantity,
                                item_price = i.price,
                                item_category = c.name,
-                               order_id = o.id
+                               order_id = o.id,
+                               order_date = o.date
                            }).ToList();
 
             if (details == null)

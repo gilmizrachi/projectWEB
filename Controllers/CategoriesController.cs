@@ -97,7 +97,8 @@ namespace projectWEB.Controllers
             {
                 try
                 {
-                    _context.Update(category);
+                    var cat = _context.Category.First(c => c.id == id);
+                    _context.Entry(cat).CurrentValues.SetValues(category);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
