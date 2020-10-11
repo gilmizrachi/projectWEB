@@ -15,13 +15,13 @@ namespace projectWEB.Controllers
         {
             _context = context;
         }
-        public void setCategoriesMenu()
-        {
-            var modelCategory = _context.Categories.ToList();
-            ViewBag.modelCategory = modelCategory;
-            ViewBag.cart = HttpContext.Session.GetString("cart");
-            ViewBag.size = HttpContext.Session.GetInt32("size");
-            ViewBag.total = HttpContext.Session.GetString("total");
-        }
+        //public void setCategoriesMenu()
+        //{
+        //    var modelCategory = _context.Categories.ToList();
+        //    ViewBag.modelCategory = modelCategory;
+        //    ViewBag.cart = HttpContext.Session.GetString("cart");
+        //    ViewBag.size = HttpContext.Session.GetInt32("size");
+        //    ViewBag.total = HttpContext.Session.GetString("total");
+        //}
     }
 }

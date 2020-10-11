@@ -40,7 +40,7 @@ namespace projectWEB.Services
             {
                 var products = context.Products
                                     .Where(x => !x.IsDeleted && !x.Category.IsDeleted)
-                                    .OrderBy(x => x.ID)
+                                    .OrderBy(x => x.ID).Include(x => x.ProductPictures).Include(p => p.ProductRecords).ThenInclude(ps => ps.ProductSpecifications)
                                     .AsQueryable();
 
                 if (recordSize.HasValue && recordSize.Value > 0)
@@ -65,7 +65,7 @@ namespace projectWEB.Services
             {
                 var products = context.Products
                                     .Where(x => !x.IsDeleted && !x.Category.IsDeleted && x.isFeatured && !excludeProductIDs.Contains(x.ID))
-                                    .OrderBy(x => x.ID)
+                                    .OrderBy(x => x.ID).Include(x => x.ProductPictures).Include(p => p.ProductRecords).ThenInclude(ps => ps.ProductSpecifications)
                                     .AsQueryable();
 
                 if (recordSize.HasValue && recordSize.Value > 0)
@@ -87,7 +87,7 @@ namespace projectWEB.Services
             using (var context = new projectWEBContext(options))
             {
                 var products = context.Products
-                                  .Where(x => !x.IsDeleted && !x.Category.IsDeleted)
+                                  .Where(x => !x.IsDeleted && !x.Category.IsDeleted).Include(x => x.ProductPictures).Include(p => p.ProductRecords).ThenInclude(ps => ps.ProductSpecifications)
                                   .AsQueryable();
 
                 if (!string.IsNullOrEmpty(searchTerm))
@@ -172,7 +172,7 @@ namespace projectWEB.Services
             var options = DataContextHelper.GetNewContext();
             using (var context = new projectWEBContext(options))
             {
-                var products = context.Products.Where(x => !x.IsDeleted && !x.Category.IsDeleted);
+                var products = context.Products.Where(x => !x.IsDeleted && !x.Category.IsDeleted).Include(x => x.ProductPictures).Include(p => p.ProductRecords).ThenInclude(ps => ps.ProductSpecifications);
 
                 return products.Count() > 0 ? products.Max(x => x.Price) : 0;
             }

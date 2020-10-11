@@ -110,6 +110,7 @@ namespace projectWEB.Controllers
         }
         public List<Product> GetProductsByIDs(List<int> IDs)
         {
+            //var products = _context.Products.Include(x => x.ProductPictures).Include(p => p.ProductRecords).ThenInclude(ps => ps.ProductSpecifications).ToList();
             return IDs.Select(id => _context.Products.Find(id)).Where(x => !x.IsDeleted && !x.Category.IsDeleted).OrderBy(x => x.ID).ToList();
         }
         [HttpPost]

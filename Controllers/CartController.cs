@@ -397,7 +397,7 @@ namespace projectWEB.Controllers
         }
         public Product GetProductByID(int ID)
         {
-            var product = _context.Products.Include("Category.CategoryRecords").Include("ProductPictures.Picture").FirstOrDefault(x => x.ID == ID);
+            var product = _context.Products.Include("Category.CategoryRecords").Include(p => p.ProductRecords).ThenInclude(ps => ps.ProductSpecifications).FirstOrDefault(x => x.ID == ID);
 
             return product != null && !product.IsDeleted && !product.Category.IsDeleted ? product : null;
         }

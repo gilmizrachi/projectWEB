@@ -21,18 +21,7 @@ namespace projectWEB.Controllers
         {
         }
 
-        // GET: Items
-        [Authorize]
-        public async Task<IActionResult> index2()
-        {
-            return View(await _context.Products.ToListAsync());
-            //return View();
-        }
-        /*
-        public  IActionResult Index()
-        {
-            return View();
-        } */
+       
         [Authorize]
         public async Task<IActionResult> Item_Details(int id)
         {
@@ -71,7 +60,7 @@ namespace projectWEB.Controllers
         [Authorize]
         public async Task<IActionResult> Mainshop()
         {
-            setCategoriesMenu();
+            //setCategoriesMenu();
             return View(await _context.Products.ToListAsync());
         }
 

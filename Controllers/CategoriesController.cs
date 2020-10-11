@@ -40,7 +40,7 @@ namespace projectWEB.Controllers
                 model.CategoryWithChildrens = CategoryHelpers.MakeCategoriesHierarchy(categories);
             }
 
-            return View("_CategoriesMenu", model);
+            return PartialView("_CategoriesMenu", model);
         }
         public IActionResult CategoriesMenuMobile()
         {
@@ -180,12 +180,12 @@ namespace projectWEB.Controllers
             return _context.Categories.Any(e => e.ID == id);
         }
 
-        public async Task<IActionResult> showProductsOfCategory(int id)
-        {
-            setCategoriesMenu();
-            var items = await (_context.Products.Where(i => i.ID == id)).ToListAsync();
-            return View("~/Views/Items/mainshop.cshtml", items);
-        }
+        //public async Task<IActionResult> showProductsOfCategory(int id)
+        //{
+        //    //setCategoriesMenu();
+        //    var items = await (_context.Products.Where(i => i.ID == id)).ToListAsync();
+        //    return View("~/Views/Items/mainshop.cshtml", items);
+        //}
         public IActionResult FeaturedCategories(int recordSize = 8)
         {
             var categories = CategoriesService.Instance.GetFeaturedCategories(recordSize: recordSize);

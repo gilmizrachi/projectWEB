@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NUglify.Helpers;
 using projectWEB.Data;
 using projectWEB.Models;
 using System;
@@ -37,9 +38,9 @@ namespace projectWEB.Services
             using (var context = new projectWEBContext(options))
             {
                 var categories = context.Categories
-                                                    .Where(x => !x.IsDeleted)
-                                                    .OrderBy(x => x.ID)
-                                                    .AsQueryable();
+                                                .Where(x => !x.IsDeleted)
+                                                .OrderBy(x => x.ID).Include(x => x.CategoryRecords).Include(p => p.Products)
+                                                .AsQueryable();
 
                 if (recordSize.HasValue && recordSize.Value > 0)
                 {
@@ -63,7 +64,7 @@ namespace projectWEB.Services
             {
                 var categories = context.Categories
                                     .Where(x => !x.IsDeleted && x.isFeatured)
-                                    .OrderBy(x => x.ID)
+                                    .OrderBy(x => x.ID).Include(x => x.CategoryRecords).Include(p => p.Products).ThenInclude(pc=>pc.ProductRecords)
                                     .AsQueryable();
 
                 if (recordSize.HasValue && recordSize.Value > 0)
@@ -140,7 +141,7 @@ namespace projectWEB.Services
             {
                 var categories = context.Categories
                                     .Where(x => !x.ParentCategoryID.HasValue && !x.IsDeleted)
-                                    .OrderBy(x => x.ID)
+                                    .OrderBy(x => x.ID).Include(x => x.CategoryRecords).Include(p => p.Products).ThenInclude(pc => pc.ProductRecords).Include(asd=> asd.Products).ThenInclude(ps=>ps.ProductPictures)
                                     .AsQueryable();
 
                 if (recordSize.HasValue && recordSize.Value > 0)
@@ -276,7 +277,7 @@ namespace projectWEB.Services
                 {
                     categories = context.CategoryRecords
                                         .Where(x => !x.Category.IsDeleted && x.Name.ToLower().Contains(searchTerm.ToLower()))
-                                        .Select(x => x.Category)
+                                        .Select(x => x.Category).Include(x => x.CategoryRecords).Include(p => p.Products).ThenInclude(pc => pc.ProductRecords).Include(asd => asd.Products).ThenInclude(ps => ps.ProductPictures)
                                         .AsQueryable();
                 }
 

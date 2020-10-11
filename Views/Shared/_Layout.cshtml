@@ -11,20 +11,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @await Html.PartialAsync("_MetaTags",baseModel)
-    @await Html.PartialAsync("_HeaderStylesScripts")
+    @Html.Partial("_MetaTags",baseModel)
+    @Html.Partial("_HeaderStylesScripts")
     @RenderSection("IncludeHeaderStylesScripts", false)
     @*<link href="~/MetisMenu/metismenujs.min.css" rel="stylesheet" />*@
     @*<link href="~/css/metisMenu.css" rel="stylesheet" />*@
     <link href="~/Slinky/slinky2.min.css" rel="stylesheet" />
 </head>
 <body>
-    @await Html.PartialAsync("_Header")
+    @Html.Partial("_Header")
 
     @RenderBody()
-    @await Html.PartialAsync("_Footer")
-    @await Html.PartialAsync("_Variables")
-    @await Html.PartialAsync("_FooterStylesScripts")
+    @Html.Partial("_Footer")
+    @Html.Partial("_Variables")
+    @Html.Partial("_FooterStylesScripts")
     @RenderSection("IncludeFooterStyleScripts", false)
     <script src="~/Slinky/slinky.min.js"></script>
     <script>

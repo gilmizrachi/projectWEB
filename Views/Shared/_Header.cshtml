@@ -1,7 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using projectWEB.Helpers 
-@using projectWEB.Extensions 
-<header class="header-section">
+﻿<header class="header-section">
     <div class="header-top">
         <div class="container">
             <div class="ht-left">
@@ -129,7 +126,6 @@
     
     <div class="nav-item">
         <div class="container-fluid">
-
             @{ Html.RenderAction("CategoriesMenu", "Categories"); }
             <nav class="nav-menu mobile-menu">
                 <ul>
@@ -167,52 +163,7 @@
                             @("PP.Header.Menu.Checkout")
                         </a>
                     </li>
-                    @*<li class="@Html.MenuItemClass("Orders", "Checkout")">
-                    <a href="@Url.Checkout()">
-                        @("PP.Header.Menu.Checkout".Localized())
-                    </a>
-                    <ul class="dropdown">
-                        <li>
-                            <a href="@Url.Cart()">
-                                @("PP.Header.Menu.ShoppingCart".Localized())
-                            </a>
-                        </li>
-                    </ul>
-                </li>*@
-                    @*@if (User.Identity.IsAuthenticated)
-                {
-                    <li>
-                        <a href="#">
-                            @("PP.Header.Menu.Account".Localized())
-                        </a>
-                        <ul class="dropdown">
-                            @if (User.IsInRole("Administrator"))
-                            {
-                                <li>
-                                    <a href="@Url.Dashboard()">
-                                        @("PP.Header.Menu.Dashboard".Localized())
-                                    </a>
-                                </li>
-                            }
-                            <li>
-                                <a href="@Url.UserProfile()">
-                                    @("PP.Header.Menu.Profile".Localized())
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" id="btnLogOff">
-                                    @("PP.Header.Menu.LogOff".Localized())
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                }
-                else
-                {
-                    <li class="@Html.MenuItemClass("Users", "Login")">
-                        <a href="@Url.Login()">@("PP.Header.Menu.Login".Localized())</a>
-                    </li>
-                }*@
+                   
                 </ul>
             </nav>
             <div id="mobile-menu-wrap">

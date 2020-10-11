@@ -56,7 +56,7 @@ namespace projectWEB.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var projectWEBContext = _context.Products.Include(p => p.Category);
+            var projectWEBContext = _context.Products.Include(x => x.ProductPictures).Include(p => p.ProductRecords).ThenInclude(ps => ps.ProductSpecifications);
             return View(await projectWEBContext.ToListAsync());
         }
         [HttpGet]
