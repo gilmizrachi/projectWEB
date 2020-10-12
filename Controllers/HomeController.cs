@@ -32,7 +32,7 @@ namespace projectWEB.Controllers
             
             return View();
         }
-        public IActionResult OhhNo(int? id)
+        public IActionResult OhhNo(int id)
         {   ViewBag.ErrorId = id;
             return View();
         }
@@ -40,6 +40,7 @@ namespace projectWEB.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            return RedirectToAction("ohhNo");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

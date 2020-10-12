@@ -91,50 +91,30 @@ namespace projectWEB.Controllers
         {
                 if((_context.RegisteredUsers.Where(u => u.UserName == registeredUsers.UserName).Count())>0)
                 {
-                //throw f
+                
                 return View();
                 }
             ModelState.Remove("CreditCard");
             if (ModelState.IsValid)
                 {
-               // RegisteredUsers registeredUsers = new RegisteredUsers() { UserName = UserName, Email = Email, Password = Password };
+              
                 _context.Add(registeredUsers);
                     await _context.SaveChangesAsync();
                 var users = _context.RegisteredUsers.First(u => u.UserName == registeredUsers.UserName);
                 signin(users);
-                var cookie = HttpContext.Request.Cookies;
-                ValidateProfile(users);
+               
+               // ValidateProfile(users);
                 return RedirectToAction("Mainshop", "Items");
             }
                 return View("item","Items");
             
         }
-        /* public IActionResult OhhNo()
+        public IActionResult OhhNo()
         {
-
+            return View();
         }
         
-         public async IActionResult Signup([Bind("Id,UserName,Email,Password,MemberType")] RegisteredUsers registeredUsers)
-         {
-             if (ModelState.IsValid)
-             {
-                 if (ModelState.IsValid)
-                 {
-                     _context.Add(registeredUsers);
-                     await _context.SaveChangesAsync();
-                     return RedirectToAction(nameof(Index));
-                 }
-                 return View(registeredUsers);
-             }
-
-         }
-         /*
-         public async Task<IActionResult> Login()
-         {
-             return View(await _context.RegisteredUsers.ToListAsync());
-         }
-
-         */
+ 
         public IActionResult login()
         {
             return View();
@@ -152,10 +132,11 @@ namespace projectWEB.Controllers
                 HttpContext.Session.SetString("username",Username);
                 HttpContext.Session.SetString("email", users.Email);
                 HttpContext.Session.SetString("userId", users.id.ToString());
-                ValidateProfile(users);
-                return RedirectToAction("Mainshop","Items");//View(nameof(Index),);
+                if (_context.Transaction.Where(i => i.Customer.id == users.id && i.Status == 0).Any())
+                { ValidateProfile(users); }
+                return RedirectToAction("Mainshop","Items");
             }
-            //  return View( _context.RegisteredUsers.ToListAsync());
+            
             return View();
         }
 
@@ -193,14 +174,6 @@ namespace projectWEB.Controllers
                 return 1;
             }
         }
-            /*
-                    private void signin()
-                    {
-                       // HttpContext.Session.SetString("Logged", "5");
-                    }
-            */
-
-
 
 
             [Authorize(Roles ="Admin,Supervisor")]
@@ -210,6 +183,7 @@ namespace projectWEB.Controllers
             return View(await _context.RegisteredUsers.ToListAsync());
         }
 
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Edit()
         {
             
@@ -297,12 +271,9 @@ namespace projectWEB.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        /*
 
-           public IActionResult Index()
-        {
-            return View();
-        }
+
+     
         // GET: RegisteredUsers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -327,22 +298,6 @@ namespace projectWEB.Controllers
             return View();
         }
 
-        // POST: RegisteredUsers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,UserName,Email,Password,MemberType")] RegisteredUsers registeredUsers)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(registeredUsers);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(registeredUsers);
-        }
-
         // GET: RegisteredUsers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -362,6 +317,7 @@ namespace projectWEB.Controllers
         // POST: RegisteredUsers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,UserName,Email,Password,MemberType")] RegisteredUsers registeredUsers)
@@ -397,9 +353,6 @@ namespace projectWEB.Controllers
         // GET: RegisteredUsers/Delete/5
 
 
-        private bool RegisteredUsersExists(int id)
-        {
-            return _context.RegisteredUsers.Any(e => e.id == id);
-        } */
+
     }
 }

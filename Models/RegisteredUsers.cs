@@ -40,6 +40,7 @@ namespace projectWEB.Models
         private string CreditCardNo { get; set; }
 
         [RegularExpression(@"^[0-9]*$")]
+        [Display(Name = "Credit Card Info")]
         public string CreditCard
         {
             get

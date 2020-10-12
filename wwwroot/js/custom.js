@@ -249,7 +249,8 @@ $('.list-inline a[href="#"]').on('click', function (e) {
 
 //#rmv-from-cart
 removeitem = function () {
-	$("#rmvme").on('click', function (e) {
+	$("#rmv-from-cart").on("click", function (e) {
+		alert("Pressed");
 		e.preventDefault();
 		var remove = $(this).parent();
 		var removepanel = remove.next();

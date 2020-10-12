@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,13 +28,52 @@ namespace projectWEB.Controllers
             return;
 
         }
+      /*  private List<Item> Similar(AlsoTry Record)
+        {
+            var records = _context.AlsoTry.Where(a => !a.IsActive);
+            var history = Record.Getval(Record.S_Phrase);
+            var index = new List<Item>();
+                foreach(var r in history)
+            {
+                index.AddRange((IEnumerable<Item>)(from a in records
+                               where a.S_Phrase.Contains(r)
+                               select a.Transaction.GetCart()));
+                    
+            }
+            return index.GroupBy(a => a.id);
+           /* var other = from a in records
+        }                join b in history
+                        on a.S_Phrase */
+            //var LikeOther = 
+
+        private String Priority(AlsoTry profile)
+        {
+            var prices = profile.Budget().Count;
+            var searches = profile.Getval(profile.S_Phrase).Count;
+            return prices > searches ? "price" : "search";
+        }
+         
         //Get: Recommendation
         public async Task<IActionResult> Recomended()
         {
+            var id = int.Parse(HttpContext.User.FindFirst(x => x.Type == ClaimTypes.SerialNumber)?.Value);
+            var myrecord = _context.AlsoTry.Where(i => i.registeredUsers.id == id && i.IsActive).First();
+            var bought = _context.AlsoTry.Where(i => !i.IsActive);
             var rating = _context.Reviews.Where(i => i.Rate > 0).OrderByDescending(i => i.Rate).GroupBy(i=>i.Item);
-           // var similar = 
-                          
-                          
+           
+
+
+
+            /*var similar = bought.Join(myrecord,
+                b => b.Transaction.GetCart(),
+                m=> m.
+                )
+             var similar = from t in _context.AlsoTry
+                           join b in bought 
+                           on t.Getval(t.S_Phrase).Intersect()
+             
+            var similar = from b in bought
+                          join t in myrecord */
             return View(await _context.AlsoTry.ToListAsync());
         }
 
@@ -41,7 +82,7 @@ namespace projectWEB.Controllers
         {
             return View(await _context.AlsoTry.ToListAsync());
         }
-
+/*
         // GET: AlsoTries/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -165,6 +206,6 @@ namespace projectWEB.Controllers
         private bool AlsoTryExists(int id)
         {
             return _context.AlsoTry.Any(e => e.Id == id);
-        }
+        }*/
     }
 }

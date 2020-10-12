@@ -10,6 +10,8 @@ using projectWEB.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Internal;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace projectWEB.Controllers
 {
@@ -23,9 +25,8 @@ namespace projectWEB.Controllers
         }
         public void ValidStatistics()
         {
-            var Collector = _context;
         }
-        
+
         public async Task<IActionResult> CommitToBuy()
         {
             var Unpaid = _context.Transaction.Where(u => u.CustomerId.ToString() == HttpContext.Session.GetString("userId") && u.Status == 0).Include(p=>p.Cart).FirstOr(null);
@@ -108,22 +109,47 @@ namespace projectWEB.Controllers
             var UsrCart = _context.Transaction.Where(u => u.Customer.id.ToString() == HttpContext.Session.GetString("userId") && u.Status == 0).First();//.Include(p => p.Cart);
             var ItemRmv = _context.Item.Where(i => i.id == id).First();
             if (UsrCart.Cart.Contains(ItemRmv)) 
-            { 
+            {
+
+                UsrCart.SumPrice -= ItemRmv.price;
                 UsrCart.Cart.Remove(ItemRmv);
-                _context.Update(UsrCart);
+                if (UsrCart.GetCart().Count() <= 1)
+                { _context.Transaction.Remove(UsrCart); }
+                else
+                { _context.Update(UsrCart); }
                 await _context.SaveChangesAsync();
                 return true;
             }
+
             return false;
         }
         
                 // GET: Transactions
           public async Task<IActionResult> Index()
            {
-            var cart = _context.Transaction.Where(t => t.Customer.id.ToString() == HttpContext.Session.GetString("userId")).Include(p => p.Cart);
+            ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
+            var cart = _context.Transaction.Where(a=> a.Status == Status.Approved ).Include(t => t.Customer); //_context.Transaction.Where(t => t.Customer.id.ToString() == HttpContext.Session.GetString("userId")).Include(p => p.Cart);
             return View(cart);
 
            }
+        [Authorize]
+        public async Task<IActionResult> Accept(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var transaction = await _context.Transaction.FindAsync(id);
+            if (transaction == null)
+            {
+                return NotFound();
+            }
+            // ViewData["CustomerId"] = new SelectList(_context.RegisteredUsers, "id", "Email", transaction.CustomerId);
+            transaction.Status += 1;
+            ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
+            return StatusCode(200);
+        }
         /*
          * 06/10 before changes
          * 
@@ -273,7 +299,7 @@ namespace projectWEB.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 */
-                private bool TransactionExists(int id)
+        private bool TransactionExists(int id)
                 {
                     return _context.Transaction.Any(e => e.Id == id);
                 }

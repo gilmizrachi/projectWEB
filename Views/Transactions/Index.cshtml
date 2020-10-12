@@ -1,15 +1,13 @@
 ﻿@model IEnumerable<projectWEB.Models.Transaction>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+    ViewData["Title"] = "Pendig Transactions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Pendig Transactions</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -25,7 +23,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer.CreditCard)
+            </th>
+            
         </tr>
     </thead>
     <tbody>
@@ -43,13 +44,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.Cart)
+                @Html.DisplayFor(modelItem => item.Customer.CreditCard)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @if (ViewBag.membertype == "SalesPerson")
+                {<a asp-action="Accept" asp-route-id="@item.Id">Accept Payment</a>}| 
+                @if(ViewBag.membertype == "Admin")
+                {<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>}
             </td>
         </tr>
 }

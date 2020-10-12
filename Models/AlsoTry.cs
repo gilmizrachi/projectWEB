@@ -14,6 +14,16 @@ namespace projectWEB.Models
     public class AlsoTry
     {
         private const char DataSeparator = ',';
+        public List<string> Getval(string str)
+        {
+            string[] temparr = str.Split(DataSeparator);
+            List<string> vals = new List<string>();
+            foreach (var t in temparr)
+            {
+                vals.Add(t);
+            }
+            return vals;
+        }
         public List<int> Budget()
         {
             var templimit = this.PriceLimits;
@@ -48,6 +58,7 @@ namespace projectWEB.Models
             {
                 var templimit = new StringBuilder();
                 templimit.Append(this.PriceLimits);
+                templimit.Append(maxprice.ToString());
                 templimit.Append(DataSeparator);
                 this.PriceLimits = templimit.ToString();
             }
@@ -56,7 +67,7 @@ namespace projectWEB.Models
         public void AddSearchedPhrase(string phrase)
         {
 
-            if (S_Phrase == null)
+            if (this.S_Phrase == null)
             {
                 var newphrase = new StringBuilder();
                 newphrase.Append(phrase);
@@ -67,6 +78,7 @@ namespace projectWEB.Models
             {
                 var tempphrase = new StringBuilder();
                 tempphrase.Append(this.S_Phrase);
+                tempphrase.Append(phrase);
                 tempphrase.Append(DataSeparator);
                 this.S_Phrase = tempphrase.ToString();
             }
@@ -75,10 +87,10 @@ namespace projectWEB.Models
         public RegisteredUsers registeredUsers { get; set; }
 
         [Display(Name = "Searched Phrases")]
-        public String S_Phrase { get; set; } //list of user
+        public String S_Phrase { get; set; } //list of user searches converted to string
 
-        [Display(Name="Visited Items")]
-        public List<Item> V_Items { get; set; } //list of the items viewed
+        [Display(Name = "Visited Items")]
+        public List<Item> V_Items { get; set; } = new List<Item>();//list of the items viewed
         public int V_ItemNo { get; set; } = 0; //Number of items viewed by the user before purchase
         public Transaction Transaction { get; set; } // Final transaction that seals this record
         public String PriceLimits { get; set; } // user price limitations on search - estimate for customer budget.

@@ -1,6 +1,7 @@
 ﻿using projectWEB.Data;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,8 +35,10 @@ namespace projectWEB.Models
         }
         public int Id { get; set; }
         public  List<Item> Cart { get; set; }
+        [Display(Name ="Commit Date")]
         public DateTime TranscationDate { get; set; }
         public RegisteredUsers Customer { get; set; }
+        [Display(Name = "Total Value")]
         public float SumPrice { get; set; }
         public Status Status { get; set; }
         public int CustomerId { get; set; }
