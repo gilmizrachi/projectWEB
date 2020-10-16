@@ -14,13 +14,10 @@ using System.Threading.Tasks;
 
 namespace projectWEB.Controllers
 {
-    public class RegisteredUsersController : Controller
+    public class RegisteredUsersController : BaseController
     {
-        private readonly projectWEBContext _context;
-
-        public RegisteredUsersController(projectWEBContext context)
+        public RegisteredUsersController(projectWEBContext context) : base(context)
         {
-            _context = context;
         }
 
         public IActionResult signup()
@@ -145,7 +142,9 @@ namespace projectWEB.Controllers
         {
             return View();
         }
-        // GET: RegisteredUsers/Details/5
+        */
+        
+            // GET: RegisteredUsers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -268,6 +267,6 @@ namespace projectWEB.Controllers
         private bool RegisteredUsersExists(int id)
         {
             return _context.RegisteredUsers.Any(e => e.id == id);
-        } */
+        } 
     }
 }

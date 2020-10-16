@@ -13,7 +13,7 @@
     <meta name="keywords" content="Shop, fancyshmancy, wubbalubbadubdub">
     <meta name="description" content="">
     <meta name="author" content="">
-   
+
     <!-- Site Icons -->
     <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="~/favicon.ico">
@@ -32,6 +32,26 @@
     <link rel="stylesheet" href="~/css/prettyPhoto.css">
     <link rel="stylesheet" href="~/style.css">
 
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    @if (Context.Request.Path.Value.Contains("Info"))
+    {
+       
+        <style>
+            .mapouter {
+                position: relative;
+                text-align: right;
+                height: 500px;
+                width: 600px;
+            }
+
+            .gmap_canvas {
+                overflow: hidden;
+                background: none !important;
+                height: 500px;
+                width: 600px;
+            }
+        </style>
+    }
 
 
 
@@ -98,74 +118,31 @@
                                 <span class="icon-bar"></span>
                             </button>
                             <div class="logo-normal">
-                                <a class="navbar-brand" asp-action="index"><img src="~/images/logo-dark.png" alt=""></a>
+                                <a class="navbar-brand" asp-controller="Items" asp-action="Mainshop"><img src="~/images/logo-dark.png" alt=""></a>
                             </div>
                         </div>
 
                         <div id="navbar" class="navbar-collapse collapse">
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a asp-action="index">Home</a></li>
-                                <li><a href="@Url.Action("ListAllOrdersByDate","Orders")">Orders History</a></li>
-
-                                <li class="dropdown yamm-fw yamm-half">
-                                    <a href="#" data-toggle="dropdown" class="dropdown-toggle active">Mega Menu <b class="fa fa-angle-down"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <div class="yamm-content clearfix">
-                                                <div class="row-fluid">
-                                                    <div class="col-md-6 col-sm-6">
-                                                        <h4>Course Pages</h4>
-                                                        <ul>
-                                                            <li><a href="#">Courses Name 01</a></li>
-                                                            <li><a href="#">Courses Name 02</a></li>
-                                                            <li><a href="#">Courses Name 03</a></li>
-                                                            <li><a href="#">Courses Name 04</a></li>
-                                                            <li><a href="#">Courses Name 05</a></li>
-                                                            <li><a href="#">Courses Name 06</a></li>
-                                                            <li><a href="#">Courses Name 07</a></li>
-                                                            <li><a href="#">Courses Name 08</a></li>
-                                                            <li><a href="#">Courses Name 09</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-6">
-                                                        <div class="menu-widget text-center">
-                                                            <div class="image-wrap entry">
-                                                                <img src="~/upload/course_01.jpg" alt="" class="img-responsive">
-                                                                <div class="magnifier">
-                                                                    <a href="#" title=""><i class="flaticon-add"></i></a>
-                                                                </div>
-                                                            </div><!-- end image-wrap -->
-                                                            <h5><a href="#"> Implament </a></h5>
-                                                            <small>$22.00</small>
-                                                            <a href="#" class="menu-button">View Course</a>
-                                                        </div><!-- end widget -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li><a asp-controller="RegisteredUsers" asp-action="login">Login</a></li> <!-- keep it as an option -->
-                                <li class="dropdown hassubmenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Shop <span class="fa fa-angle-down"></span></a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">Shop</a></li>
-                                        <li><a asp-action="item_details">Shop Single</a></li> <!-- TODO: single item view -->
-                                    </ul>
-                                </li>
-                                <li class="dropdown hassubmenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">op.menu <span class="fa fa-angle-down"></span></a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">Obj one</a></li>
-                                        <li><a href="#">Obj two</a></li>
-                                        <li><a href="#">Obj four</a></li>
-                                        <li><a href="#l">Haha, jk</a></li>
-                                        <li><a href="#">Obj five</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Contact</a></li> <!-- TODO -->
+                                <li><a asp-controller="Items" asp-action="Mainshop">Home</a></li>
+                                <li><a href="@Url.Action("ListAllOrdersByDate","Orders")" style="color: cornflowerblue">Your Orders History</a></li>
+                              
+                                @*<li><a asp-controller="RegisteredUsers" asp-action="login">Login</a></li>*@ <!-- keep it as an option -->
+                                @if (ViewBag.membertype == "Admin")
+                                {
+                                    <li class="dropdown hassubmenu">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin<span class="fa fa-angle-down"></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a asp-controller="RegisteredUsers" asp-action="Index">Users</a></li>
+                                            <li><a asp-controller="Items" asp-action="Index">Items</a></li>
+                                            <li><a asp-controller="Orders" asp-action="Index">Orders</a></li>
+                                            <li><a asp-controller="Branches" asp-action="Index">Branches</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                                <li><a asp-controller="Branches" asp-action="Info">Contact</a></li> <!-- TODO -->
                                 <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
-                                <li class="iconitem"><a class="shopicon" href="shop-cart.html"><i class="fa fa-shopping-basket"></i> &nbsp;(0)</a></li>
+                                <li class="iconitem"><a class="shopicon" href="@Url.Action("Index","Cart")"><i class="fa fa-shopping-basket"></i> &nbsp;@(ViewBag.size != null ? ViewBag.size : 0)</a></li>
                             </ul>
                         </div>
                     </nav><!-- end navbar -->
@@ -193,7 +170,7 @@
                     }
                     else
                     {
-                        <p>You have @ViewBag.size item in your cart</p>
+                        <p>You have  item in your cart</p>
                         <p>Total price: $@ViewBag.total </p>
                         <p>
                             <a class="btn btn-success" href="@Url.Action("Index","Cart")" style="border: none !important; margin-left: 7px; padding: 8px 26px; margin-bottom: 5px;">View cart</a>
@@ -201,45 +178,45 @@
                         </p>
                     }
                 </div>
-                <div style="background-color: white; color: black; min-height:60px;">
-                    @if (ViewBag.RecommendedItem != null)
-                    {
-                        <p style="margin-top: 30px">You might like this item:</p>
+                @if (ViewBag.RecommendedItem != null)
+                {
+                    <div style="background-color: white; color: black; min-height:60px;">                     
+                            <p style="margin-top: 30px">You might like this item:</p>
 
-                        <div class="col-md-8">
-                            <div class="course-box shop-wrapper">
-                                <div class="image-wrap entry">
-                                    <img src="~/upload/shop_01.jpg" alt="" class="img-responsive"> <!-- TODO redirect to image method -->
-                                    <div class="magnifier">
-                                        <a asp-action="item_details" asp-route-id="@ViewBag.RecommendedItem.id" title=""><i class="flaticon-add"></i></a>
+                            <div class="col-md-8">
+                                <div class="course-box shop-wrapper">
+                                    <div class="image-wrap entry">
+                                        <img src="~/upload/shop_01.jpg" alt="" class="img-responsive"> <!-- TODO redirect to image method -->
+                                        <div class="magnifier">
+                                            <a asp-action="item_details" asp-route-id="@ViewBag.RecommendedItem.id" title=""><i class="flaticon-add"></i></a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- end image-wrap -->
-                                <div class="course-details shop-box text-center">
-                                    <h4>
-                                        <a asp-action="item_details" asp-route-id="@ViewBag.RecommendedItem.id" title="">@ViewBag.RecommendedItem.ItemName</a>
-                                        @*<small>@Html.DisplayFor(modelItem => item.ItemDevision)</small>*@
-                                    </h4>
-                                </div>
-                                <!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="@Url.Action("Add","Cart", new {id = @ViewBag.RecommendedItem.id})"><i class="fa fa-shopping-basket"></i> Add Cart</a></li> <!-- TODO cart model -->
-                                        </ul>
-                                    </div><!-- end left -->
+                                    <!-- end image-wrap -->
+                                    <div class="course-details shop-box text-center">
+                                        <h4>
+                                            <a asp-action="item_details" asp-route-id="@ViewBag.RecommendedItem.id" title="">@ViewBag.RecommendedItem.ItemName</a>
+                                            @*<small>@Html.DisplayFor(modelItem => item.ItemDevision)</small>*@
+                                        </h4>
+                                    </div>
+                                    <!-- end details -->
+                                    <div class="course-footer clearfix">
+                                        <div class="pull-left">
+                                            <ul class="list-inline">
+                                                <li><a href="@Url.Action("Add","Cart", new {id = @ViewBag.RecommendedItem.id})"><i class="fa fa-shopping-basket"></i> Add Cart</a></li> <!-- TODO cart model -->
+                                            </ul>
+                                        </div><!-- end left -->
 
-                                    <div class="pull-right">
-                                        <ul class="list-inline">
-                                            <li><a href="#">$@ViewBag.RecommendedItem.price</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
-                            </div><!-- end box -->
-                        </div><!-- end col -->
+                                        <div class="pull-right">
+                                            <ul class="list-inline">
+                                                <li><a href="#">$@ViewBag.RecommendedItem.price</a></li>
+                                            </ul>
+                                        </div><!-- end left -->
+                                    </div><!-- end footer -->
+                                </div><!-- end box -->
+                            </div><!-- end col -->                      
+                    </div>
                     }
                 </div>
-            </div>
             
 
             @RenderBody()

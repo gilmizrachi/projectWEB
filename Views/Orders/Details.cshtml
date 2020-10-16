@@ -6,70 +6,75 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
+    <div style="margin: auto 20%;">
+        <meta name="viewport" content="width=device-width" />
+        <title>Details</title>
+     </div>
 </head>
 <body>
-    <table class="table" style="margin: auto 20%; width: 60%; margin-bottom: 500px !important;">
-        <thead>
-            <tr>
-                <th>
-                    Order Number
-                </th>
-                <th>
-                    Item Name
-                </th>
-                <th>
-                    Quantity
-                </th>
-                <th>
-                    Total Price
-                </th>
-                <th>
-                    Category
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in (IEnumerable<dynamic>)ViewBag.Details)
-            {
+    <div style="margin: auto 20%;">
+        <table class="table" style="margin: auto 20%; width: 60%; margin-bottom: 500px !important;">
+            <thead>
                 <tr>
-                    <td>
-                        @item.order_number
-                    </td>
-                    <td>
-                        @item.item_name
-                    </td>
-                    <td>
-                        @item.item_quantity
-                    </td>
-                    <td>
-                        @(item.item_price * item.item_quantity)
-                    </td>
-                    <td>
-                        @item.item_category
-                    </td>
-                    @if(DateTime.Today.AddDays(-1) - item.order_date.Date  == TimeSpan.FromDays(0) || DateTime.Today == item.order_date.Date)
-                    {                    
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.order_id">Update Order</a> | <a asp-action="Delete" asp-route-id="@item.order_id">Cancel Order</a>
-                    </td>
-                    } else
-                    {
-                    <td>
-                        <a onclick="myAlert()">Update Order</a> | <a onclick="myAlert()">Cancel Order</a>
-                    </td>
-                    }
+                    <th>
+                        Order Number
+                    </th>
+                    <th>
+                        Item Name
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Total Price
+                    </th>
+                    <th>
+                        Category
+                    </th>
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in (IEnumerable<dynamic>)ViewBag.Details)
+                {
+                    <tr>
+                        <td>
+                            @item.order_number
+                        </td>
+                        <td>
+                            @item.item_name
+                        </td>
+                        <td>
+                            @item.item_quantity
+                        </td>
+                        <td>
+                            @(item.item_price * item.item_quantity)
+                        </td>
+                        <td>
+                            @item.item_category
+                        </td>
+                        @if (DateTime.Today.AddDays(-1) - item.order_date.Date == TimeSpan.FromDays(0) || DateTime.Today == item.order_date.Date)
+                        {
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.order_id">Update Order</a> | <a asp-action="Delete" asp-route-id="@item.order_id">Cancel Order</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <a onclick="myAlert()">Update Order</a> | <a onclick="myAlert()">Cancel Order</a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+     </div>
+        <script type="text/javascript">
+            function myAlert() {
+                alert("You cannot edit or cancel order which was made over more than day ago!");
             }
-        </tbody>
-    </table>
-
-    <script type="text/javascript">
-        function myAlert() {
-            alert("You cannot edit or cancel order which was made over more than day ago!");
-        }        
-    </script>
+        </script>
 </body>
 </html>

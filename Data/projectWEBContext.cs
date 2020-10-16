@@ -22,5 +22,7 @@ namespace projectWEB.Data
         public DbSet<projectWEB.Data.Category> Category { get; set; }
 
         public DbSet<projectWEB.Models.Order> Order { get; set; }
+
+        public DbSet<projectWEB.Models.Branch> Branch { get; set; }
     }
 }

@@ -130,7 +130,7 @@ namespace projectWEB.Controllers
             return View(item);
         }
 
-        /*
+        
                 // GET: Items/Details/5
                 public async Task<IActionResult> Details(int? id)
                 {
@@ -150,26 +150,26 @@ namespace projectWEB.Controllers
                 }
 
                 // GET: Items/Create
-                public IActionResult Create()
-                {
-                    return View();
-                }
+                //public IActionResult Create()
+                //{
+                //    return View();
+                //}
 
                 // POST: Items/Create
                 // To protect from overposting attacks, enable the specific properties you want to bind to, for 
                 // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-                [HttpPost]
-                [ValidateAntiForgeryToken]
-                public async Task<IActionResult> Create([Bind("id,ItemName,price,ItemDevision,Description,amount")] Item item)
-                {
-                    if (ModelState.IsValid)
-                    {
-                        _context.Add(item);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
-                    }
-                    return View(item);
-                }
+                //[HttpPost]
+                //[ValidateAntiForgeryToken]
+                //public async Task<IActionResult> Create([Bind("id,ItemName,price,ItemDevision,Description,amount")] Item item)
+                //{
+                //    if (ModelState.IsValid)
+                //    {
+                //        _context.Add(item);
+                //        await _context.SaveChangesAsync();
+                //        return RedirectToAction(nameof(Index));
+                //    }
+                //    return View(item);
+                //}
 
                 // GET: Items/Edit/5
                 public async Task<IActionResult> Edit(int? id)
@@ -255,6 +255,6 @@ namespace projectWEB.Controllers
                 {
                     return _context.Item.Any(e => e.id == id);
                 }
-        */
+      
     }
 }

@@ -84,7 +84,7 @@
                         <p>@Html.DisplayFor(modelItem => item.Description)</p>
 
                         <div class="shop-meta">
-                            <a href="#" class="btn btn-primary">Add to Cart</a>
+                            <a href="@Url.Action("Add","Cart", new {id = item.id})" class="btn btn-primary">Add to Cart</a>
                             <ul class="list-inline">
                                 <li> SKU: product-111</li>
                                 <li>Categories: <a href="#">@Html.DisplayFor(modelItem => item.ItemDevision)</a>

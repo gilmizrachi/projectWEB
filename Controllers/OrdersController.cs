@@ -135,6 +135,11 @@ namespace projectWEB.Controllers
             return View(order);
         }
 
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Order.ToListAsync());
+        }
+
         // UpdateQuantity
         // POST: Orders/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
