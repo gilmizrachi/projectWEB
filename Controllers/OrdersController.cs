@@ -62,6 +62,44 @@ namespace projectWEB.Controllers
             return View("Details");
         }
 
+        public IActionResult Statistics()
+        {
+            return View();
+        }
+
+        public string getSumMoneySpentPerDay()
+        {
+            var grouped =
+                (from o in _context.Order
+                 join i in _context.Item on o.item_id equals i.id
+                 where o.date.Date >= DateTime.Now.AddDays(-14)
+                 group new { o, i } by o.date.Date
+                 into g
+                 select new { date = g.Key, sum = g.Sum(x => x.o.item_quantity * x.i.price) }).ToList<dynamic>();
+
+            //Dictionary<string, string> map = new Dictionary<string, string>();
+            //grouped.ForEach(r => map.Add(r.date.ToString().Split(' ')[0], r.sum.ToString()));
+            //return JsonConvert.SerializeObject(map);
+            return JsonConvert.SerializeObject(grouped);
+        }
+
+        public string getNumOfProductsPurchasedPerDay()
+        {
+            var grouped =
+                (from o in _context.Order
+                 join i in _context.Item on o.item_id equals i.id
+                 where o.date.Date >= DateTime.Now.AddDays(-14)
+                 group new { o, i } by o.date.Date
+                 into g
+                 select new { date = g.Key, sum = g.Sum(x => x.o.item_quantity) }).ToList<dynamic>();
+
+            //Dictionary<string, string> map = new Dictionary<string, string>();
+            //grouped.ForEach(r => map.Add(r.date.ToString().Split(' ')[0], r.sum.ToString()));
+            //return JsonConvert.SerializeObject(map);
+            return JsonConvert.SerializeObject(grouped);
+
+        }
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
