@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using projectWEB.Data;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace projectWEB.Controllers
 {
@@ -108,6 +109,11 @@ namespace projectWEB.Controllers
                     if (item != null)
                     {
                         ViewBag.RecommendedItem = item;
+                    } 
+                    else
+                    {
+                        var orderedItemsIds = _context.Order.Where(o => o.user_id == int.Parse(HttpContext.Session.GetInt32("userId").ToString())).Select(o => o.item_id).ToList();
+                        ViewBag.RecommendedItem = _context.Item.Where(i => !orderedItemsIds.Contains(i.id)).FirstOrDefault();
                     }
                 }
             }
@@ -119,10 +125,14 @@ namespace projectWEB.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("id,ItemName,price,ItemDevision,Description,amount")] Item item)
+        public async Task<IActionResult> Create([Bind("id,ItemName,price,ItemDevision,Description,amount")] Item item, IFormFile file)
         {
             if (ModelState.IsValid)
             {
+                var memoryStream = new MemoryStream();
+                file.CopyTo(memoryStream);
+                var fileBytes = memoryStream.ToArray();
+                item.image = fileBytes;
                 _context.Add(item);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -192,7 +202,7 @@ namespace projectWEB.Controllers
                 // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
                 [HttpPost]
                 [ValidateAntiForgeryToken]
-                public async Task<IActionResult> Edit(int id, [Bind("id,ItemName,price,ItemDevision,Description,amount")] Item item)
+                public async Task<IActionResult> Edit(int id, [Bind("id,ItemName,price,ItemDevision,Description,amount")] Item item, IFormFile file)
                 {
                     if (id != item.id)
                     {
@@ -203,6 +213,13 @@ namespace projectWEB.Controllers
                     {
                         try
                         {
+                            if (file != null)
+                            {
+                                var memoryStream = new MemoryStream();
+                                file.CopyTo(memoryStream);
+                                var fileBytes = memoryStream.ToArray();
+                                item.image = fileBytes;
+                            }
                             _context.Update(item);
                             await _context.SaveChangesAsync();
                         }
@@ -255,6 +272,7 @@ namespace projectWEB.Controllers
                 {
                     return _context.Item.Any(e => e.id == id);
                 }
-      
+                
+        
     }
 }

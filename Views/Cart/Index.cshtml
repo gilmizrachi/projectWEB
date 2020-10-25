@@ -59,7 +59,6 @@
             dataType: "json",
             success: function (data) {
                 var sum = 0;
-                debugger;
                 for (var j = 0; j < Object.keys(data).length; j++){
                     var i = Object.keys(data)[j];
                    sum += data[i].price * data[i].quantity;

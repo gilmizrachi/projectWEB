@@ -18,7 +18,7 @@
             </div><!-- end col -->
             <div class="col-md-6 text-right">
                 <ul class="breadcrumb">
-                    <li><a href="javascript:void(0)">Implament</a></li>
+                    <li><a href="javascript:void(0)">Implement</a></li>
                     <li class="active">Shop</li>
                 </ul>
             </div>
@@ -36,10 +36,23 @@
                         <div class="col-md-12">
 
                             <div class="image-wrap entry">
-                                <img src="~/upload/single_shop_01.gif" alt="" class="img-responsive">
-                                <div class="magnifier">
-                                    <a rel="prettyPhoto[inline]" href="upload/single_shop_01.jpg" title=""><i class="flaticon-add"></i></a>
-                                </div>
+                                @if (item.image != null)
+                                {
+                                    var base64 = Convert.ToBase64String(item.image);
+                                    var imgSrc = String.Format("data:image;base64,{0}", base64);
+                                    <img src="@imgSrc" alt="" class="img-responsive">
+                                    <div class="magnifier">
+                                        <a rel="prettyPhoto[inline]" href="@imgSrc" title=""><i class="flaticon-add"></i></a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <img src="~/upload/shop_01.jpg" alt="" class="img-responsive">
+                                    <div class="magnifier">
+                                        <a rel="prettyPhoto[inline]" href="upload/single_shop_01.jpg" title=""><i class="flaticon-add"></i></a>
+                                    </div>
+                                }
+                                
                             </div><!-- end image-wrap -->
                         </div>
 
@@ -80,7 +93,7 @@
                 <div class="col-md-6">
                     <div class="shop-desc">
                         <h3>@Html.DisplayFor(modelItem => item.ItemName)</h3>
-                        <small>@Html.DisplayFor(modelItem => item.price)</small>
+                        <small>@Html.DisplayFor(modelItem => item.price)$</small>
                         <p>@Html.DisplayFor(modelItem => item.Description)</p>
 
                         <div class="shop-meta">
