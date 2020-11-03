@@ -29,26 +29,118 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.S_Phrase)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.V_ItemNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PriceLimits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<!--
+
+<table class="table">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.S_Phrase)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.V_ItemNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PriceLimits)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+            <th>
+                @@Html.DisplayNameFor(model => model.ItemName)
+            </th>
+            <th>
+                @@Html.DisplayNameFor(model => model.ItemDevision)
+            </th>
+            <th>
+                @@Html.DisplayNameFor(model => model.price)
+            </th>
+            <th>
+                @@Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
         </tr>
+    </thead>
+    <tbody>
+        @@foreach (var item in Model)
+        {
+            /*
+            <tr>
+                <td>
+                    @@Html.DisplayFor(modelItem => item.ItemName)
+                </td>
+                <td>
+                    @@Html.DisplayFor(modelItem => item.ItemDevision)
+                </td>
+                <td>
+                    @@Html.DisplayFor(modelItem => item.price)
+                </td>
+                <td>
+                    @@Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <!--
+                <a asp-action="Edit" asp-route-id="@@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@@item.Id">Delete</a> - ->
+                </td>
+            </tr>
+            */
+            <div class="col-md-3">
+                <div class="course-box shop-wrapper">
+                    <div class="image-wrap entry">
+                        <img src="~/upload/items/@@(Html.Raw(item.id)).jpg" alt="" class="img-responsive">
+                        <div class="magnifier">
+                            <a asp-action="item_details" asp-route-id="@@item.id" title=""><i class="flaticon-add"></i></a>
+                        </div>
+                    </div>
+                    <!-- end image-wrap - ->
+<div class="course-details shop-box text-center">
+    <h4>
+        <a asp-action="item_details" asp-route-id="@@item.id" title="">@@Html.DisplayFor(modelItem => item.ItemName)</a>
+        <small>@@Html.DisplayFor(modelItem => item.ItemDevision)</small>
+    </h4>
+</div>
+
+<!-- end details - ->
+<div class="course-footer clearfix">
+    <div class="pull-left">
+        <ul class="list-inline">
+            @@if (item.amount > 0)
+            {
+                <li><a href="#" id="AddCartLink" value='@@item.id'><i class="fa fa-shopping-basket"></i> Add Cart</a><input type="hidden" style="display:none" asp-controller="Transactions" asp-action="Addtocart" asp-route-id="@@item.id" id="AddToCart" /></li>
+                <!-- TODO cart model - ->
+
+            }
+            else
+            {
+                <a> <i class="fa fa-truck">This item is currntly out of stock</i> </a>
+            }
+        </ul>
+    </div><!-- end left - ->
+
+    <div class="pull-right">
+        <ul class="list-inline">
+            <li><a href="#">$@@Html.DisplayFor(modelItem => item.price)</a></li>
+        </ul>
+    </div><!-- end left - ->
+</div>
+                </div>
+            </div>
 }
     </tbody>
 </table>
+-->
+-->

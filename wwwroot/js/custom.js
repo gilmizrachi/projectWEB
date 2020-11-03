@@ -222,7 +222,7 @@ $("#confirmpayment").on("click", function (e) {
 					url: "/Transactions/CommitToBuy",
 					type: 'GET'
 				});
-				alert("Done.");
+				console.log('Payment succeeded:' + result);
 			}
 		});
 });
@@ -233,7 +233,7 @@ $("#AddToCart").click(function (e) {
 	$.ajax({
 		url: carturl,
 		type: 'GET',
-		success: function() { alert("success "+ carturl.val() ); }
+		success: function () { console.log('Item added to cart via item page'); }
 	})
 });
 // /Transactions/Addtocart/  #AddCartLink
@@ -243,12 +243,12 @@ $('.list-inline a[href="#"]').on('click', function (e) {
 	$.ajax({
 		url: url,
 		type: 'GET',
-		success: function () { alert("success " + carturl.val()); }
+		success: function () { console.log('Item added to cart via main page'); }
 	})
 });
 
 //#rmv-from-cart
-removeitem = function () {
+function removeitem() {
 	$("#rmv-from-cart").on("click", function (e) {
 		alert("Pressed");
 		e.preventDefault();
@@ -261,4 +261,47 @@ removeitem = function () {
 			}
 		});
 	});
-}
+};
+if($('.recomendation')[0]){
+	url = "/AlsoTries/Recomended"
+	$.ajax(
+		{
+			url: url,
+			type: 'GET',
+			success: function (items) {
+				$('div.related-products').html(items);
+			}
+		});
+
+};
+function rfc(e) {
+	//bootbox.alert("test rfc "+e);
+	bootbox.confirm({
+		message: "Are you sure?",
+		buttons: {
+			confirm: {
+				label: 'Yes',
+				className: 'btn-success'
+			},
+			cancel: {
+				label: 'No',
+				className: 'btn-danger'
+			}
+		},
+		callback: function (result) {
+			console.log('Item removal action succeeded: ' + result);
+			if (result == false) { console.log('No changes were made'); }
+			else {
+				url = "/Transactions/rmvfrmcart/" + e;
+				$.ajax({
+					url: url,
+					type: 'GET',
+					success: function () {
+						$('ul.cart-list').children('li').fadeOut(500);
+						listCart();
+					}
+				})
+			};
+		}
+	});
+};

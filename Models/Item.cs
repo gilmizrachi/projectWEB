@@ -19,11 +19,8 @@ namespace projectWEB.Data
         public string Description { get; set; }
 
         public int amount { get; set; }
+        public int Rating { get; set; }
         public virtual ICollection<Reviews> Comments { get; set; }
     }
 
-    public class locations
-    {
-
-    }
 }

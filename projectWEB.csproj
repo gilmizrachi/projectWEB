@@ -11,6 +11,8 @@
     <Compile Remove="Migrations\20200913073921_init1.Designer.cs" />
     <Compile Remove="Migrations\20200928155152_relations.cs" />
     <Compile Remove="Migrations\20200928155152_relations.Designer.cs" />
+    <Compile Remove="Migrations\20201103014458_ratingandlocations.cs" />
+    <Compile Remove="Migrations\20201103014458_ratingandlocations.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

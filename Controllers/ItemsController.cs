@@ -81,15 +81,22 @@ namespace projectWEB.Controllers
         {
             var it = _context.Item.Where(u => u.id == id);
             var usr = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.SerialNumber)?.Value;
-            var Profile = _context.AlsoTry.Where(u => u.registeredUsers.id.ToString() == usr && u.IsActive).First();
-            Profile.V_Items.Add(it.First());
-            Profile.V_ItemNo += 1;
-            _context.Update(Profile);
+            if (!_context.Transaction.Any(i => i.Customer.id.ToString() == usr&&i.Status==0)) {
+             Transaction transaction = new Transaction() { CustomerId = Int32.Parse(HttpContext.Session.GetString("userId")), SumPrice = 0 };
+            }
+            if (_context.AlsoTry.Where(u => u.registeredUsers.id.ToString() == usr && u.IsActive).Any())
+            {
+                var Profile = _context.AlsoTry.Where(u => u.registeredUsers.id.ToString() == usr && u.IsActive).First();
+                Profile.V_Items.Add(it.First());
+                Profile.V_ItemNo += 1;
+                _context.Update(Profile);
+                await _context.SaveChangesAsync();
+            }
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
             ViewBag.username = HttpContext.Session.GetString("username");
             ViewBag.email = HttpContext.Session.GetString("email");
             ViewBag.id = HttpContext.Session.GetString("userId");
-            await _context.SaveChangesAsync();
+            
             return View(it);
         }
         public IActionResult Create()
@@ -160,6 +167,15 @@ namespace projectWEB.Controllers
        // [Authorize]
         public async Task<IActionResult> Mainshop()
         {
+            var usr = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.SerialNumber)?.Value;
+
+            if (!_context.Transaction.Any(i => i.Customer.id.ToString() == usr && i.Status == 0))
+            {
+               // Transaction transaction = new Transaction() { CustomerId = Int32.Parse(HttpContext.Session.GetString("userId")), SumPrice = 0 };
+                Transaction transaction = new Transaction() { CustomerId = Int32.Parse(HttpContext.User.FindFirst(x => x.Type == ClaimTypes.SerialNumber).Value), SumPrice = 0 };
+                _context.Add(transaction);
+                await _context.SaveChangesAsync();
+            }
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
             // HttpContext.Session.SetString()
             return View(await _context.Item.ToListAsync());

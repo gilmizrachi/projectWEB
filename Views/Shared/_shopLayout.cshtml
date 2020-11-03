@@ -198,16 +198,16 @@
                             </li>
                             @if (ViewBag.membertype == "Admin")
                             {
-                                <li class="dropdown hassubmenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin<span class="fa fa-angle-down"></span></a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a asp-controller="RegisteredUsers" asp-action="Index">Users</a></li>
-                                        <li><a asp-controller="Items" asp-action="Index">Items</a></li>
-                                        <li><a href="#">Orders</a></li>
-                                        <li><a href="#">Haha, jk</a></li>
-                                        <li><a href="#">Obj five</a></li>
-                                    </ul>
-                                </li>
+                            <li class="dropdown hassubmenu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin<span class="fa fa-angle-down"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a asp-controller="RegisteredUsers" asp-action="Index">Users</a></li>
+                                    <li><a asp-controller="Items" asp-action="Index">Items</a></li>
+                                    <li><a href="#">Orders</a></li>
+                                    <li><a href="#">Haha, jk</a></li>
+                                    <li><a href="#">Obj five</a></li>
+                                </ul>
+                            </li>
                             }
                             <li><a asp-action="info">Contact</a></li> <!-- TODO -->
                             <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
@@ -222,9 +222,9 @@
                                 <li>
                                     <a href="#" class="photo"><img src="images/img-pro-01.jpg" class="cart-thumb" alt=""></a>
                                     <h6><a href="#">Delica omtantur </a></h6>
-                                    
-                                </li>
 
+                                </li>
+                                <!--TODO remove this demo list when everything works-->
                                 <li class="total">
                                     <a href="#" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
                                     <span class="float-right"><strong>Total</strong>: $180.00</span>
@@ -355,6 +355,7 @@
     <script src="~/js/animate.js"></script>
     <script src="~/js/bootstrap-select.min.js"></script>
     <script src="~/js/custom.js"></script>
+    <script src="~/js/bootbox.all.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

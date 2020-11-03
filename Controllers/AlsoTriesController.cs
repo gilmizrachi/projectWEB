@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using projectWEB.Data;
 using projectWEB.Models;
@@ -56,12 +57,20 @@ namespace projectWEB.Controllers
         //Get: Recommendation
         public async Task<IActionResult> Recomended()
         {
+
             var id = int.Parse(HttpContext.User.FindFirst(x => x.Type == ClaimTypes.SerialNumber)?.Value);
             var myrecord = _context.AlsoTry.Where(i => i.registeredUsers.id == id && i.IsActive).First();
-            var bought = _context.AlsoTry.Where(i => !i.IsActive);
-            var rating = _context.Reviews.Where(i => i.Rate > 0).OrderByDescending(i => i.Rate).GroupBy(i=>i.Item);
-           
-
+            var bought = _context.AlsoTry.Where(i => !i.IsActive).Include(p=>p.Transaction.Cart).ToList();
+            var rating = _context.Item.Where(i => i.Rating > 0).OrderByDescending(i => i.Rating).ToList();
+            var myPhrases = myrecord.Getval(myrecord.S_Phrase);
+          //  var similarse = myrecord.Getval(myrecord.S_Phrase).ForEach(i => bought.ForEach(f => f.S_Phrase.Contains(i)));
+            bought = bought.Where(i=>i.Similarity(myPhrases)>0).OrderByDescending(x => x.Similarity(myPhrases)).Take(3).ToList();
+            var boughtList = bought.Select(x => x.Transaction.Cart).Distinct();
+            var recomended = new List<Item>() ;
+            foreach (var lis in boughtList)
+                recomended.AddRange(lis);
+            recomended.AddRange(rating.Take(4 - recomended.Count()));
+            return View(recomended);
 
 
             /*var similar = bought.Join(myrecord,

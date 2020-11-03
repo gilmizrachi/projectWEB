@@ -24,6 +24,16 @@ namespace projectWEB.Models
             }
             return vals;
         }
+        public int Similarity(List<string> vals)
+        {
+            int res = 0;
+            foreach(var i in vals)
+            {
+                if (this.S_Phrase.Contains(i))
+                    res += 1;
+            }
+            return res;
+        }
         public List<int> Budget()
         {
             var templimit = this.PriceLimits;

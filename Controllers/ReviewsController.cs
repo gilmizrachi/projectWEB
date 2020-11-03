@@ -90,8 +90,11 @@ namespace projectWEB.Controllers
         {
             if (ItemId != null && CommentBody != null)
             {
+                var itemrate = _context.Reviews.Where(a => a.ItemId.ToString() == ItemId).ToList();
+                var item = _context.Item.Where(a => a.id.ToString() == ItemId).First();
+                item.Rating = (itemrate.Sum(a => a.Rate) + rating) / (itemrate.Count() + 1);
                 Reviews reviews = new Reviews { CommentBody = CommentBody, Item = _context.Item.First(u => u.id.ToString() == ItemId),registeredUsers=_context.RegisteredUsers.First(usr=>usr.id.ToString()== HttpContext.Session.GetString("userId")),Rate=rating,PublishTime=DateTime.Now,CommentTitle=CommentTitle };
-                
+                _context.Update(item);
                 _context.Add(reviews);
                 await _context.SaveChangesAsync();
                

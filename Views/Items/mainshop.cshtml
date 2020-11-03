@@ -27,7 +27,7 @@
                 <div class="clearfix">
                     <div class="pull-left">
                         <p> Showing 1–9 of 11 results</p>
-                        
+
                         <!-- submit was here before-->
                     </div>
                     <div class="pull-right">
@@ -45,69 +45,75 @@
 
             </div>
 
-                    <div class="row blog-grid shop-grid" id="shop-grid">
-                    @if (Model != null)
-                      {
-                        @foreach (var item in Model.Take(12))
-                        {
-                            <div class="col-md-3">
-                                <div class="course-box shop-wrapper">
-                                    <div class="image-wrap entry">
-                                        <img src="~/upload/items/@(Html.Raw(item.id)).jpg" alt="" class="img-responsive"> <!-- TODO redirect to image method -->
-                                        <div class="magnifier">
-                                            <a asp-action="item_details" asp-route-id="@item.id" title=""><i class="flaticon-add"></i></a>
-                                        </div>
+            <div class="row blog-grid shop-grid" id="shop-grid">
+                @if (Model != null)
+                {
+                    @foreach (var item in Model.Take(12))
+                    {
+                        <div class="col-md-3">
+                            <div class="course-box shop-wrapper">
+                                <div class="image-wrap entry">
+                                    <img src="~/upload/items/@(Html.Raw(item.id)).jpg" alt="" class="img-responsive"> <!-- TODO redirect to image method -->
+                                    <div class="magnifier">
+                                        <a asp-action="item_details" asp-route-id="@item.id" title=""><i class="flaticon-add"></i></a>
                                     </div>
-                                    <!-- end image-wrap -->
-                                    <div class="course-details shop-box text-center">
-                                        <h4>
-                                            <a asp-action="item_details" asp-route-id="@item.id" title="">@Html.DisplayFor(modelItem => item.ItemName)</a>
-                                            <small>@Html.DisplayFor(modelItem => item.ItemDevision)</small>
-                                        </h4>
-                                    </div>
-                                    <!-- end details -->
-                                    <div class="course-footer clearfix">
-                                        <div class="pull-left">
-                                            <ul class="list-inline">
-                                                @if (item.amount > 0) { 
-                                                <li><a href="#" id="AddCartLink" value='@item.id'><i class="fa fa-shopping-basket"></i> Add Cart</a><input type="hidden" style="display:none" asp-controller="Transactions" asp-action="Addtocart" asp-route-id="@item.id" id="AddToCart" /></li> <!-- TODO cart model -->
-                                                
-                                                }
-                                                else { <a> <i class="fa fa-truck">This item is currntly out of stock</i> </a>}
-                                            </ul>
-                                        </div><!-- end left -->
+                                </div>
+                                <!-- end image-wrap -->
+                                <div class="course-details shop-box text-center">
+                                    <h4>
+                                        <a asp-action="item_details" asp-route-id="@item.id" title="">@Html.DisplayFor(modelItem => item.ItemName)</a>
+                                        <small>@Html.DisplayFor(modelItem => item.ItemDevision)</small>
+                                    </h4>
+                                </div>
+                                <!-- end details -->
+                                <div class="course-footer clearfix">
+                                    <div class="pull-left">
+                                        <ul class="list-inline">
+                                            @if (item.amount > 0)
+                                            {
+                                                <li><a href="#" id="AddCartLink" value='@item.id'><i class="fa fa-shopping-basket"></i> Add Cart</a><input type="hidden" style="display:none" asp-controller="Transactions" asp-action="Addtocart" asp-route-id="@item.id" id="AddToCart" /></li>
+ <!-- TODO cart model -->
 
-                                        <div class="pull-right">
-                                            <ul class="list-inline">
-                                                <li><a href="#">$@Html.DisplayFor(modelItem => item.price)</a></li>
-                                            </ul>
-                                        </div><!-- end left -->
-                                    </div><!-- end footer -->
-                                </div><!-- end box -->
-                            </div><!-- end col -->
-                        }
-                       }
-                    </div><!-- end row -->
-                    
-                
-                    
-                <hr class="invis">
+                                            }
+                                            else
+                                            {
+                                                <a> <i class="fa fa-truck">This item is currntly out of stock</i> </a>
+}
+                                        </ul>
+                                    </div><!-- end left -->
 
-                <div class="row text-center">
-                    <div class="col-md-12">
-                        <ul class="pagination">
-                            <li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>
-                            <li class="active"><a href="javascript:void(0)">1</a></li>
-                            <li><a href="javascript:void(0)">2</a></li> <!-- TODO paging system with ajax -->
-                            <li><a href="javascript:void(0)">3</a></li>
-                            <li><a href="javascript:void(0)">...</a></li>
-                            <li><a href="javascript:void(0)">&raquo;</a></li>
-                        </ul>
-                    </div><!-- end col -->
-                </div><!-- end row -->
-            </div>
-        </div><!-- end container -->
- </section>
+                                    <div class="pull-right">
+                                        <ul class="list-inline">
+                                            <li><a href="#">$@Html.DisplayFor(modelItem => item.price)</a></li>
+                                        </ul>
+                                    </div><!-- end left -->
+                                </div><!-- end footer -->
+                            </div><!-- end box -->
+                        </div><!-- end col -->
+                    }
+                }
+            </div><!-- end row -->
 
-           
-   
+
+
+            <hr class="invis">
+
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <ul class="pagination">
+                        <li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>
+                        <li class="active"><a href="javascript:void(0)">1</a></li>
+                        <li><a href="javascript:void(0)">2</a></li> <!-- TODO paging system with ajax -->
+                        <li><a href="javascript:void(0)">3</a></li>
+                        <li><a href="javascript:void(0)">...</a></li>
+                        <li><a href="javascript:void(0)">&raquo;</a></li>
+                    </ul>
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div>
+    </div><!-- end container -->
+</section>
+@section Scripts {
+    <script type="text/javascript" src="~/js/jquery.prettyPhoto.js"></script>
+}
+

@@ -24,5 +24,7 @@ namespace projectWEB.Data
         public DbSet<projectWEB.Models.Transaction> Transaction { get; set; }
 
         public DbSet<projectWEB.Models.AlsoTry> AlsoTry { get; set; }
+
+        public DbSet<projectWEB.Models.Location> Location { get; set; }
     }
 }

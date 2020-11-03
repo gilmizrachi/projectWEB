@@ -8,21 +8,24 @@
 {
     foreach (var item in Model)
     {<!--data-dismiss="modal"-->
-        <button type="button" id="rmv-from-cart" value="@item.id" class="close" aria-label="Close" asp-controller="Transactions" asp-action="rmvfrmcart" asp-route-id="@item.id">
-            <span href="#" class="fa fa-trash" aria-hidden="true" id="rmvme"></span>
-        </button>
-        <li class="panel" id="cartitem">
-            <a href="#" class="photo"><img src="images/img-pro-01.jpg" class="cart-thumb" alt=""></a>
-            <h6><a asp-controller="Items" asp-action="item_details" asp-route-id="@item.id">@Html.DisplayFor(modelItem => item.ItemName) </a></h6>
-            <p>1x - <span class="price">$@Html.DisplayFor(modelItem => item.price)</span></p>
-        </li>
+<button onclick="rfc(@item.id)" type="button" id="rmv-from-cart" value="@item.id" class="close" aria-label="Close" asp-controller="Transactions" asp-action="rmvfrmcart" asp-route-id="@item.id">
+    <span href="#" class="fa fa-trash" aria-hidden="true" id="rmvme"></span>
+</button>
+<li class="panel" id="cartitem">
+    <a href="#" class="photo"><img src="~/upload/items/@(Html.Raw(item.id)).jpg" class="cart-thumb" alt=""></a>
+    <h6><a asp-controller="Items" asp-action="item_details" asp-route-id="@item.id">@Html.DisplayFor(modelItem => item.ItemName) </a></h6>
+    <p>1x - <span class="price">$@Html.DisplayFor(modelItem => item.price)</span></p>
+</li>
     }
-    <li class="total">
-        <button data-href="/Transactions/CommitToBuy" id="PayButton" class="btn btn-default hvr-hover btn-cart" data-toggle="modal" data-target="#confirm-pay">Pay Now</button>
-        <span class="float-right"><strong>Total</strong>: $@ViewBag.Total</span>
-    </li>
+<li class="total">
+    <button data-href="/Transactions/CommitToBuy" id="PayButton" class="btn btn-default hvr-hover btn-cart" data-toggle="modal" data-target="#confirm-pay">Pay Now</button>
+    <span class="float-right"><strong>Total</strong>: $@ViewBag.Total</span>
+</li>
 }
 else
 {
-    <img src="~/images/emptycart.png" width="250" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) style="width:100%">
+<img src="~/images/emptycart.png" width="250" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) style="width:100%">
 };
+@section Scripts {
+    <script src="~/js/custom.js"></script>
+}

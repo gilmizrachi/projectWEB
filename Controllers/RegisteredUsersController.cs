@@ -34,9 +34,9 @@ namespace projectWEB.Controllers
 
             var c = new AlsoTriesController(_context);
             c.NewProfile(profile);
-
+            _context.Add(profile);
+            // await _context.SaveChangesAsync();
             _context.SaveChanges();
-             
             
            
           

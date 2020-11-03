@@ -70,11 +70,11 @@ namespace projectWEB.Controllers
 
             Transaction transaction = new Transaction() { CustomerId = Int32.Parse(HttpContext.Session.GetString("userId")),SumPrice=0 };
         
-            if (ModelState.IsValid)
+          /*  if (ModelState.IsValid)
             {
-                
+             */   
                 if (Unpaid != null)
-                {   if (Unpaid.Cart.Where(u => u.id == chosenitem.id).Count() > 0) { return StatusCode(204); };
+                { //  if (Unpaid.Cart.Where(u => u.id == chosenitem.id).Count() > 0) { return StatusCode(204); };
                     Unpaid.AddCart(chosenitem);
                     _context.Update(Unpaid);
                     await _context.SaveChangesAsync();
@@ -87,7 +87,7 @@ namespace projectWEB.Controllers
                     await _context.SaveChangesAsync();
                 }
 
-            }
+           // }
 
             return View(transaction);
         }
@@ -106,14 +106,14 @@ namespace projectWEB.Controllers
         }
         public async Task<bool> rmvfrmcart(int id)
         {
-            var UsrCart = _context.Transaction.Where(u => u.Customer.id.ToString() == HttpContext.Session.GetString("userId") && u.Status == 0).First();//.Include(p => p.Cart);
+            var UsrCart = _context.Transaction.Where(u => u.Customer.id.ToString() == HttpContext.Session.GetString("userId") && u.Status == 0).Include(p => p.Cart).First();
             var ItemRmv = _context.Item.Where(i => i.id == id).First();
             if (UsrCart.Cart.Contains(ItemRmv)) 
             {
 
                 UsrCart.SumPrice -= ItemRmv.price;
                 UsrCart.Cart.Remove(ItemRmv);
-                if (UsrCart.GetCart().Count() <= 1)
+                if (UsrCart.GetCart().Count() < 1)
                 { _context.Transaction.Remove(UsrCart); }
                 else
                 { _context.Update(UsrCart); }
