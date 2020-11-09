@@ -83,7 +83,7 @@ namespace projectWEB.Controllers
              
             var similar = from b in bought
                           join t in myrecord */
-            return View(await _context.AlsoTry.ToListAsync());
+            
         }
 
         // GET: AlsoTries

@@ -180,7 +180,7 @@ $("nav.navbar.bootsnav ").each(function () {
 	$("li.side-menu > a", this).on("click", function (e) {
 		e.preventDefault();
 		listCart();
-		removeitem();
+		//removeitem();
 		$("nav.navbar.bootsnav > .side").toggleClass("on");
 		$("body").toggleClass("on-side");
 	});
@@ -191,7 +191,7 @@ $(".side .close-side").on("click", function (e) {
 	$("body").removeClass("on-side");
 });
 //pulls list of items for current user ---not yet finished--- 
-listCart= function () {
+ function listCart() {
 	var cart = $("#GetCart").attr("href");
 	$.ajax(
 		{

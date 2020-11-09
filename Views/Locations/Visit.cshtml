@@ -1,0 +1,35 @@
+﻿@model IEnumerable<projectWEB.Models.Location>
+
+@{
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+@foreach (var item in Model)
+{
+
+
+
+
+    <div class="col-md-4">
+        <div class="small-box">
+            <i class="flaticon-map-with-position-marker wow fadeIn" style="visibility: visible; animation-name: fadeIn;"></i>
+            <h4>Visit Our Office</h4>
+            <small> @Html.DisplayFor(modelItem => item.LocationName)</small>
+            <small>@Html.DisplayFor(modelItem => item.Street)  @Html.DisplayFor(modelItem => item.CityName)</small>
+            <p><a href="#" onclick="locate(@item.Lat,@item.Lng)">View on Google Map</a></p>
+            @if (ViewBag.membertype == "Admin")
+            {<a asp-controller="Locations" asp-action="Edit" asp-route-id="@item.Id">Edit</a>}
+
+        </div><!-- end small-box -->
+    </div><!-- end col -->
+
+}
+<div class="col-md-4">
+    <div class="small-box">
+        <i class="flaticon-share wow fadeIn" style="visibility: visible; animation-name: fadeIn;"></i>
+        <h4>Be Social</h4>
+        <small>Twitter: Bullshit</small>
+        <small>Facebook: facebook.com/yourhandle</small>
+        <p><a href="#">Email Newsletter</a></p>
+    </div><!-- end small-box -->
+</div><!-- end col -->

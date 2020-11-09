@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,7 +19,17 @@ namespace projectWEB.Controllers
         {
             _context = context;
         }
-
+        public IActionResult Visit()
+        {
+            ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
+            var locat = _context.Location.ToList();
+            return View(_context.Location.ToList());
+        }
+        public Array Locate()
+        {
+          
+            return _context.Location.ToArray();
+        }
         // GET: Locations
         public async Task<IActionResult> Index()
         {

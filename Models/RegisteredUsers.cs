@@ -48,7 +48,11 @@ namespace projectWEB.Models
                 if (string.IsNullOrEmpty(CreditCardNo)) return "✘";
                 else return "✅";
             }
-            set { CreditCardNo = value; }
+            set
+            {
+                if (value.Length > 1)
+                { CreditCardNo = value; }
+            }
 
         }
 

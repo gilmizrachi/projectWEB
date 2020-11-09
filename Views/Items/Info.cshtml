@@ -4,11 +4,15 @@
 @{ ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_shopLayout.cshtml"; }
 
+
+
 <div class="boxed boxedp4">
 
     <div id="map" class="wow slideInUp"></div>
-
+    
+    
     <div class="row contactv2 text-center">
+        <div class="office"></div>
         <div class="col-md-4">
             <div class="small-box">
                 <i class="flaticon-email wow fadeIn" style="visibility: visible; animation-name: fadeIn;"></i>
@@ -46,20 +50,20 @@
                 <h3>Contact Form</h3>
                 <p>Maecenas sit amet tristique turpis. Quisque porttitor eros quis leo pulvinar, at hendrerit sapien iaculis.</p>
             </div><!-- end title -->
-     <!-- <form class="big-contact-form" role="search">
-         <input type="text" class="form-control" placeholder="Enter your name..">
-         <input type="email" class="form-control" placeholder="Enter email..">
-         <input type="text" class="form-control" placeholder="Your phone..">
-         <input type="text" class="form-control" placeholder="Subject..">
-         <textarea class="form-control" placeholder="Message goes here.."></textarea>
-         <button type="submit" class="btn btn-primary">Submit</button>
-     </form>-->
+            <!-- <form class="big-contact-form" role="search">
+                <input type="text" class="form-control" placeholder="Enter your name..">
+                <input type="email" class="form-control" placeholder="Enter email..">
+                <input type="text" class="form-control" placeholder="Your phone..">
+                <input type="text" class="form-control" placeholder="Subject..">
+                <textarea class="form-control" placeholder="Message goes here.."></textarea>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>-->
         </div><!-- end col -->
     </div><!-- end row -->
 </div>
 @section Scripts {
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAkADq7R0xf6ami9YirAM1N-yl7hdnYBhM"></script>
-
-    <script src="~/js/map.js"></script>
+    <script src="~/js/mapit.js"></script>
+    <script src="~/js/charts.js"></script>
 
 }

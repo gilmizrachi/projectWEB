@@ -188,7 +188,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a asp-controller="RegisteredUsers" asp-action="login">Login</a></li> <!-- keep it as an option -->
+                            <li><a asp-controller="RegisteredUsers" asp-action="login">Login</a></li> 
                             <li class="dropdown hassubmenu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Shop <span class="fa fa-angle-down"></span></a>
                                 <ul class="dropdown-menu" role="menu">
@@ -203,13 +203,13 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a asp-controller="RegisteredUsers" asp-action="Index">Users</a></li>
                                     <li><a asp-controller="Items" asp-action="Index">Items</a></li>
-                                    <li><a href="#">Orders</a></li>
-                                    <li><a href="#">Haha, jk</a></li>
+                                    <li><a asp-controller="Transactions" asp-action="Index">Orders approval</a></li>
+                                    <li><a asp-controller="Locations" asp-action="Index">Branches & offices</a></li>
                                     <li><a href="#">Obj five</a></li>
                                 </ul>
                             </li>
                             }
-                            <li><a asp-action="info">Contact</a></li> <!-- TODO -->
+                            <li><a asp-action="info">Contact</a></li> 
                             <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
                             <li class="side-menu"><a class="shopicon" href="#"><i class="fa fa-shopping-bag"></i></a></li>
                         </ul>

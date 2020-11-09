@@ -7,7 +7,7 @@
 
 <h1>Edit</h1>
 
-<h4>RegisteredUsers</h4>
+<h4>Registered Users</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -30,8 +30,15 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MemberType" class="control-label"></label>
-                <input asp-for="MemberType" class="form-control" />
+                <label asp-for="MemberType" class="control-label"></label><br>
+                <input asp-for="MemberType" type="radio" id="BasicUser" value="BasicUser">
+                <label for="BasicUser">BasicUser</label><br>
+                <input asp-for="MemberType" type="radio" id="SalesPerson" value="SalesPerson">
+                <label for="SalesPerson">Sales Person</label><br>
+                <input asp-for="MemberType" type="radio" id="Supervisor" value="Supervisor">
+                <label for="Supervisor">Supervisor</label><br>
+                <input asp-for="MemberType" type="radio" id="Admin" value="Admin">
+                <label for="Admin">Site Admin</label>
                 <span asp-validation-for="MemberType" class="text-danger"></span>
             </div>
             <div class="form-group">

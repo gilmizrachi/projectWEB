@@ -78,10 +78,10 @@ namespace projectWEB.Controllers
           //  RedirectToAction( "item","Items");
           */
         }
-        public async Task<ViewResult> DoLogout()
+        public async Task<IActionResult> DoLogout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return View("Login");
+            return RedirectToAction("login");
         }
 
         [HttpPost]
@@ -183,21 +183,22 @@ namespace projectWEB.Controllers
             return View(await _context.RegisteredUsers.ToListAsync());
         }
 
-        [Authorize(Roles ="Admin")]
-        public async Task<IActionResult> Edit()
-        {
-            
-            var id =int.Parse( HttpContext.User.FindFirst(x => x.Type == ClaimTypes.SerialNumber)?.Value);
+        /*
+                [Authorize(Roles ="Admin")]
+                public async Task<IActionResult> Edit(int id)
+                {
 
-      
-            var registeredUsers = await _context.RegisteredUsers.FindAsync(id);
-            if (registeredUsers == null)
-            {
-                return NotFound();
-            }
-            return View(registeredUsers);
-        }
+                    //var id =int.Parse( HttpContext.User.FindFirst(x => x.Type == ClaimTypes.SerialNumber)?.Value);
 
+
+                    var registeredUsers = await _context.RegisteredUsers.FindAsync(id);
+                    if (registeredUsers == null)
+                    {
+                        return NotFound();
+                    }
+                    return View(registeredUsers);
+                }
+        */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddPayment(string CreditCardNo )
@@ -299,6 +300,7 @@ namespace projectWEB.Controllers
         }
 
         // GET: RegisteredUsers/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -326,7 +328,7 @@ namespace projectWEB.Controllers
             {
                 return NotFound();
             }
-
+            ModelState.Remove("CreditCard");
             if (ModelState.IsValid)
             {
                 try

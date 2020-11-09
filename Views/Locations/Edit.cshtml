@@ -1,11 +1,11 @@
 ﻿@model projectWEB.Models.Location
 
 @{
-    ViewData["Title"] = "Edit";
-    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+    ViewData["Title"] = "Edit Parameters";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Store Moved? Name Changes?</h2>
 
 <h4>Location</h4>
 <hr />
@@ -39,17 +39,26 @@
                 <input asp-for="Lng" class="form-control" />
                 <span asp-validation-for="Lng" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group btn btn-primary">
                 <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+            <div class="form-group btn btn-danger">
+                <a onclick="dltcfr(@Model.Id)"  class="btn btn-default">Delete</a>
             </div>
         </form>
     </div>
+    <div class="col-md-8" id="map"></div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Items" asp-action="info">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAkADq7R0xf6ami9YirAM1N-yl7hdnYBhM"></script>
+    <script src="~/js/map.js"></script>
+    <script src="~/js/bootbox.all.min.js"></script>
+    <script src="~/js/confirm.js"></script>
+    
 }

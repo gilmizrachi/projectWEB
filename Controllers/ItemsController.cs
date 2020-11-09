@@ -14,6 +14,7 @@ using projectWEB.Data;
 using projectWEB.Models;
 using Microsoft.AspNetCore.Http;
 using projectWEB.Migrations;
+using Newtonsoft.Json;
 
 namespace projectWEB.Controllers
 {
@@ -38,14 +39,25 @@ namespace projectWEB.Controllers
         public IActionResult Info()
         {
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
-           /*  var locations =[ ['<div class="infobox"><h3 class="title"><a href="#">Here we are</a></h3><span>Rishon Le Zion / Street</span><span> +972 3 444 55 66</span></div>',
-            31.970394,
-            34.771959,
-            1]]; 
-            ViewBag.location1.title= "info";
-            ViewBag.location1.latt = 31.970394;
-            ViewBag.location1.longt = 34.771959;*/
+            /*  var locations =[ ['<div class="infobox"><h3 class="title"><a href="#">Here we are</a></h3><span>Rishon Le Zion / Street</span><span> +972 3 444 55 66</span></div>',
+              ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints); */
+             List < ChartData > chartdata = new List<ChartData>();
 
+            chartdata.Add(new ChartData("01/01/2020", 10));
+            chartdata.Add(new ChartData("02/02/2020", 30));
+            chartdata.Add(new ChartData("03/03/2020", 17));
+            chartdata.Add(new ChartData("04/05/2020", 39));
+            chartdata.Add(new ChartData("05/05/2020", 30));
+            chartdata.Add(new ChartData("06/05/2020", 25));
+            chartdata.Add(new ChartData("07/09/2020", 15));
+            var bullshit = from a in _context.Transaction.Include(p => p.Cart)
+                           where a.Status != 0
+                           select new { sale_time = a.TranscationDate.ToShortDateString(),value = a.SumPrice };//value = a.Cart.Count() };
+            var da = bullshit.ToList();
+            ViewBag.DataPoints = JsonConvert.SerializeObject(chartdata);
+            ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
+            // ViewBag.DataPoints = JsonConvert.SerializeObject(da);
+            /*ViewBag.DataPoints = JsonConvert.SerializeObject(chartdata);  */             //.Where(a=>a.Status!=0).Include(p=>p.Cart).SelectMany(a=>a.Cart as objects)
             return View();
         }
 /*
@@ -164,7 +176,20 @@ namespace projectWEB.Controllers
         {
             return View();
         }
-       // [Authorize]
+        [AllowAnonymous]
+        public async Task<IActionResult> Manage()
+        {
+            var bullshit = from a in _context.Transaction.Include(p => p.Cart)
+                           where a.Status != 0
+                           select new { sale_time = a.TranscationDate.ToShortDateString(), value = a.SumPrice };//value = a.Cart.Count() };
+            var da = bullshit.ToList();
+            ViewBag.DataPoints = JsonConvert.SerializeObject(da);
+            ViewBag.usersList = await _context.RegisteredUsers.OrderByDescending(a => a.id).ToListAsync();
+            ViewBag.Waiting = await _context.Transaction.Where(a => a.Status == Status.Approved).ToListAsync();
+            return View();
+            
+        }
+        // [Authorize]
         public async Task<IActionResult> Mainshop()
         {
             var usr = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.SerialNumber)?.Value;
