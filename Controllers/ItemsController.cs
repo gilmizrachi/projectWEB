@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using projectWEB.Data;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using projectWEB.Models;
 
 namespace projectWEB.Controllers
 {
@@ -135,6 +136,13 @@ namespace projectWEB.Controllers
                 item.image = fileBytes;
                 _context.Add(item);
                 await _context.SaveChangesAsync();
+
+                FacebookApi fc = new FacebookApi();
+                fc.PublishMessage(item.ItemName + " is the newest product on our shopping site.\n"
+                     + "Description: " + item.Description + ".\n"
+                      + "Only: " + item.amount + "units remained! hurry up!\n"
+                       + "Price: " + item.price + "$");
+
                 return RedirectToAction(nameof(Index));
             }
             return View(item);
