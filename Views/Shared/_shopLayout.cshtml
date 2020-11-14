@@ -84,13 +84,14 @@
                 </div>
             </div>
             <!-- END # MODAL LOGIN -->
-
+            
             <header class="header header-normal">
                 <div class="topbar clearfix">
+                    <canvas id="myCanvas" width="35" height="35" style="position:absolute;"></canvas>
                     <div class="container">
-                        <div class="row-fluid">
+                        <div class="row-fluid">                         
                             <div class="col-md-6 col-sm-6 text-left">
-                                <p>
+                                <p>                                  
                                     <strong><i class="fa fa-phone"></i></strong> +972 123 123 45 67 &nbsp;&nbsp;
                                     <strong><i class="fa fa-envelope"></i></strong> <a href="mailto:#">info@webappcourse.com</a>
                                 </p>
@@ -117,7 +118,7 @@
                                 <a class="navbar-brand" asp-controller="Items" asp-action="Mainshop"><img src="~/images/logo-dark.png" alt=""></a>
                             </div>
                         </div>
-
+                        
                         <div id="navbar" class="navbar-collapse collapse">
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a asp-controller="Items" asp-action="Mainshop">Home</a></li>
@@ -233,7 +234,7 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-4">
                             <div class="widget clearfix">
-                                <h3 class="widget-title">Subscribe Our Newsletter</h3>
+                                @*<h3 class="widget-title">Subscribe Our Newsletter</h3>
                                 <div class="newsletter-widget">
                                     <p>You can opt out of our newsletters at any time.<br> See our <a href="#">privacy policy</a>.</p>
                                     <form class="form-inline" role="search">
@@ -243,7 +244,7 @@
                                         </div>
                                     </form>
                                     <img src="~/images/payments.png" alt="" class="img-responsive">
-                                </div><!-- end newsletter -->
+                                </div>*@
                             </div><!-- end widget -->
                         </div><!-- end col -->
 
@@ -251,7 +252,7 @@
                             <div class="widget clearfix">
                                 <h3 class="widget-title">Colman project</h3>
                                 <p> our web project </p>
-                                <a href="#" class="readmore"> Web application</a>
+                                <a href="#" class="readmore">Web application</a>
                             </div><!-- end widget -->
                         </div><!-- end col -->
 
@@ -263,33 +264,28 @@
                                         <li><a href="#">Store</a></li>
                                         <li><a href="#">Online</a></li>
                                         <li><a href="#">Shop</a></li>
-                                        <li><a href="#">Blabla</a></li>
-                                        <li><a href="#">Bla</a></li>
-                                        <li><a href="#">wasting</a></li>
-                                        <li><a href="#">Time</a></li>
-                                        <li><a href="#">For css</a></li>
-                                        <li><a href="#">and html</a></li>
+                                        <li><a href="#">Colman</a></li>
+                                        <li><a href="#">Web</a></li>
+                                        <li><a href="#">jQuery</a></li>
+                                        <li><a href="#">MVC</a></li>
+                                        <li><a href="#">CSS</a></li>
+                                        <li><a href="#">HTML</a></li>
                                         <li><a href="#">learning</a></li>
                                     </ul>
                                 </div><!-- end list-widget -->
                             </div><!-- end widget -->
                         </div><!-- end col -->
 
-                        <div class="col-lg-2 col-md-2">
+                        @*<div class="col-lg-2 col-md-2">
                             <div class="widget clearfix">
                                 <h3 class="widget-title">Support</h3>
                                 <div class="list-widget">
                                     <ul>
                                         <li><a href="#">Terms of Use</a></li>
-                                        <li><a href="#">Copyrights</a></li>
-                                        <li><a href="#">Create a Ticket</a></li>
-                                        <li><a href="#">Pricing & Plans</a></li>
-                                        <li><a href="#">Carrier</a></li>
-                                        <li><a href="#">Trademark</a></li>
                                     </ul>
-                                </div><!-- end list-widget -->
-                            </div><!-- end widget -->
-                        </div><!-- end col -->
+                                </div>
+                            </div>
+                        </div>*@
                     </div><!-- end row -->
                 </div><!-- end container -->
             </footer><!-- end footer -->
@@ -299,14 +295,14 @@
                     <div class="clearfix">
                         <div class="pull-left">
                             <div class="cop-logo">
-                                <a href="#"><img src="~/images/logo.png" alt=""></a>
+                                @*<a href="#"><img src="~/images/logo.png" alt=""></a>*@
                             </div>
                         </div>
 
                         <div class="pull-right">
                             <div class="footer-links">
                                 <ul class="list-inline">
-                                    <li>Design? : <a href="#">Bootstrap</a></li>
+                                    <li>Team #8</li>
                                 </ul>
                             </div>
                         </div>
@@ -323,7 +319,16 @@
     <script src="~/js/bootstrap-select.min.js"></script>
     <script src="~/js/custom.js"></script>
     <script src="~/js/site.js"></script>
-
+    <script type="text/javascript">
+        var c = document.getElementById("myCanvas");
+        var context = c.getContext("2d");
+        var clr = '#6495ED';
+        context.strokeStyle = clr;
+        context.beginPath(); context.moveTo(8, 4); context.lineTo(30, 32); context.stroke(); context.closePath();
+        context.beginPath(); context.moveTo(29, 4); context.lineTo(8, 31); context.stroke(); context.closePath();
+        context.beginPath(); context.moveTo(7, 32); context.lineTo(30, 32); context.stroke(); context.closePath();
+        context.beginPath(); context.moveTo(8, 4); context.lineTo(29, 5); context.stroke(); context.closePath();
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
