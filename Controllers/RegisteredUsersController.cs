@@ -62,22 +62,21 @@ namespace projectWEB.Controllers
         //public async Task<IActionResult> signup(string UserName,string Email,string Password) 
         public async Task<IActionResult> Signup([Bind("UserName,Email,Password")] RegisteredUsers registeredUsers)
         {
-                if((_context.RegisteredUsers.Where(u => u.UserName == registeredUsers.UserName).Count())>0)
-                {
-                //throw f
+            if((_context.RegisteredUsers.Where(u => u.UserName == registeredUsers.UserName).Count())>0)
+            {
+            //throw f
                 return View();
-                }
-                if (ModelState.IsValid)
-                {
-               // RegisteredUsers registeredUsers = new RegisteredUsers() { UserName = UserName, Email = Email, Password = Password };
+            }
+            if (ModelState.IsValid)
+            {
+            // RegisteredUsers registeredUsers = new RegisteredUsers() { UserName = UserName, Email = Email, Password = Password };
                 _context.Add(registeredUsers);
                     await _context.SaveChangesAsync();
                 var users = _context.RegisteredUsers.First(u => u.UserName == registeredUsers.UserName);
                 signin(users);
-                return View("index", Index());
-                }
-                return View("item","Items");
-            
+                return RedirectToAction("mainshop", "Items");
+            }
+            return View("item","Items");          
         }
 
         /*
