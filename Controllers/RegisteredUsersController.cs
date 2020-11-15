@@ -267,7 +267,9 @@ namespace projectWEB.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var registeredUsers = await _context.RegisteredUsers.FindAsync(id);
-            _context.RegisteredUsers.Remove(registeredUsers);
+            registeredUsers.Password = Guid.NewGuid().ToString();//making it impossible to login to user. 
+            _context.RegisteredUsers.Update(registeredUsers);
+            //_context.RegisteredUsers.Remove(registeredUsers);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -294,6 +296,7 @@ namespace projectWEB.Controllers
         }
 
         // GET: RegisteredUsers/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();

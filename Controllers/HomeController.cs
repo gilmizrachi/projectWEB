@@ -32,11 +32,7 @@ namespace projectWEB.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            
-            return View();
-        }
+
         public IActionResult OhhNo(int id)
         {   ViewBag.ErrorId = id;
             return View();
@@ -48,11 +44,8 @@ namespace projectWEB.Controllers
             return RedirectToAction("ohhNo");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        [HttpGet]
-        public IActionResult test()
-        {
-            return View();
-        }
+       
+
 
        /* [HttpPost]
         public async Task<IActionResult> test(IFormFile file)

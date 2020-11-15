@@ -322,13 +322,13 @@ $("#shop-grid").html("");
 			'<div class="image-wrap entry">' +
 			'<img src="/upload/items/' + data[it].id + '-0.jpg" alt="" style="height:30vh" class="img-responsive">' +
 			'<div class="magnifier">' +
-			'<a href"/item_details/' + data[it].id + '"  title=""><i class="flaticon-add"></i></a>' +
+			'<a href"item_details/' + data[it].id + '"  title=""><i class="flaticon-add"></i></a>' +
 			'</div>' +
 			'</div>' +
 			'<!-- end image-wrap -->' +
 			'<div class="course-details shop-box text-center">' +
 			'<h4>' +
-			'<a href="/item_details/' + data[it].id + '"  title="">' + data[it].ItemName + '</a>' +
+			'<a href="item_details/' + data[it].id + '"  title="">' + data[it].ItemName + '</a>' +
 			'<small>' + data[it].ItemDevision + '</small>' +
 			'</h4>' +
 			'</div>' +
