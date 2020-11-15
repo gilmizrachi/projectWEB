@@ -24,13 +24,6 @@ namespace projectWEB.Controllers
         }
 
 
-        public IActionResult Index1()
-        {
-            ViewBag.test2 =  HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
-            ViewBag.test = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Name)?.Value;
-
-            return View();
-        }
 
 
         public IActionResult OhhNo(int id)
