@@ -1,5 +1,5 @@
 ﻿function dltcfr(e) {
-	url = "/Locations/Delete/" + e;
+	url = "/Transactions/Delete/" + e;
 	$.ajax({
 		url: url,
 		type: 'GET',
@@ -7,7 +7,7 @@
 			nxt(res);
 		}
 	})
-	
+	console.log('Item removal action succeeded: ' + e);
 	function nxt(i) {
 		bootbox.confirm({
 			message: i,
@@ -22,11 +22,11 @@
 				}
 			},
 			callback: function (result) {
-				
+				console.log('Item removal action succeeded: ' + result);
 				if (result == false) { console.log('No changes were made'); }
 				else {
 					$("div.modal-body > div > div > form > input.btn.btn-default").submit();
-					console.log('Item removal action succeeded: ' + e);
+
 				};
 			}
 		});

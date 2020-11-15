@@ -237,8 +237,9 @@ $("#AddToCart").click(function (e) {
 	})
 });
 // /Transactions/Addtocart/  #AddCartLink
-$('.list-inline a[href="#"]').on('click', function (e) {
+again = $('.list-inline a[href="#"]').on('click', function (e) {
 	e.preventDefault();
+	$(this).parent().addClass('animated bounceOutUp');
 	url = "/Transactions/Addtocart/" + $(this).attr('value');
 	$.ajax({
 		url: url,
@@ -246,6 +247,7 @@ $('.list-inline a[href="#"]').on('click', function (e) {
 		success: function () { console.log('Item added to cart via main page'); }
 	})
 });
+
 
 //#rmv-from-cart
 function removeitem() {
@@ -305,3 +307,69 @@ function rfc(e) {
 		}
 	});
 };
+function nxpg(dx) {
+	var data = $("#ItemsVal").val();
+	data = JSON.parse(data);
+	//console.log(data);
+	const len = data.length;
+$("#shop-grid").html("");
+	for (var it = 12 * (dx-1); it < len && it < 12*dx ;it++) {
+		//console.log(data[it]);
+		//console.log(data[it].ItemName);
+		//console.log(data[it].id);
+		var ItemCard = '<div class="col-md-3">' +
+			'<div class="course-box shop-wrapper">' +
+			'<div class="image-wrap entry">' +
+			'<img src="/upload/items/' + data[it].id + '-0.jpg" alt="" style="height:30vh" class="img-responsive">' +
+			'<div class="magnifier">' +
+			'<a href"/item_details/' + data[it].id + '"  title=""><i class="flaticon-add"></i></a>' +
+			'</div>' +
+			'</div>' +
+			'<!-- end image-wrap -->' +
+			'<div class="course-details shop-box text-center">' +
+			'<h4>' +
+			'<a href="/item_details/' + data[it].id + '"  title="">' + data[it].ItemName + '</a>' +
+			'<small>' + data[it].ItemDevision + '</small>' +
+			'</h4>' +
+			'</div>' +
+			'<div class="course-footer clearfix">' +
+			'<div class="pull-left">' +
+			'<ul class="list-inline">' +
+			'<li><a href="#" id="AddCartLink" value="' + data[it].id + '"><i class="fa fa-shopping-basket"></i> Add Cart</a><input type="hidden" style="display:none" href="/Transactions/Addtocart/' + data[it].id + '" id="AddToCart" /></li>'+
+/* @if (item.amount > 0)
+			 {
+
+			 }
+			 else
+			 {
+			 <a> <i class="fa fa-truck">This item is currntly out of stock</i> </a>
+			 }*/
+			'</ul>' +
+			'</div><!-- end left -->' +
+			// @if (ViewBag.membertype != "BasicUser")
+			//{<a asp-action="Edit" asp-route-id="@item.id">Edit</a>}
+			'<div class="pull-right">' +
+			'<ul class="list-inline">' +
+			'<li><a href="#">$' + data[it].price + '</a></li>' +
+			'</ul>' +
+			'</div><!-- end left -->' +
+			'</div><!-- end footer -->' +
+			'</div><!-- end box -->' +
+			'</div><!-- end col -->'
+
+		
+		$("#shop-grid").append(ItemCard);
+
+	}
+	$(".pagination > .active").removeClass("active");
+	var spec = '<p> Showing ' + ((12 * (dx - 1))+1) + '-' + (12 * dx) + ' of ' + len + ' results</p>';
+	$("#showing").html(spec);
+	//$('li > #'+dx+'.pg').addClass("active");
+	again;
+	
+
+}
+$(".pagination  li  a").on("click", function () {
+	
+	$(this).parent().addClass("active");
+});

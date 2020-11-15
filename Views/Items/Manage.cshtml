@@ -4,6 +4,7 @@
     var waiting = ViewBag.Waiting as List<Transaction>;
 
 }
+<link href="~/css/chartist.css" rel="stylesheet">
 
 
 <section class="section gb nopadtop">
@@ -12,30 +13,28 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="row blog-grid">
-                        <div class="col-md-6">
+                        <div class="col-md-6"id="chart">
                             <div class="course-box">
                                 <div class="image-wrap entry">
-                                    <img src="upload/blog_02.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="blog-single.html" title=""><i class="flaticon-add"></i></a>
-                                    </div>
+                                   <h4>
+                                       Transaction current status
+                                   </h4>
                                 </div><!-- end image-wrap -->
+                                <input type="hidden" id="piedata" value="@ViewBag.statis" />
                                 <div class="course-details">
-                                    <h4>
-                                        <small>Language</small>
-                                        <a href="blog-single.html" title="">Learn English Online with our professional teachers</a>
-                                    </h4>
-                                    <p>Integer pellentesque justo vitae nisl sagittis, nec tristique erat tincidunt. Nunc varius euismod arcu ut volutpat. Praesent massa ex, sodales nullam. </p>
+                                    <div class="ct-chart-pie" id="chart2"></div>
+                                    <p>@ViewBag.statis[3] not paid</p>
+                                    <p>@ViewBag.statis[1] paid</p>
                                 </div><!-- end details -->
-                                <div class="course-footer clearfix">
-                                    <div class="pull-left">
-                                        <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-user"></i> Amanda</a></li>
-                                            <li><a href="#"><i class="fa fa-clock-o"></i> 14 Jun</a></li>
-                                            <li><a href="#"><i class="fa fa-eye"></i> 455 Views</a></li>
-                                        </ul>
-                                    </div><!-- end left -->
-                                </div><!-- end footer -->
+                                <!--div class="course-footer clearfix">
+        <div class="pull-left">
+            <ul class="list-inline">
+                <li><a href="#"><i class="fa fa-user"></i> Amanda</a></li>
+                <li><a href="#"><i class="fa fa-clock-o"></i> 14 Jun</a></li>
+                <li><a href="#"><i class="fa fa-eye"></i> 455 Views</a></li>
+            </ul>
+        </div><!-- end left -->
+                                <!--/!-div><!-- end footer -->
                             </div><!-- end box -->
                         </div><!-- end col -->
                         <input type="hidden" id="chartValue" value="@ViewBag.DataPoints" />
@@ -47,11 +46,11 @@
                                         <a href="blog-single.html" title=""><i class="flaticon-add"></i></a>
                                     </div>
                                 </div><!-- end image-wrap -->
-                                <div class="course-details"style="padding:0">
+                                <div class="course-details" style="padding:0">
                                     <svg></svg>
-                                    
+
                                 </div><!-- end details -->
-                                <div class="course-footer clearfix">
+                                <!--div class="course-footer clearfix">
                                     <div class="pull-left">
                                         <ul class="list-inline">
                                             <li><a href="#"><i class="fa fa-user"></i> Bob DOE</a></li>
@@ -59,34 +58,33 @@
                                             <li><a href="#"><i class="fa fa-eye"></i> 444 Views</a></li>
                                         </ul>
                                     </div><!-- end left -->
-                                </div><!-- end footer -->
+                                <!--/!-div><!-- end footer -->
                             </div><!-- end box -->
                         </div><!-- end col -->
 
                         <div class="col-md-6">
                             <div class="course-box">
-                                <div class="image-wrap entry">
-                                    <img src="upload/blog_01.jpg" alt="" class="img-responsive">
-                                    <div class="magnifier">
-                                        <a href="blog-single.html" title=""><i class="flaticon-add"></i></a>
-                                    </div>
-                                </div><!-- end image-wrap -->
+
                                 <div class="course-details">
+                                    <div class="small-box">
+                                        <i class="flaticon-add text-center wow fadeIn" style="visibility: visible; animation-name: fadeIn;"></i>
+                                    </div>
                                     <h4>
-                                        <small>Tips & Tricks</small>
-                                        <a href="blog-single.html" title="">Buy a Macbook and learn code today like a pro</a>
+                                        <a asp-controller="Items" asp-action="Create" title="">Add More Items</a>
                                     </h4>
+
                                     <p>Nulla nisl velit, lobortis vel luctus eu, rutrum ac elit. Donec nec condimentum libero. Maecenas rutrum sit amet mi vel hendrerit. Praesent tempor id. </p>
+                                    <a asp-action="Create" />
                                 </div><!-- end details -->
-                                <div class="course-footer clearfix">
+                                <!--div class="course-footer clearfix">
                                     <div class="pull-left">
                                         <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-user"></i> Edulogy</a></li>
+                                            <li><a href="#"><i class="fa fa-user"></i>  </a></li>
                                             <li><a href="#"><i class="fa fa-clock-o"></i> 12 Jun</a></li>
                                             <li><a href="#"><i class="fa fa-eye"></i> 444 Views</a></li>
                                         </ul>
                                     </div><!-- end left -->
-                                </div><!-- end footer -->
+                                <!--/!-div--><!-- end footer -->
                             </div><!-- end box -->
                         </div><!-- end col -->
 
@@ -108,7 +106,7 @@
                                 <div class="course-footer clearfix">
                                     <div class="pull-left">
                                         <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-user"></i> Amanda</a></li>
+                                            <li><a href="#"><i class="fa fa-user"></i>  </a></li>
                                             <li><a href="#"><i class="fa fa-clock-o"></i> 11 Jun</a></li>
                                             <li><a href="#"><i class="fa fa-eye"></i> 441 Views</a></li>
                                         </ul>
@@ -135,7 +133,7 @@
                                 <div class="course-footer clearfix">
                                     <div class="pull-left">
                                         <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-user"></i> Jenny DOE</a></li>
+                                            <li><a href="#"><i class="fa fa-user"></i>  </a></li>
                                             <li><a href="#"><i class="fa fa-clock-o"></i> 10 Jun</a></li>
                                             <li><a href="#"><i class="fa fa-eye"></i> 178 Views</a></li>
                                         </ul>
@@ -162,7 +160,7 @@
                                 <div class="course-footer clearfix">
                                     <div class="pull-left">
                                         <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-user"></i> Martin</a></li>
+                                            <li><a href="#"><i class="fa fa-user"></i>  </a></li>
                                             <li><a href="#"><i class="fa fa-clock-o"></i> 09 Jun</a></li>
                                             <li><a href="#"><i class="fa fa-eye"></i> 55 Views</a></li>
                                         </ul>
@@ -189,7 +187,7 @@
                                 <div class="course-footer clearfix">
                                     <div class="pull-left">
                                         <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-user"></i> Edulogy</a></li>
+                                            <li><a href="#"><i class="fa fa-user"></i>  </a></li>
                                             <li><a href="#"><i class="fa fa-clock-o"></i> 05 Jun</a></li>
                                             <li><a href="#"><i class="fa fa-eye"></i> 444 Views</a></li>
                                         </ul>
@@ -216,7 +214,7 @@
                                 <div class="course-footer clearfix">
                                     <div class="pull-left">
                                         <ul class="list-inline">
-                                            <li><a href="#"><i class="fa fa-user"></i> Bob DOE</a></li>
+                                            <li><a href="#"><i class="fa fa-user"></i>  </a></li>
                                             <li><a href="#"><i class="fa fa-clock-o"></i> 01 Jun</a></li>
                                             <li><a href="#"><i class="fa fa-eye"></i> 55 Views</a></li>
                                         </ul>
@@ -228,18 +226,7 @@
 
                     <hr class="invis">
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul class="pagination">
-                                <li class="disabled"><a href="javascript:void(0)">&laquo;</a></li>
-                                <li class="active"><a href="javascript:void(0)">1</a></li>
-                                <li><a href="javascript:void(0)">2</a></li>
-                                <li><a href="javascript:void(0)">3</a></li>
-                                <li><a href="javascript:void(0)">...</a></li>
-                                <li><a href="javascript:void(0)">&raquo;</a></li>
-                            </ul>
-                        </div><!-- end col -->
-                    </div><!-- end row -->
+
                 </div><!-- end col -->
 
                 <div class="sidebar col-md-4">
@@ -248,7 +235,7 @@
                         <div class="post-widget">
                             <!-- <div class="media"> end col
 
-        <div class="media-body">-->
+                            <div class="media-body">-->
                             <div class="table-responsive" style="overflow-x:hidden">
                                 <table class="table table-striped first">
                                     <thead>
@@ -267,7 +254,7 @@
                                         {
                                             <tr>
                                                 <td>
-                                                    @item.UserName
+                                                    <a asp-controller="RegisteredUsers" asp-action="Edit" asp-route-id="@item.id"> @item.UserName </a>
                                                 </td>
                                                 <td>
                                                     @item.MemberType
@@ -303,10 +290,13 @@
                                     {
                                         <tr>
                                             <td>
-                                                @item.Customer.UserName
+                                                <a asp-controller="Transactions" asp-action="Edit" asp-route-id="@item.Id"> @item.Customer.UserName </a>
                                             </td>
                                             <td>
                                                 @item.SumPrice
+                                            </td>
+                                            <td>
+                                                <a onclick="dltcfr(@item.Id)" class="btn btn-danger">Delete</a>
                                             </td>
 
                                         </tr>
@@ -342,9 +332,13 @@
 @section scripts{
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="~/js/data-table.js"></script>
-    <!-- <script src="~/js/jquery.dataTables.min.js"></script>-->
+    <script src="~/js/bootbox.all.min.js"></script>
     <script src="~/js/dataTables.bootstrap4.min.js"></script>
-    <script src="~/js/bootstrap.bundle.js"></script>
+    <!-- <script src="~/js/bootstrap.bundle.js"></script>-->
+    <script src="~/js/chartist.min.js"></script>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <!--script src="~/js/c3.min.js"></-script-->
     <script src="~/js/charts.js"></script>
+    <script src="~/js/ManageHelper.js"></script>
+
 }

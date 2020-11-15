@@ -150,6 +150,46 @@ namespace projectWEB.Controllers
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
             return StatusCode(200);
         }
+
+
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var transaction = await _context.Transaction
+                .Include(t => t.Customer)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (transaction == null)
+            {
+                return NotFound();
+            }
+
+            return View(transaction);
+        }
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DelConf(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var transaction = await _context.Transaction
+                .Include(t => t.Customer)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (transaction == null)
+            {
+                return NotFound();
+            }
+
+            return View(transaction);
+        }
+
         /*
          * 06/10 before changes
          * 

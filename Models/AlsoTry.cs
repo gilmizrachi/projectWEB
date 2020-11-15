@@ -16,21 +16,28 @@ namespace projectWEB.Models
         private const char DataSeparator = ',';
         public List<string> Getval(string str)
         {
-            string[] temparr = str.Split(DataSeparator);
-            List<string> vals = new List<string>();
-            foreach (var t in temparr)
+            if (!string.IsNullOrEmpty(str))
             {
-                vals.Add(t);
+                string[] temparr = str.Split(DataSeparator);
+                List<string> vals = new List<string>();
+                foreach (var t in temparr)
+                {
+                    vals.Add(t);
+                }
+                return vals;
             }
-            return vals;
+            return null;
         }
         public int Similarity(List<string> vals)
         {
             int res = 0;
-            foreach(var i in vals)
+            if (vals.Count()>0)
             {
-                if (this.S_Phrase.Contains(i))
-                    res += 1;
+                foreach (var i in vals)
+                {
+                    if (this.S_Phrase.Contains(i))
+                        res += 1;
+                }
             }
             return res;
         }

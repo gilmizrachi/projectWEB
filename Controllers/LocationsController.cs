@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,7 @@ namespace projectWEB.Controllers
         public IActionResult Visit()
         {
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
-            var locat = _context.Location.ToList();
+           // var locat = _context.Location.ToList();
             return View(_context.Location.ToList());
         }
         public Array Locate()
@@ -31,12 +32,13 @@ namespace projectWEB.Controllers
             return _context.Location.ToArray();
         }
         // GET: Locations
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Location.ToListAsync());
-        }
+        /* public async Task<IActionResult> Index()
+         {
+             return View(await _context.Location.ToListAsync());
+         }*/
 
         // GET: Locations/Details/5
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -55,6 +57,7 @@ namespace projectWEB.Controllers
         }
 
         // GET: Locations/Create
+        [Authorize(Roles = "Admin,Supervisor")]
         public IActionResult Create()
         {
             return View();
@@ -63,6 +66,7 @@ namespace projectWEB.Controllers
         // POST: Locations/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,LocationName,CityName,Street,Lat,Lng")] Location location)
@@ -75,7 +79,7 @@ namespace projectWEB.Controllers
             }
             return View(location);
         }
-
+        [Authorize(Roles = "Admin,Supervisor")]
         // GET: Locations/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -126,7 +130,7 @@ namespace projectWEB.Controllers
             }
             return View(location);
         }
-
+        [Authorize(Roles = "Admin,Supervisor")]
         // GET: Locations/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -146,6 +150,7 @@ namespace projectWEB.Controllers
         }
 
         // POST: Locations/Delete/5
+        [Authorize(Roles = "Admin,Supervisor")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

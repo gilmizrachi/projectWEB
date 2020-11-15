@@ -4,52 +4,73 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link rel="stylesheet" href="~/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/style.css">
 
 <h2>Edit</h2>
 
 <h4>Item</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="id" />
-            <div class="form-group">
-                <label asp-for="ItemName" class="control-label"></label>
-                <input asp-for="ItemName" class="form-control" />
-                <span asp-validation-for="ItemName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="price" class="control-label"></label>
-                <input asp-for="price" class="form-control" />
-                <span asp-validation-for="price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ItemDevision" class="control-label"></label>
-                <input asp-for="ItemDevision" class="form-control" />
-                <span asp-validation-for="ItemDevision" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="amount" class="control-label"></label>
-                <input asp-for="amount" class="form-control" />
-                <span asp-validation-for="amount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+    <div class="col-md-1"></div>
+        <div class="col-md-8">
+            <form enctype="multipart/form-data" asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="id" />
+                <div class="form-group">
+                    <label asp-for="ItemName" class="control-label"></label>
+                    <input asp-for="ItemName" class="form-control" />
+                    <span asp-validation-for="ItemName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="price" class="control-label"></label>
+                    <input asp-for="price" class="form-control" />
+                    <span asp-validation-for="price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ItemDevision" class="control-label"></label>
+                    <input asp-for="ItemDevision" class="form-control" />
+                    <span asp-validation-for="ItemDevision" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="amount" class="control-label"></label>
+                    <input asp-for="amount" class="form-control" />
+                    <span asp-validation-for="amount" class="text-danger"></span>
+                </div>
+                <!-- test for image upload -->
+                <div class="col-md-3"><strong>Primery image:</strong> <img style="height:30vh; width:auto" src="~/upload/items/@(Html.Raw(Model.id))-0.jpg" alt="" class="img-responsive" /> <input type="file" name="FormFile0" id="flPhoto" accept=".jpg"  /> </div>
+                <div class="col-md-3"><strong>Additional image No.1</strong> <img style="height:30vh; width:auto" src="~/upload/items/@(Html.Raw(Model.id))-1.jpg" alt="" class="img-responsive" /> <input type="file" name="FormFile1" id="flPhoto" accept=".jpg" /> </div>
+                <div class="col-md-3"><strong>Additional image No.2</strong> <img style="height:30vh; width:auto" src="~/upload/items/@(Html.Raw(Model.id))-2.jpg" alt="" class="img-responsive" /> <input type="file" name="FormFile2" id="flPhoto" accept=".jpg" /> </div>
+                <div class="col-md-3"><strong>Additional image No.3</strong> <img style="height:30vh; width:auto" src="~/upload/items/@(Html.Raw(Model.id))-3.jpg" alt="" class="img-responsive" /> <input type="file" name="FormFile3" id="flPhoto" accept=".jpg" /> </div>
+
+                <!-- end test for image upload -->
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-secondary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <div>
+        <a asp-action="Manage" >Take Me Back </a>
+    </div>
+    <hr />
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        <script>
+            $(function () {
+                $("input[type = 'submit']").click(function (e) {
+                    var $fileUpload = $("input[type='file']");
+                    if (parseInt($fileUpload.get(0).files.length) > 4) {
+                        e.preventDefault();
+                        alert("You are only allowed to upload a maximum of 4 files");
+                    }
+                });
+            });
+        </script>
+    }

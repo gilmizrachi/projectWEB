@@ -108,10 +108,10 @@ if ($('.office')[0]) {
         }
         /*
           const bounds = {
-    north: -25.363882,
-    south: -31.203405,
-    east: 131.044922,
-    west: 125.244141,
+    north: 32.000000,
+    south: 31.225605,
+    east: 35.017422,
+    west: 34.000000,
   };
   
   map.fitBounds(bounds)

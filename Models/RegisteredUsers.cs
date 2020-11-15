@@ -50,8 +50,10 @@ namespace projectWEB.Models
             }
             set
             {
-                if (value.Length > 1)
-                { CreditCardNo = value; }
+                if (!string.IsNullOrWhiteSpace(value))
+                { this.CreditCardNo = value; }
+                else
+                    this.CreditCardNo = null;
             }
 
         }

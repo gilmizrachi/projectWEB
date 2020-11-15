@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
+using projectWEB.Data;
 
 namespace projectWEB.Models
 {
@@ -34,5 +35,38 @@ namespace projectWEB.Models
         [DataMember(Name = "value")]
         public Nullable<double> value { get; set; } = null;
     }
+    public class BufferedSingleFileUploadDbModel 
+    {
 
- }
+        public itemview FileUpload { get; set; }
+
+}
+
+    public class itemview
+    {
+        public itemview() { }
+            public itemview(Item cpy)
+        {
+            id = cpy.id;
+            ItemName = cpy.ItemName;
+            price = cpy.price;
+            ItemDevision = cpy.ItemDevision;
+            Description = cpy.Description;
+            amount = cpy.amount;
+            
+        }
+        public int id { get; set; }
+
+        public string ItemName { get; set; }
+        public int price { get; set; }
+
+        public string ItemDevision { get; set; }
+
+        public string Description { get; set; }
+
+        public int amount { get; set; }
+
+        public IFormFile FormFile { get; set; }
+    }
+
+}

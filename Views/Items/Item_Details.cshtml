@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="tagline-message page-title">
-                    <h3>Single Shop</h3>
+                    <h3>@Html.DisplayFor(modelItem => item.ItemName)</h3>
 
                 </div>
             </div><!-- end col -->
@@ -36,9 +36,9 @@
                         <div class="col-md-12">
 
                             <div class="image-wrap entry">
-                                <img src="~/upload/items/@(Html.Raw(item.id)).jpg" alt="" class="img-responsive">
+                                <img src="~/upload/items/@(Html.Raw(item.id))-0.jpg" alt="" class="img-responsive">
                                 <div class="magnifier">
-                                    <a rel="prettyPhoto[inline]" href="~/upload/items/@(Html.Raw(item.id)).jpg" title=""><i class="flaticon-add"></i></a>
+                                    <a rel="prettyPhoto[inline]" href="~/upload/items/@(Html.Raw(item.id))-0.jpg" title=""><i class="flaticon-add"></i></a>
                                 </div>
                             </div><!-- end image-wrap -->
                         </div>

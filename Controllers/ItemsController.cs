@@ -13,8 +13,11 @@ using Microsoft.EntityFrameworkCore;
 using projectWEB.Data;
 using projectWEB.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 using projectWEB.Migrations;
 using Newtonsoft.Json;
+using System.IO;
+
 
 namespace projectWEB.Controllers
 {
@@ -22,42 +25,20 @@ namespace projectWEB.Controllers
     public class ItemsController : Controller
     {
         private readonly projectWEBContext _context;
-
-        public ItemsController(projectWEBContext context)
+        private readonly IHostingEnvironment hostingEnvironment;
+        public ItemsController(projectWEBContext context, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
-        // GET: Items
 
-        /*
-        public  IActionResult Index()
-        {
-            return View();
-        } */
         [AllowAnonymous]
         public IActionResult Info()
         {
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
-            /*  var locations =[ ['<div class="infobox"><h3 class="title"><a href="#">Here we are</a></h3><span>Rishon Le Zion / Street</span><span> +972 3 444 55 66</span></div>',
-              ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints); */
-             List < ChartData > chartdata = new List<ChartData>();
 
-            chartdata.Add(new ChartData("01/01/2020", 10));
-            chartdata.Add(new ChartData("02/02/2020", 30));
-            chartdata.Add(new ChartData("03/03/2020", 17));
-            chartdata.Add(new ChartData("04/05/2020", 39));
-            chartdata.Add(new ChartData("05/05/2020", 30));
-            chartdata.Add(new ChartData("06/05/2020", 25));
-            chartdata.Add(new ChartData("07/09/2020", 15));
-            var bullshit = from a in _context.Transaction.Include(p => p.Cart)
-                           where a.Status != 0
-                           select new { sale_time = a.TranscationDate.ToShortDateString(),value = a.SumPrice };//value = a.Cart.Count() };
-            var da = bullshit.ToList();
-            ViewBag.DataPoints = JsonConvert.SerializeObject(chartdata);
-            ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
-            // ViewBag.DataPoints = JsonConvert.SerializeObject(da);
-            /*ViewBag.DataPoints = JsonConvert.SerializeObject(chartdata);  */             //.Where(a=>a.Status!=0).Include(p=>p.Cart).SelectMany(a=>a.Cart as objects)
+
             return View();
         }
 /*
@@ -111,6 +92,7 @@ namespace projectWEB.Controllers
             
             return View(it);
         }
+        [Authorize(Roles = "SalesPerson,Supervisor,Admin")]
         public IActionResult Create()
         {
             return View();
@@ -172,10 +154,7 @@ namespace projectWEB.Controllers
             else { return View("Mainshop"); }
 
         }
-        public IActionResult Index2()
-        {
-            return View();
-        }
+
         [AllowAnonymous]
         public async Task<IActionResult> Manage()
         {
@@ -183,7 +162,10 @@ namespace projectWEB.Controllers
                            where a.Status != 0
                            select new { sale_time = a.TranscationDate.ToShortDateString(), value = a.SumPrice };//value = a.Cart.Count() };
             var da = bullshit.ToList();
+            var T_statistics = new int[] { _context.Transaction.Where(a => a.Status != Status.Pending).Count(), _context.Transaction.Where(i => i.Status == Status.Pending).Count()};
+            ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
             ViewBag.DataPoints = JsonConvert.SerializeObject(da);
+            ViewBag.statis = JsonConvert.SerializeObject(T_statistics);
             ViewBag.usersList = await _context.RegisteredUsers.OrderByDescending(a => a.id).ToListAsync();
             ViewBag.Waiting = await _context.Transaction.Where(a => a.Status == Status.Approved).ToListAsync();
             return View();
@@ -202,6 +184,7 @@ namespace projectWEB.Controllers
                 await _context.SaveChangesAsync();
             }
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
+            ViewBag.ItemVal = JsonConvert.SerializeObject(await _context.Item.ToListAsync());
             // HttpContext.Session.SetString()
             return View(await _context.Item.ToListAsync());
         }
@@ -212,13 +195,21 @@ namespace projectWEB.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles ="SalesPerson,Supervisor")]
-        public async Task<IActionResult> Create([Bind("id,ItemName,price,ItemDevision,Description,amount")] Item item)
+        public async Task<IActionResult> Create([Bind("id,ItemName,price,ItemDevision,Description,amount")] Item item, List<IFormFile> FormFile)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(item);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (FormFile != null)
+                {
+                    for (int i = 0; i < FormFile.Count() && i < 4; i++)
+                    {
+                        var filePath = hostingEnvironment.WebRootPath + "/upload/items/" + item.id + "-" + i + ".jpg";
+                        await FormFile[i].CopyToAsync(new FileStream(filePath, FileMode.Create));
+                    }
+                }
+                return RedirectToAction(nameof(Manage));
             }
             return View(item);
         }
@@ -235,8 +226,65 @@ namespace projectWEB.Controllers
             {
                 return NotFound();
             }
+            itemview harta = new itemview(item);
             return View(item);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("id,ItemName,price,ItemDevision,Description,amount,FormFile")] Item item,IFormFile FormFile0, IFormFile FormFile1, IFormFile FormFile2, IFormFile FormFile3)//, string FormFile)  [Bind("id,ItemName,price,ItemDevision,Description,amount,FormFile")] 
+        {
+
+           
+                 if (FormFile0 != null)
+               {
+                var filePath = hostingEnvironment.WebRootPath + "/upload/items/" + item.id + "-0.jpg";
+                await FormFile0.CopyToAsync(new FileStream(filePath, FileMode.Create));
+               }
+                if (FormFile1 != null)
+                {
+                    var filePath = hostingEnvironment.WebRootPath + "/upload/items/" + item.id + "-1.jpg";
+                    await FormFile1.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                }
+                if (FormFile2 != null)
+                {
+                    var filePath = hostingEnvironment.WebRootPath + "/upload/items/" + item.id + "-2.jpg";
+                    await FormFile0.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                }
+                if (FormFile3 != null)
+                {
+                    var filePath = hostingEnvironment.WebRootPath + "/upload/items/" + item.id + "-3.jpg";
+                    await FormFile3.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                }
+            
+            if (id != item.id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(item);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ItemExists(item.id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Manage));
+            }
+            return View(item);
+        }
+
+
         /*
                 // GET: Items/Details/5
                 public async Task<IActionResult> Details(int? id)
@@ -363,5 +411,9 @@ namespace projectWEB.Controllers
                     return _context.Item.Any(e => e.id == id);
                 }
         */
+        private bool ItemExists(int id)
+        {
+            return _context.Item.Any(e => e.id == id);
+        }
     }
 }

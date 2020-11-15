@@ -1,7 +1,7 @@
 ﻿using projectWEB.Models;
-using System;
+using System.Web;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace projectWEB.Data
@@ -9,10 +9,11 @@ namespace projectWEB.Data
     public class Item
     {
         public int id { get; set; }
+        [Display(Name = "Product name")]
 
         public string ItemName { get; set; }
         public int price { get; set; }
-
+        [Display(Name = "Category")]
         public string ItemDevision { get; set; }
         public byte[] ItemImage { get; set; }
 

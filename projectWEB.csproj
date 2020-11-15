@@ -16,10 +16,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\css\jcrop.css" />
+    <None Include="wwwroot\css\jcrop.css.map" />
+    <None Include="wwwroot\js\jcrop.js" />
+    <None Include="wwwroot\js\jcrop.js.map" />
     <None Include="wwwroot\sass\style.scss" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="jquery.jcrop.js" Version="0.9.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
@@ -28,6 +33,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\Photo\" />
   </ItemGroup>
 
 </Project>
