@@ -194,7 +194,7 @@ namespace projectWEB.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles ="SalesPerson,Supervisor")]
+        [Authorize(Roles ="SalesPerson,Supervisor,Admin")]
         public async Task<IActionResult> Create([Bind("id,ItemName,price,ItemDevision,Description,amount")] Item item, List<IFormFile> FormFile)
         {
             if (ModelState.IsValid)
@@ -209,6 +209,13 @@ namespace projectWEB.Controllers
                         await FormFile[i].CopyToAsync(new FileStream(filePath, FileMode.Create));
                     }
                 }
+
+                FacebookApi fc = new FacebookApi();
+                fc.PublishMessage(item.ItemName + " is the newest product on our shopping site.\n"
+                     + "Description: " + item.Description + ".\n"
+                      + "Only: " + item.amount + "units remained! hurry up!\n"
+                       + "Price: " + item.price + "$");
+
                 return RedirectToAction(nameof(Manage));
             }
             return View(item);
