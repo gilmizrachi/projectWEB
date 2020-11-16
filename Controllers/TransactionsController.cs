@@ -152,6 +152,21 @@ namespace projectWEB.Controllers
         }
 
 
+         // GET: Orders
+        public async Task<IActionResult> ListAllOrdersByDate()
+        {
+            var result = (from t in _context.Transaction
+                          join u in _context.RegisteredUsers on t.CustomerId equals u.id
+                          select new OrdersHistory
+                          {
+                              orderNumber = t.Id,
+                              orderDate = t.TranscationDate
+                          }).GroupBy(o => new { o.orderNumber, o.orderDate.Date })
+                             .Select(order => order.Key)
+                             .OrderByDescending(order => order.Date);
+            ViewBag.History = result.ToList();
+            return View("History"); 
+        }
 
         public async Task<IActionResult> Delete(int? id)
         {
