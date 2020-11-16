@@ -37,51 +37,55 @@ namespace projectWEB.Controllers
             return RedirectToAction("ohhNo");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-       
 
-
-       /* [HttpPost]
-        public async Task<IActionResult> test(IFormFile file)
+        public IActionResult test()
         {
-            return View(file);
+            
+            return View();
         }
-         private string ProcessImage(string croppedImage)
 
-        {
+        /* [HttpPost]
+         public async Task<IActionResult> test(IFormFile file)
+         {
+             return View(file);
+         }
+          private string ProcessImage(string croppedImage)
 
-            string filePath = String.Empty;
+         {
 
-            try
-            {
+             string filePath = String.Empty;
 
-                string base64 = croppedImage;
+             try
+             {
 
-                byte[] bytes = Convert.FromBase64String(base64.Split(',')[1]);
+                 string base64 = croppedImage;
 
-                filePath = "/Images/Photo/Emp-" + Guid.NewGuid() + ".jpg";
+                 byte[] bytes = Convert.FromBase64String(base64.Split(',')[1]);
 
-                using (FileStream stream = new FileStream(Server.MapPath(filePath), FileMode.Create))
+                 filePath = "/Images/Photo/Emp-" + Guid.NewGuid() + ".jpg";
 
-                {
+                 using (FileStream stream = new FileStream(Server.MapPath(filePath), FileMode.Create))
 
-                    stream.Write(bytes, 0, bytes.Length);
+                 {
 
-                    stream.Flush();
+                     stream.Write(bytes, 0, bytes.Length);
 
-                }
+                     stream.Flush();
 
-            }
+                 }
 
-            catch (Exception ex)
+             }
 
-            {
+             catch (Exception ex)
 
-                string st = ex.Message;
+             {
 
-            }
+                 string st = ex.Message;
 
-            return filePath;
+             }
 
-        }*/
+             return filePath;
+
+         }*/
     }
 }

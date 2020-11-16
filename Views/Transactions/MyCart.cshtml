@@ -11,7 +11,7 @@
                 <span href="#" class="fa fa-trash" aria-hidden="true" id="rmvme"></span>
             </button>
             <li class="panel" id="cartitem">
-                <a asp-controller="Items" asp-action="item_details" asp-route-id="@item.id"><img src="~/upload/items/@(Html.Raw(item.id)).jpg" class="cart-thumb" alt=""> <strong>@Html.DisplayFor(modelItem => item.ItemName)</strong></a>
+                <a asp-controller="Items" asp-action="item_details" asp-route-id="@item.id"><img src="~/upload/items/@(Html.Raw(item.id))-0.jpg" class="cart-thumb" alt=""> <strong>@Html.DisplayFor(modelItem => item.ItemName)</strong></a>
                 <!--h6><a asp-controller="Items" asp-action="item_details" asp-route-id="@@item.id">@@Html.DisplayFor(modelItem => item.ItemName) </a></!h6>-->
                 <p>1x - <span class="price">$@Html.DisplayFor(modelItem => item.price)</span></p>
             </li>
