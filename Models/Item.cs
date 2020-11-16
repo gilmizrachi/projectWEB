@@ -13,7 +13,7 @@ namespace projectWEB.Data
 
         public string ItemName { get; set; }
         public int price { get; set; }
-        [Display(Name = "Category")]
+        
         public string ItemDevision { get; set; }
         public byte[] ItemImage { get; set; }
 

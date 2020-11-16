@@ -155,6 +155,7 @@ namespace projectWEB.Controllers
          // GET: Orders
         public async Task<IActionResult> ListAllOrdersByDate()
         {
+         //  var usr =  HttpContext.User.FindFirst(x => x.Type == ClaimTypes.SerialNumber)?.Value;
             var result = (from t in _context.Transaction
                           join u in _context.RegisteredUsers on t.CustomerId equals u.id
                           select new OrdersHistory

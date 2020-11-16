@@ -13,6 +13,10 @@
     <Compile Remove="Migrations\20200928155152_relations.Designer.cs" />
     <Compile Remove="Migrations\20201103014458_ratingandlocations.cs" />
     <Compile Remove="Migrations\20201103014458_ratingandlocations.Designer.cs" />
+    <Compile Remove="Migrations\20201116153141_fin-stg.cs" />
+    <Compile Remove="Migrations\20201116153141_fin-stg.Designer.cs" />
+    <Compile Remove="Migrations\20201116153607_fin-stg.cs" />
+    <Compile Remove="Migrations\20201116153607_fin-stg.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
