@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -159,6 +160,7 @@ namespace projectWEB.Controllers
         }
         public async Task<IActionResult> showProductsOfCategory(int id)
         {
+            ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
             setCategoriesMenu();
             var items = await (_context.Item.Where(i => i.ItemDevision == id.ToString())).ToListAsync();
             return View("~/Views/Items/mainshop.cshtml", items);
