@@ -32,10 +32,10 @@ namespace projectWEB.Controllers
             return _context.Location.ToArray();
         }
         // GET: Locations
-        /* public async Task<IActionResult> Index()
-         {
-             return View(await _context.Location.ToListAsync());
-         }*/
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Location.ToListAsync());
+        }
 
         // GET: Locations/Details/5
         [Authorize(Roles = "Admin,Supervisor")]

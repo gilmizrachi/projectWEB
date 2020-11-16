@@ -26,5 +26,7 @@ namespace projectWEB.Data
         public DbSet<projectWEB.Models.AlsoTry> AlsoTry { get; set; }
 
         public DbSet<projectWEB.Models.Location> Location { get; set; }
+
+        public DbSet<projectWEB.Models.Category> Category { get; set; }
     }
 }

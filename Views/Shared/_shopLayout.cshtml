@@ -145,67 +145,69 @@
 
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a asp-action="Mainshop">Home</a></li>
+                            <li><a asp-controller="Items" asp-action="Mainshop">Home</a></li>
+                            <li><a href="@Url.Action("ListAllOrdersByDate","Transactions")" style="color: cornflowerblue">Your Orders History</a></li>
                             <!--li class="dropdown yamm-fw yamm-half">
-                                <a href="#" data-toggle="dropdown" class="dropdown-toggle active">Mega Menu <b class="fa fa-angle-down"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <div class="yamm-content clearfix">
-                                            <div class="row-fluid">
-                                                <div class="col-md-6 col-sm-6">
-                                                    <h4>Course Pages</h4>
-                                                    <ul>
-                                                        <li><a href="#">Courses Name 01</a></li>
-                                                        <li><a href="#">Courses Name 02</a></li>
-                                                        <li><a href="#">Courses Name 03</a></li>
-                                                        <li><a href="#">Courses Name 04</a></li>
-                                                        <li><a href="#">Courses Name 05</a></li>
-                                                        <li><a href="#">Courses Name 06</a></li>
-                                                        <li><a href="#">Courses Name 07</a></li>
-                                                        <li><a href="#">Courses Name 08</a></li>
-                                                        <li><a href="#">Courses Name 09</a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <div class="menu-widget text-center">
-                                                        <div class="image-wrap entry">
-                                                            <img src="~/upload/course_01.jpg" alt="" class="img-responsive">
-                                                            <div class="magnifier">
-                                                                <a href="#" title=""><i class="flaticon-add"></i></a>
-                                                            </div>
-                                                        </div><!-- end image-wrap - ->
-                                                        <h5><a href="#"> Implament </a></h5>
-                                                        <small>$22.00</small>
-                                                        <a href="#" class="menu-button">View Course</a>
-                                                    </div><!-- end widget - ->
-                                                </div>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle active">Mega Menu <b class="fa fa-angle-down"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="yamm-content clearfix">
+                                        <div class="row-fluid">
+                                            <div class="col-md-6 col-sm-6">
+                                                <h4>Course Pages</h4>
+                                                <ul>
+                                                    <li><a href="#">Courses Name 01</a></li>
+                                                    <li><a href="#">Courses Name 02</a></li>
+                                                    <li><a href="#">Courses Name 03</a></li>
+                                                    <li><a href="#">Courses Name 04</a></li>
+                                                    <li><a href="#">Courses Name 05</a></li>
+                                                    <li><a href="#">Courses Name 06</a></li>
+                                                    <li><a href="#">Courses Name 07</a></li>
+                                                    <li><a href="#">Courses Name 08</a></li>
+                                                    <li><a href="#">Courses Name 09</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="menu-widget text-center">
+                                                    <div class="image-wrap entry">
+                                                        <img src="~/upload/course_01.jpg" alt="" class="img-responsive">
+                                                        <div class="magnifier">
+                                                            <a href="#" title=""><i class="flaticon-add"></i></a>
+                                                        </div>
+                                                    </div><!-- end image-wrap - ->
+                                                    <h5><a href="#"> Implament </a></h5>
+                                                    <small>$22.00</small>
+                                                    <a href="#" class="menu-button">View Course</a>
+                                                </div><!-- end widget - ->
                                             </div>
                                         </div>
-                                    </li>
-                                </ul>
-                            </li-->
-                            <li><a asp-controller="RegisteredUsers" asp-action="login">Login</a></li> 
+                                    </div>
+                                </li>
+                            </ul>
+                        </li-->
+                            <li><a asp-controller="RegisteredUsers" asp-action="login">Login</a></li>
                             <!--li class="dropdown hassubmenu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Shop <span class="fa fa-angle-down"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Shop</a></li>
-                                    <li><a asp-action="item_details">Shop Single</a></li> <!-- TODO: single item view - ->
-                                </ul>
-                            </li-->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Shop <span class="fa fa-angle-down"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Shop</a></li>
+                                <li><a asp-action="item_details">Shop Single</a></li> <!-- TODO: single item view - ->
+                            </ul>
+                        </li-->
                             @if (ViewBag.membertype == "Admin")
                             {
-                            <li class="dropdown hassubmenu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin<span class="fa fa-angle-down"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a asp-controller="RegisteredUsers" asp-action="Index">Users</a></li>
-                                    <li><a asp-controller="Items" asp-action="create">Add Items</a></li>
-                                    <li><a asp-controller="Transactions" asp-action="Index">Orders </a></li>
-                                    <li><a asp-controller="Locations" asp-action="Index">Branches & offices</a></li>
-                                    <li><a asp-controller="Items" asp-action="Manage">Admin Page</a></li>
-                                </ul>
-                            </li>
+                                <li class="dropdown hassubmenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin<span class="fa fa-angle-down"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a asp-controller="RegisteredUsers" asp-action="Index">Users</a></li>
+                                        <li><a asp-controller="Items" asp-action="create">Add Items</a></li>
+                                        <li><a asp-controller="Transactions" asp-action="Index">Orders </a></li>
+                                        <li><a asp-controller="Locations" asp-action="Index">Branches & offices</a></li>
+                                        <li><a asp-controller="Items" asp-action="Manage">Admin Page</a></li>
+                                        <li><a asp-controller="Categories" asp-action="Index">Categories</a></li>
+                                    </ul>
+                                </li>
                             }
-                            <li><a asp-action="info">Contact</a></li> 
+                            <li><a asp-action="info">Contact</a></li>
                             <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
                             <li class="side-menu"><a class="shopicon" href="#"><i class="fa fa-shopping-bag"></i></a></li>
                         </ul>
@@ -219,12 +221,28 @@
                                 <img src="~/images/no-cookies.jpg" width="250" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) style="width:100%">
                                 <span class="float-none"><a asp-controller="RegisteredUsers" asp-action="DoLogout" style="color:darkturquoise"> <strong>Please Login Agin</strong></a></span>
                             </ul>
-                           
+
                         </li>
                     </div>
                 </nav><!-- end navbar -->
             </div><!-- end container -->
         </header>
+
+        <div class="col-3" style="width: 265px; position: absolute; z-index: 123;">
+            <ul class="list-group">
+                @if (ViewBag.modelCategory != null)
+                {
+                    @foreach (var item in ViewBag.modelCategory)
+                    {
+                        <a href="@Url.Action("showProductsOfCategory", "Categories", new { id = item.id })">
+                            <li class="list-group-item">
+                                @(item.name)
+                            </li>
+                        </a>
+                    }
+                }
+            </ul>     
+        </div>
 
         @RenderBody()
 

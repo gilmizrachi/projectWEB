@@ -142,7 +142,13 @@ namespace projectWEB.Controllers
 
 
         }
-       
+
+        public void setCategoriesMenu()
+        {
+            var modelCategory = _context.Category.ToList();
+            ViewBag.modelCategory = modelCategory;
+        }
+
         [HttpPost]
         public async Task<IActionResult> Sort(string Sortby)
         {
@@ -186,6 +192,7 @@ namespace projectWEB.Controllers
             ViewBag.membertype = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Role)?.Value;
             ViewBag.ItemVal = JsonConvert.SerializeObject(await _context.Item.ToListAsync());
             // HttpContext.Session.SetString()
+            setCategoriesMenu();
             return View(await _context.Item.ToListAsync());
         }
 

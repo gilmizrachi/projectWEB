@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Orders History";
+    Layout = "~/Views/Shared/_shopLayout.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>History</title>
+</head>
+<body>
+    <table class="table" style="margin: auto 20%; margin-bottom: 500px !important;">
+        <thead>
+            <tr>
+                <th>
+                    Order Date
+                </th>
+                <th>
+                    Order Number
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in (dynamic)ViewBag.History)
+            {
+            <tr>
+                <td>
+                    @item.GetType().GetProperty("Date").GetValue(item, null).ToString().Replace(" 0:00:00", "")
+                </td>
+                <td>
+                    <a style="text-decoration:underline !important;" href="">@item.GetType().GetProperty("orderNumber").GetValue(item, null)</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
